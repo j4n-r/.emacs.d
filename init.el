@@ -7,8 +7,7 @@
       scroll-bar-mode -1
       tooltip-mode nil
       global-display-line-numbers-mode t
-      display-line-numbers 'relative
-      )
+      display-line-numbers 'relative)
 
 (set-face-attribute 'default nil :font "JetBrains Mono Nerd Font")
 
@@ -79,6 +78,128 @@
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode))
 
 
+;; Example configuration for Consult
+(use-package consult
+  ;; Replace bindings. Lazily loaded by `use-package'.
+  :bind (;; C-c bindings in `mode-specific-map'
+         ("C-c M-x" . consult-mode-command)
+         ("C-c h" . consult-history)
+         ("C-c k" . consult-kmacro)
+         ("C-c m" . consult-man)
+         ("C-c i" . consult-info)
+         ([remap Info-search] . consult-info)
+         ;; C-x bindings in `ctl-x-map'
+         ("C-x M-:" . consult-complex-command)     ;; orig. repeat-complex-command
+         ("C-x b" . consult-buffer)                ;; orig. switch-to-buffer
+         ("C-x 4 b" . consult-buffer-other-window) ;; orig. switch-to-buffer-other-window
+         ("C-x 5 b" . consult-buffer-other-frame)  ;; orig. switch-to-buffer-other-frame
+         ("C-x t b" . consult-buffer-other-tab)    ;; orig. switch-to-buffer-other-tab
+         ("C-x r b" . consult-bookmark)            ;; orig. bookmark-jump
+         ("C-x p b" . consult-project-buffer)      ;; orig. project-switch-to-buffer
+         ;; Custom M-# bindings for fast register access
+         ("M-#" . consult-register-load)
+         ("M-'" . consult-register-store)          ;; orig. abbrev-prefix-mark (unrelated)
+         ("C-M-#" . consult-register)
+         ;; Other custom bindings
+         ("M-y" . consult-yank-pop)                ;; orig. yank-pop
+         ;; M-g bindings in `goto-map'
+         ("M-g e" . consult-compile-error)
+         ("M-g f" . consult-flymake)               ;; Alternative: consult-flycheck
+         ("M-g g" . consult-goto-line)             ;; orig. goto-line
+         ("M-g M-g" . consult-goto-line)           ;; orig. goto-line
+         ("M-g o" . consult-outline)               ;; Alternative: consult-org-heading
+         ("M-g m" . consult-mark)
+         ("M-g k" . consult-global-mark)
+         ("M-g i" . consult-imenu)
+         ("M-g I" . consult-imenu-multi)
+         ;; M-s bindings in `search-map'
+         ("M-s d" . consult-find)                  ;; Alternative: consult-fd
+         ("M-s c" . consult-locate)
+         ("M-s g" . consult-grep)
+         ("M-s G" . consult-git-grep)
+         ("M-s r" . consult-ripgrep)
+         ("M-s l" . consult-line)
+         ("M-s L" . consult-line-multi)
+         ("M-s k" . consult-keep-lines)
+         ("M-s u" . consult-focus-lines)
+         ;; Isearch integration
+         ("M-s e" . consult-isearch-history)
+         :map isearch-mode-map
+         ("M-e" . consult-isearch-history)         ;; orig. isearch-edit-string
+         ("M-s e" . consult-isearch-history)       ;; orig. isearch-edit-string
+         ("M-s l" . consult-line)                  ;; needed by consult-line to detect isearch
+         ("M-s L" . consult-line-multi)            ;; needed by consult-line to detect isearch
+         ;; Minibuffer history
+         :map minibuffer-local-map
+         ("M-s" . consult-history)                 ;; orig. next-matching-history-element
+         ("M-r" . consult-history))                ;; orig. previous-matching-history-element
+
+  ;; Enable automatic preview at point in the *Completions* buffer. This is
+  ;; relevant when you use the default completion UI.
+  :hook (completion-list-mode . consult-preview-at-point-mode)
+
+  ;; The :init configuration is always executed (Not lazy)
+  :init
+
+  ;; Tweak the register preview for `consult-register-load',
+  ;; `consult-register-store' and the built-in commands.  This improves the
+  ;; register formatting, adds thin separator lines, register sorting and hides
+  ;; the window mode line.
+  (advice-add #'register-preview :override #'consult-register-window)
+  (setq register-preview-delay 0.5)
+
+  ;; Use Consult to select xref locations with preview
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
+
+  ;; Configure other variables and modes in the :config section,
+  ;; after lazily loading the package.
+  :config
+
+  ;; Optionally configure preview. The default value
+  ;; is 'any, such that any key triggers the preview.
+  ;; (setq consult-preview-key 'any)
+  ;; (setq consult-preview-key "M-.")
+  ;; (setq consult-preview-key '("S-<down>" "S-<up>"))
+  ;; For some commands and buffer sources it is useful to configure the
+  ;; :preview-key on a per-command basis using the `consult-customize' macro.
+  (consult-customize
+   consult-theme :preview-key '(:debounce 0.2 any)
+   consult-ripgrep consult-git-grep consult-grep consult-man
+   consult-bookmark consult-recent-file consult-xref
+   consult--source-bookmark consult--source-file-register
+   consult--source-recent-file consult--source-project-recent-file
+   ;; :preview-key "M-."
+   :preview-key '(:debounce 0.4 any))
+
+  ;; Optionally configure the narrowing key.
+  ;; Both < and C-+ work reasonably well.
+  (setq consult-narrow-key "<") ;; "C-+"
+
+  ;; Optionally make narrowing help available in the minibuffer.
+  ;; You may want to use `embark-prefix-help-command' or which-key instead.
+  ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
+)
+
+;; Helpful
+(use-package helpful)
+  ;; Note that the built-in `describe-function' includes both functions
+;; and macros. `helpful-function' is functions only, so we provide
+;; `helpful-callable' as a drop-in replacement.
+(global-set-key (kbd "C-h f") #'helpful-callable)
+
+(global-set-key (kbd "C-h v") #'helpful-variable)
+(global-set-key (kbd "C-h k") #'helpful-key)
+(global-set-key (kbd "C-h x") #'helpful-command)
+;; Lookup the current symbol at point. C-c C-d is a common keybinding
+;; for this in lisp modes.
+(global-set-key (kbd "C-c C-d") #'helpful-at-point)
+
+;; Look up *F*unctions (excludes macros).
+;;
+;; By default, C-h F is bound to `Info-goto-emacs-command-node'. Helpful
+;; already links to the manual, if a function is referenced there.
+(global-set-key (kbd "C-h F") #'helpful-function)
 
 
 ;; Corfu - Completion UI
@@ -99,16 +220,56 @@
   :config
   (general-evil-setup t)
 
-  (general-create-definer rune/leader-keys
+  (general-create-definer leader
     :keymaps '(normal insert visual emacs)
     :prefix "SPC"
     :global-prefix "C-SPC"))
+
+(leader
+  "f" '(:ignore f :which-key "file")
+  "ff" '(find-file :which-key "find file")
+
+  "g" '(:ignore g :which-key "git")
+  "gg" '(magit-status :which-key "magit")
+
+  "o" '(:igore o :which-key "open")
+  "od" '(dired-jump :which-key "open dired")
+
+  "p" '(projectile-command-map p :which-key "project")
+
+  "t" '(:ignore t :which-key "toggles")
+  "tt" '(vterm :which-key "toggle terminal")
+
+  "w" '(:ignore w :which-key "window")
+  "wv" '(evil-window-vsplit :which-key "split vertically")
+  "ws" '(evil-window-split :which-key "split horizontally")
+  "wq" '(delete-window :which-key "delete window")
+  ;;"wo" '(delete-other-windows :which-key "maximize window")
+  "ww" '(other-window :which-key "switch window")
+  "w<" '(evil-window-decrease-width :which-key "decrease width")
+  "w>" '(evil-window-increase-width :which-key "increase width")
+  "w+" '(evil-window-increase-height :which-key "increase height")
+  "w-" '(evil-window-decrease-height :which-key "decrease height")
+  "wh" '(evil-window-left :which-key "window left")
+  "wl" '(evil-window-right :which-key "window right")
+  "wj" '(evil-window-down :which-key "window down")
+  "wk" '(evil-window-up :which-key "window up")
+  "wH" '(evil-window-move-far-left :which-key "move window far left")
+  "wL" '(evil-window-move-far-right :which-key "move window far right")
+  "wJ" '(evil-window-move-very-bottom :which-key "move window very bottom")
+  "wK" '(evil-window-move-very-top :which-key "move window very top")
+  "wt" '(evil-window-top-left :which-key "top-left window")
+  "wb" '(evil-window-bottom-right :which-key "bottom-right window")
+  "w=" '(balance-windows :which-key "balance windows")
+  "wr" '(evil-window-rotate-downwards :which-key "rotate downwards")
+  "wR" '(evil-window-rotate-upwards :which-key "rotate upwards")
+  )
+
 
 
 
 ;; Marginalia - Rich Annotations
 (use-package marginalia
-  :ensure t
   :bind (:map minibuffer-local-map
          ("M-A" . marginalia-cycle))
   :init
@@ -116,17 +277,18 @@
 
 ;; Evil - Vim Emulation
 (use-package evil
-  :ensure t
   :init
   (setq evil-want-integration t
 	evil-want-C-u-scroll t
 	evil-undo-system 'undo-fu
-        evil-want-keybinding nil) ;; Disable default keybindings
+        evil-want-keybinding nil) ;; Disable default )
   :config
-  (evil-mode 1))
+  (evil-mode 1)
+  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
-(evil-global-set-key 'motion "j" 'evil-next-visual-line)
-(evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+  (evil-set-initial-state 'message-buffer-mode 'normal)
+  (evil-set-initial-state 'dashboard-mode 'normal))
 
 (use-package undo-fu)
 
@@ -170,7 +332,6 @@
   :init
   :config
   (projectile-mode +1))
-
 ;; Which-Key - Keybinding Help
 (use-package which-key
   :ensure t
