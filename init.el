@@ -2,15 +2,56 @@
 (setq inhibit-startup-message t
       blink-cursor-mode nil
       custom-file "~/.emacs.d/custom.el"
-      tool-bar-mode -1
-      menu-bar-mode -1
-      scroll-bar-mode -1
+      tool-bar-mode nil
+      menu-bar-mode nil
+      scroll-bar-mode nil
       tooltip-mode nil
       global-display-line-numbers-mode t
+      column-number-mode t
+      frame-resize-pixelwise t
       display-line-numbers 'relative)
+(setq default-frame-alist '((fullscreen . maximized)
+
+
+                            ;; You can turn off scroll bars by uncommenting these lines:
+                             (vertical-scroll-bars . nil)
+                             (horizontal-scroll-bars . nil)
+
+                            ;; Setting the face in here prevents flashes of
+                            ;; color as the theme gets activated
+                            (background-color . "#000000")
+                            (foreground-color . "#ffffff")
+                            (ns-appearance . dark)
+                            (ns-transparent-titlebar . t)))
+;; Don't litter file system with *~ backup files; put them all inside
+;; ~/.emacs.d/backup or wherever
+(defun bedrock--backup-file-name (fpath)
+  "Return a new file path of a given file path.
+If the new path's directories does not exist, create them."
+  (let* ((backupRootDir (concat user-emacs-directory "emacs-backup/"))
+         (filePath (replace-regexp-in-string "[A-Za-z]:" "" fpath )) ; remove Windows driver letter in path
+         (backupFilePath (replace-regexp-in-string "//" "/" (concat backupRootDir filePath "~") )))
+    (make-directory (file-name-directory backupFilePath) (file-name-directory backupFilePath))
+    backupFilePath))
+(setopt make-backup-file-name-function 'bedrock--backup-file-name)
+(setopt x-underline-at-descent-line nil)           ; Prettier underlines
+(setopt switch-to-buffer-obey-display-actions t)   ; Make switching buffers more consistent
+
+(setopt show-trailing-whitespace nil)      ; By default, don't underline trailing spaces
+(setopt indicate-buffer-boundaries 'left)  ; Show buffer top and bottom in the margin
+(add-hook 'text-mode-hook 'visual-line-mode)
+
+;; Enable horizontal scrolling
+(setopt mouse-wheel-tilt-scroll t)
+(setopt mouse-wheel-flip-direction t)
+(pixel-scroll-precision-mode)                         ; Smooth scrolling
 
 (set-face-attribute 'default nil :font "JetBrains Mono Nerd Font")
 
+(setopt auto-revert-avoid-polling t)
+(setopt auto-revert-interval 5)
+(setopt auto-revert-check-vc-info t)
+(global-auto-revert-mode)
 ;; Initialize package system
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -46,6 +87,7 @@
                   (car args))
           (cdr args)))
   (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+
 
 ;; Enable vertico
 (use-package vertico
@@ -240,6 +282,9 @@
   "t" '(:ignore t :which-key "toggles")
   "tt" '(vterm :which-key "toggle terminal")
 
+  "c" '(:igore t :which-key "code")
+  "cc" '(eglot-code-action "code actions")
+
   "w" '(:ignore w :which-key "window")
   "wv" '(evil-window-vsplit :which-key "split vertically")
   "ws" '(evil-window-split :which-key "split horizontally")
@@ -342,18 +387,6 @@
 (add-hook 'org-mode-hook #'org-modern-mode)
 (add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
 
-(use-package lsp-mode
-  :init
-  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-keymap-prefix "C-c l")
-  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         (prog-mode-hook . lsp)
-         ;; if you want which-key integration
-         (lsp-mode . lsp-enable-which-key-integration))
-  :commands lsp)
-
-;; optionally
-(use-package lsp-ui :commands lsp-ui-mode)
 (use-package flycheck
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
@@ -367,3 +400,52 @@
       doom-modeline-total-line-number t)
 
 (use-package vterm)
+
+;;;; Treeitter and Eglot LSP ;;;;;;;;
+(use-package tree-sitter-langs)
+(setq global-tree-sitter-mode t
+      )
+(use-package emacs
+  :config
+  ;; Treesitter config
+
+  ;; Tell Emacs to prefer the treesitter mode
+  ;; You'll want to run the command `M-x treesit-install-language-grammar' before editing.
+  (setq major-mode-remap-alist
+        '((yaml-mode . yaml-ts-mode)
+          (bash-mode . bash-ts-mode)
+          (js2-mode . js-ts-mode)
+          (typescript-mode . typescript-ts-mode)
+          (json-mode . json-ts-mode)
+          (css-mode . css-ts-mode)
+          (python-mode . python-ts-mode)))
+  :hook
+  ;; Auto parenthesis matching
+  ((prog-mode . electric-pair-mode)))
+
+
+(use-package markdown-mode
+  :hook ((markdown-mode . visual-line-mode)))
+
+(use-package yaml-mode
+  :ensure t)
+
+(use-package json-mode
+  :ensure t)
+(use-package eglot
+  ;; no :ensure t here because it's built-in
+
+  ;; Configure hooks to automatically turn-on eglot for selected modes
+  ; :hook
+  ; (((python-mode ruby-mode elixir-mode) . eglot))
+
+  :custom
+  (eglot-send-changes-idle-time 0.1)
+  (eglot-extend-to-xref t)              ; activate Eglot in referenced non-project files
+
+  :config
+  (fset #'jsonrpc--log-event #'ignore)  ; massive perf boost---don't log every event
+  ;; Sometimes you need to tell Eglot where to find the language server
+  ; (add-to-list 'eglot-server-programs
+  ;              '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
+  )
