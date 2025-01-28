@@ -1,11 +1,16 @@
 ;; Basic Options
+(when (display-graphic-p)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1))
+
+
 (setq inhibit-startup-message t
       blink-cursor-mode nil
       custom-file "~/.emacs.d/custom.el"
-      tool-bar-mode nil
-      menu-bar-mode nil
-      scroll-bar-mode nil
-      tooltip-mode nil
+      tool-bar-mode -1
+      vc-follow-symlinks t
+      scroll-bar-mode -1
+      tooltip-mode -1
       global-display-line-numbers-mode t
       column-number-mode t
       frame-resize-pixelwise t
@@ -46,7 +51,7 @@ If the new path's directories does not exist, create them."
 (setopt mouse-wheel-flip-direction t)
 (pixel-scroll-precision-mode)                         ; Smooth scrolling
 
-(set-face-attribute 'default nil :font "JetBrains Mono Nerd Font")
+(set-face-attribute 'default nil :font "JetBrains Mono Nerd Font" :height 110 )
 
 (setopt auto-revert-avoid-polling t)
 (setopt auto-revert-interval 5)
@@ -191,6 +196,7 @@ If the new path's directories does not exist, create them."
 (global-set-key (kbd "C-h F") #'helpful-function)
 
 
+
 ;; Corfu - Completion UI
 (use-package corfu
   :init
@@ -219,6 +225,15 @@ If the new path's directories does not exist, create them."
   "." '(switch-to-buffer :which-key "find buffer")
   "TAB" '(perspective-map :which-key "perspective")
 
+  "c" '(:igore t :which-key "code")
+  "cc" '(eglot-code-action "code actions")
+
+  "e" '(:ignore t :which-key "eval elisp")
+  "eb" '(eval-buffer :which-key "eval buffer")
+  "er" '(eval-region :which-key "eval region")
+  "ee" '(eval-expression :which-key "eval expression")
+  "ed" '(eval-expression :which-key "eval expression")
+
   "f" '(:ignore f :which-key "file")
   "ff" '(find-file :which-key "find file")
 
@@ -233,14 +248,17 @@ If the new path's directories does not exist, create them."
   "t" '(:ignore t :which-key "toggles")
   "tt" '(vterm :which-key "toggle terminal")
 
-  "c" '(:igore t :which-key "code")
-  "cc" '(eglot-code-action "code actions")
-
   "w" '(:ignore w :which-key "window")
   "wv" '(evil-window-vsplit :which-key "split vertically")
   "ws" '(evil-window-split :which-key "split horizontally")
   "wq" '(delete-window :which-key "delete window")
-  ;;"wo" '(delete-other-windows :which-key "maximize window")
+
+  "wo" '(:ignore t :which-key "olivetti")
+  "woo" '(olivetti-mode :which-key "center")
+  "wo>" '(olivetti-expand :which-key "expand margin")
+  "wo<" '(olivetti-shrink :which-key "shrink margin")
+  "wos" '(olivetti-set-width :which-key "set width")
+
   "ww" '(other-window :which-key "switch window")
   "w<" '(evil-window-decrease-width :which-key "decrease width")
   "w>" '(evil-window-increase-width :which-key "increase width")
@@ -260,9 +278,6 @@ If the new path's directories does not exist, create them."
   "wr" '(evil-window-rotate-downwards :which-key "rotate downwards")
   "wR" '(evil-window-rotate-upwards :which-key "rotate upwards")
   )
-
-
-
 
 ;; Marginalia - Rich Annotations
 (use-package marginalia
@@ -358,10 +373,13 @@ If the new path's directories does not exist, create them."
   :init
   (persp-mode))
 
+(use-package olivetti)
+
+(use-package magit)
+
 ;;;; Treeitter and Eglot LSP ;;;;;;;;
 (use-package tree-sitter-langs)
-(setq global-tree-sitter-mode t
-      )
+(setq global-tree-sitter-mode t)
 (use-package emacs
   :config
   ;; Treesitter config
