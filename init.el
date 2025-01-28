@@ -226,7 +226,10 @@ If the new path's directories does not exist, create them."
   "TAB" '(perspective-map :which-key "perspective")
 
   "c" '(:igore t :which-key "code")
-  "cc" '(eglot-code-action "code actions")
+  "cc" '(eglot-code-action :which-key "code actions")
+  "cf" '(eglot-format-buffer :which-key "format buffer")
+  "cr" '(eglot-rename :which-key "rename")
+  "co" '(eglot-organize-imports :which-key "organize imports")
 
   "e" '(:ignore t :which-key "eval elisp")
   "eb" '(eval-buffer :which-key "eval buffer")
@@ -242,11 +245,13 @@ If the new path's directories does not exist, create them."
 
   "o" '(:igore o :which-key "open")
   "od" '(dired-jump :which-key "open dired")
+  "ot" '(vterm :which-key "open terminal")
 
   "p" '(projectile-command-map p :which-key "project")
 
   "t" '(:ignore t :which-key "toggles")
-  "tt" '(vterm :which-key "toggle terminal")
+  "tt" '(vterm-toggle :which-key "toggle terminal")
+  "tT" '(vterm-toggle-cd :which-key "cdd toggle terminal")
 
   "w" '(:ignore w :which-key "window")
   "wv" '(evil-window-vsplit :which-key "split vertically")
@@ -278,6 +283,15 @@ If the new path's directories does not exist, create them."
   "wr" '(evil-window-rotate-downwards :which-key "rotate downwards")
   "wR" '(evil-window-rotate-upwards :which-key "rotate upwards")
   )
+
+(general-define-key
+ :states 'normal
+ "gd" 'eglot-find-declaration
+ "gD" 'eglot-find-typeDefinition
+ "gi" 'eglot-find-implementation
+ "gr" 'xref-find-references
+ ;;"K"  'eldoc
+ )
 
 ;; Marginalia - Rich Annotations
 (use-package marginalia
@@ -376,6 +390,21 @@ If the new path's directories does not exist, create them."
 (use-package olivetti)
 
 (use-package magit)
+(use-package vterm-toggle)
+(setq vterm-toggle-fullscreen-p nil)
+(add-to-list 'display-buffer-alist
+             '((lambda (buffer-or-name _)
+                   (let ((buffer (get-buffer buffer-or-name)))
+                     (with-current-buffer buffer
+                       (or (equal major-mode 'vterm-mode)
+                           (string-prefix-p vterm-buffer-name (buffer-name buffer))))))
+                (display-buffer-reuse-window display-buffer-at-bottom)
+                ;;(display-buffer-reuse-window display-buffer-in-direction)
+                ;;display-buffer-in-direction/direction/dedicated is added in emacs27
+d                ;;(direction . bottom)
+                ;;(dedicated . t) ;dedicated is supported in emacs27
+                (re-frames . visible)
+                (window-height . 0.3)))
 
 ;;;; Treeitter and Eglot LSP ;;;;;;;;
 (use-package tree-sitter-langs)
