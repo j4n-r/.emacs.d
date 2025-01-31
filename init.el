@@ -222,7 +222,8 @@ If the new path's directories does not exist, create them."
 
 (leader
   "SPC" '(projectile-find-file :which-key "project ff")
-  "." '(switch-to-buffer :which-key "find buffer")
+  "," '(switch-to-buffer :which-key "find buffer")
+  "." '(find-file-at-point :which-key "ff in dir")
   "TAB" '(perspective-map :which-key "perspective")
 
   "c" '(:igore t :which-key "code")
@@ -247,7 +248,24 @@ If the new path's directories does not exist, create them."
   "od" '(dired-jump :which-key "open dired")
   "ot" '(vterm :which-key "open terminal")
 
+
+  "n" '(:ignore :which-key "nodes")
+  "nf" '(org-roam-node-find :which-key "find node")
+  "ng" '(org-roam-graph :which-key "show graph")
+  "ni" '(org-roam-node-insert :which-key "insert node")
+  "nc" '(org-roam-capture :which-key "capture node")
+  "nj" '(org-roam-dailies-capture-today :which-key "capture daily node") 
+
   "p" '(projectile-command-map p :which-key "project")
+
+  "qq" '(evil-quit :which-key "quit emcas")
+
+  "s" '(:ignore :which-key "spelling")
+  "ss" '(jinx-correct :which-key "jinx correct")
+  "sl" '(jinx-languages :which-key "set language")
+  "sn" '(jinx-correct-next :which-key "jinx next")
+  "sN" '(jinx-correct-previous :which-key "jinx previous")
+  "sa" '(jinx-correct-all :which-key "jinx corect all")
 
   "t" '(:ignore t :which-key "toggles")
   "tt" '(vterm-toggle :which-key "toggle terminal")
@@ -293,6 +311,17 @@ If the new path's directories does not exist, create them."
  ;;"K"  'eldoc
  )
 
+(defun jinx-correct-next ()
+  "Move to next incorrect word and correct it"
+  (interactive)
+  (jinx-next 1)
+  (jinx-correct))
+
+(defun jinx-correct-previous ()
+  "Move to previous incorrect word and correct it"
+  (interactive)
+  (jinx-previous 1)
+  (jinx-correct))
 ;; Marginalia - Rich Annotations
 (use-package marginalia
   :bind (:map minibuffer-local-map
@@ -363,9 +392,6 @@ If the new path's directories does not exist, create them."
   :config
   (which-key-mode))
 
-;; Org Mode
-(add-hook 'org-mode-hook #'org-modern-mode)
-(add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
 
 (use-package flycheck
   :config
@@ -384,6 +410,8 @@ If the new path's directories does not exist, create them."
 (use-package perspective
   :bind
   ("C-x C-b" . persp-list-buffers)         ; or use a nicer switcher, see below
+  :custom
+  (persp-mode-prefix-key (kbd "C-c M-p")) 
   :init
   (persp-mode))
 
@@ -405,6 +433,34 @@ d                ;;(direction . bottom)
                 ;;(dedicated . t) ;dedicated is supported in emacs27
                 (re-frames . visible)
                 (window-height . 0.3)))
+
+;; Must do this so the agenda knows where to look for my files
+(setq org-agenda-files '("~/org-roam"))
+
+;; When a TODO is set to a done state, record a timestamp
+(setq org-log-done 'time)
+
+;; Follow the links
+(setq org-return-follows-link  t)
+
+;; Associate all org files with org mode
+(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+
+;; Make the indentation look nicer
+(add-hook 'org-mode-hook 'org-indent-mode)
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory (file-truename "~/org-roam"))
+  :config
+  ;; If you're using a vertical completion framework, you might want a more informative completion interface
+  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (org-roam-db-autosync-mode)
+  ;; If using org-roam-protocol
+  (require 'org-roam-protocol))
+
+(use-package jinx
+  :hook (emacs-startup . global-jinx-mode))
 
 ;;;; Treeitter and Eglot LSP ;;;;;;;;
 (use-package tree-sitter-langs)
