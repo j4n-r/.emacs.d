@@ -313,6 +313,12 @@ If the new path's directories does not exist, create them."
  ;;"K"  'eldoc
  )
 
+(general-define-key
+ :states 'normal
+ :keymaps 'dired-mode-map
+ "h" 'dired-up-directory
+ "l" 'dired-find-alternate-file)
+
 (defun jinx-correct-next ()
   "Move to next incorrect word and correct it"
   (interactive)
@@ -500,3 +506,4 @@ If the new path's directories does not exist, create them."
   )
 
 
+(put 'dired-find-alternate-file 'disabled nil)
