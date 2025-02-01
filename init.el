@@ -199,8 +199,58 @@ If the new path's directories does not exist, create them."
 
 ;; Corfu - Completion UI
 (use-package corfu
+  ;; Optional customizations
+  :custom
+  ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+  corfu-auto t
+  corfu-quit-no-match 'separator ;; or t
+
+  ;; Enable Corfu only for certain modes. See also `global-corfu-modes'.
+  ;; :hook ((prog-mode . corfu-mode)
+  ;;        (shell-mode . corfu-mode)
+  ;;        (eshell-mode . corfu-mode))
+
+  ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
+  ;; be used globally (M-/).  See also the customization variable
+  ;; `global-corfu-modes' to exclude certain modes.
   :init
   (global-corfu-mode))
+;; Enable auto completion and configure quitting
+
+;; Option 1: Specify explicitly to use Orderless for Eglot
+(setq completion-category-overrides '((eglot (styles orderless))
+                                      (eglot-capf (styles orderless))))
+
+;; Option 2: Undo the Eglot modification of completion-category-defaults
+(with-eval-after-load 'eglot
+   (setq completion-category-defaults nil))
+
+;; Enable cache busting, depending on if your server returns
+;; sufficiently many candidates in the first place.
+(advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
+
+;; A few more useful configurations...
+(use-package emacs
+  :custom
+  ;; TAB cycle if there are only few candidates
+  ;; (completion-cycle-threshold 3)
+
+  ;; Enable indentation+completion using the TAB key.
+  ;; `completion-at-point' is often bound to M-TAB.
+  (tab-always-indent 'complete)
+
+  ;; Emacs 30 and newer: Disable Ispell completion function.
+  ;; Try `cape-dict' as an alternative.
+  (text-mode-ispell-word-completion nil)
+
+  ;; Hide commands in M-x which do not apply to the current mode.  Corfu
+  ;; commands are hidden, since they are not used via M-x. This setting is
+  ;; useful beyond Corfu.
+  (read-extended-command-predicate #'command-completion-default-include-p))
 
 ;; Cape - Completion Extensions
 (use-package cape
@@ -316,6 +366,7 @@ If the new path's directories does not exist, create them."
 (general-define-key
  :states 'normal
  :keymaps 'dired-mode-map
+ "n" 'dired-create-empty-file
  "h" 'dired-up-directory
  "l" 'dired-find-alternate-file)
 
@@ -427,6 +478,8 @@ If the new path's directories does not exist, create them."
 
 (use-package olivetti)
 
+(add-hook 'olivetti-mode-on-hook (lambda () (olivetti-set-width 100))) 
+
 (use-package magit)
 
 ;; Must do this so the agenda knows where to look for my files
@@ -504,6 +557,11 @@ If the new path's directories does not exist, create them."
   ; (add-to-list 'eglot-server-programs
   ;              '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
   )
+(defun eglot-format-on-save ()
+  (add-hook 'before-save-hook #'eglot-format-buffer -10 t))
+
+(add-hook 'eglot-managed-mode-hook #'eglot-format-on-save)
+
 
 
 (put 'dired-find-alternate-file 'disabled nil)
