@@ -216,7 +216,7 @@ If the new path's directories does not exist, create them."
   (general-evil-setup t)
 
   (general-create-definer leader
-    :keymaps '(normal visual emacs)
+    :keymaps '(normal visual emacs )
     :prefix "SPC"
     :global-prefix "S-SPC"))
 
@@ -267,9 +267,11 @@ If the new path's directories does not exist, create them."
   "sN" '(jinx-correct-previous :which-key "jinx previous")
   "sa" '(jinx-correct-all :which-key "jinx corect all")
 
-  "t" '(:ignore t :which-key "toggles")
-  "tt" '(vterm-toggle :which-key "toggle terminal")
-  "tT" '(vterm-toggle-cd :which-key "cdd toggle terminal")
+  "t"  '(:ignore t :which-key "toggles")
+  "tt" '(multi-vterm-dedicated-toggle :which-key "Toggle dedicated terminal")
+  "tT" '(multi-vterm-project :which-key "Project-based terminal")
+  "tn" '(multi-vterm-next :which-key "Switch to next terminal")
+  "tp" '(multi-vterm-prev :which-key "Switch to previous terminal")
 
   "w" '(:ignore w :which-key "window")
   "wv" '(evil-window-vsplit :which-key "split vertically")
@@ -406,6 +408,8 @@ If the new path's directories does not exist, create them."
       doom-modeline-total-line-number t)
 
 (use-package vterm)
+(use-package multi-vterm)
+(setq multi-vterm-dedicated-window-height-percent 30)
 
 (use-package perspective
   :bind
@@ -418,21 +422,6 @@ If the new path's directories does not exist, create them."
 (use-package olivetti)
 
 (use-package magit)
-(use-package vterm-toggle)
-(setq vterm-toggle-fullscreen-p nil)
-(add-to-list 'display-buffer-alist
-             '((lambda (buffer-or-name _)
-                   (let ((buffer (get-buffer buffer-or-name)))
-                     (with-current-buffer buffer
-                       (or (equal major-mode 'vterm-mode)
-                           (string-prefix-p vterm-buffer-name (buffer-name buffer))))))
-                (display-buffer-reuse-window display-buffer-at-bottom)
-                ;;(display-buffer-reuse-window display-buffer-in-direction)
-                ;;display-buffer-in-direction/direction/dedicated is added in emacs27
-d                ;;(direction . bottom)
-                ;;(dedicated . t) ;dedicated is supported in emacs27
-                (re-frames . visible)
-                (window-height . 0.3)))
 
 ;; Must do this so the agenda knows where to look for my files
 (setq org-agenda-files '("~/org-roam"))
