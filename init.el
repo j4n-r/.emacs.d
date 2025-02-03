@@ -15,9 +15,10 @@
       column-number-mode t
       frame-resize-pixelwise t
       display-line-numbers 'relative)
+(setq-default indent-tabs-mode nil)  ;; Use spaces instead of tabs
+(setq-default tab-width 4)           ;; Set default tab width to 4 spaces
+
 (setq default-frame-alist '((fullscreen . maximized)
-
-
                             ;; You can turn off scroll bars by uncommenting these lines:
                              (vertical-scroll-bars . nil)
                              (horizontal-scroll-bars . nil)
@@ -277,7 +278,8 @@ If the new path's directories does not exist, create them."
   "TAB" '(perspective-map :which-key "perspective")
 
   "c" '(:igore t :which-key "code")
-  "cc" '(eglot-code-action :which-key "code actions")
+  "ca" '(eglot-code-action :which-key "code actions")
+  "cc" '(compile :which-key "compile")
   "cf" '(eglot-format-buffer :which-key "format buffer")
   "cr" '(eglot-rename :which-key "rename")
   "co" '(eglot-organize-imports :which-key "organize imports")
