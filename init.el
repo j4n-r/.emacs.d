@@ -95,6 +95,11 @@ If the new path's directories does not exist, create them."
           (cdr args)))
   (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
 
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
+
 
 ;; Enable vertico
 (use-package vertico
@@ -234,6 +239,8 @@ If the new path's directories does not exist, create them."
 ;; Enable cache busting, depending on if your server returns
 ;; sufficiently many candidates in the first place.
 (advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
+(string-trim-right (shell-command-to-string "npm list --global --parseable typescript | head -n1"))
+
 
 ;; A few more useful configurations...
 (use-package emacs
@@ -572,6 +579,9 @@ If the new path's directories does not exist, create them."
 
 (add-hook 'eglot-managed-mode-hook #'eglot-format-on-save)
 
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(typescript-ts-mode . ("typescript-language-server" "--stdio"))))
 
 
 (put 'dired-find-alternate-file 'disabled nil)
