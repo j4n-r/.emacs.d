@@ -4,7 +4,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(eglot yaml-mode which-key vterm-toggle vertico undo-fu tree-sitter-langs projectile perspective org-roam orderless olivetti multi-vterm markdown-mode marginalia magit json-mode jinx helpful gruber-darker-theme gnu-elpa-keyring-update general flycheck evil-collection doom-themes doom-modeline corfu consult cape)))
+   '(cape consult corfu doom-modeline doom-themes eglot evil-collection
+	  flycheck general gnu-elpa-keyring-update gruber-darker-theme
+	  helpful jinx json-mode magit marginalia markdown-mode
+	  multi-vterm olivetti orderless org-roam perspective
+	  projectile tree-sitter-langs undo-fu vertico yaml-mode)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
