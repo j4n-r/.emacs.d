@@ -2,6 +2,7 @@
 (when (display-graphic-p)
   (tool-bar-mode -1)
   (menu-bar-mode -1))
+(add-to-list 'default-frame-alist '(undecorated . t))
 
 
 (setq inhibit-startup-message t
@@ -52,7 +53,7 @@ If the new path's directories does not exist, create them."
 (setopt mouse-wheel-flip-direction t)
 (pixel-scroll-precision-mode)                         ; Smooth scrolling
 
-(set-face-attribute 'default nil :font "JetBrains Mono Nerd Font" :height 110 )
+(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 150 )
 
 (setopt auto-revert-avoid-polling t)
 (setopt auto-revert-interval 5)
@@ -313,7 +314,7 @@ If the new path's directories does not exist, create them."
   "qq" '(evil-quit :which-key "quit emcas")
 
   "s" '(:ignore :which-key "spelling")
-  "ss" '(jinx-correct :which-key "jinx correct")
+  "ss" '(jinx-correct :which-key "correct spelling")
   "sl" '(jinx-languages :which-key "set language")
   "sn" '(jinx-correct-next :which-key "jinx next")
   "sN" '(jinx-correct-previous :which-key "jinx previous")
@@ -364,6 +365,10 @@ If the new path's directories does not exist, create them."
  "gr" 'xref-find-references
  ;;"K"  'eldoc
  )
+
+(general-define-key
+ :states 'motion
+ "gc" 'comment-or-uncomment-region)
 
 (general-define-key
  :states 'normal
@@ -513,7 +518,9 @@ If the new path's directories does not exist, create them."
   :hook (emacs-startup . global-jinx-mode))
 
 ;;;; Treeitter and Eglot LSP ;;;;;;;;
+(use-package tree-sitter)
 (use-package tree-sitter-langs)
+
 (setq global-tree-sitter-mode t)
 (use-package emacs
   :config
@@ -533,6 +540,7 @@ If the new path's directories does not exist, create them."
   ;; Auto parenthesis matching
   ((prog-mode . electric-pair-mode)))
 
+(setq treesit-extra-load-path '("~/.emacs.d/tree-sitter-mac/"))
 
 (use-package markdown-mode
   :hook ((markdown-mode . visual-line-mode)))
