@@ -535,14 +535,15 @@ If the new path's directories does not exist, create them."
 
   ;; Tell Emacs to prefer the treesitter mode
   ;; You'll want to run the command `M-x treesit-install-language-grammar' before editing.
-  (setq major-mode-remap-alist
-        '((yaml-mode . yaml-ts-mode)
-          (bash-mode . bash-ts-mode)
-          (js2-mode . js-ts-mode)
-          (typescript-mode . typescript-ts-mode)
-          (json-mode . json-ts-mode)
-          (css-mode . css-ts-mode)
-          (python-mode . python-ts-mode)))
+(setq major-mode-remap-alist
+      '((yaml-mode       . yaml-ts-mode)
+        (bash-mode       . bash-ts-mode)
+        (js2-mode        . js-ts-mode)
+        (typescript-mode . typescript-ts-mode)
+        (json-mode       . json-ts-mode)
+        (css-mode        . css-ts-mode)
+        (python-mode     . python-ts-mode)
+        (kotlin-mode     . kotlin-ts-mode)))
   :hook
   ;; Auto parenthesis matching
   ((prog-mode . electric-pair-mode)))
@@ -578,10 +579,14 @@ If the new path's directories does not exist, create them."
   (add-hook 'before-save-hook #'eglot-format-buffer -10 t))
 
 (add-hook 'eglot-managed-mode-hook #'eglot-format-on-save)
-
+(use-package kotlin-ts-mode)
 (with-eval-after-load 'eglot
   (add-to-list 'eglot-server-programs
                '(typescript-ts-mode . ("typescript-language-server" "--stdio"))))
+
+(with-eval-after-load 'tree-sitter
+  (add-to-list 'tree-sitter-major-mode-language-alist '(kotlin-mode . kotlin)))
+
 
 
 (put 'dired-find-alternate-file 'disabled nil)
