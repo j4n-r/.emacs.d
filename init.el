@@ -444,7 +444,6 @@ If the new path's directories does not exist, create them."
 ;; Gruber Darker Theme
 (use-package gruber-darker-theme
   :ensure t)
-
 (use-package doom-themes
   :ensure t
   :config
@@ -585,7 +584,7 @@ If the new path's directories does not exist, create them."
   (lsp-completion-provider :none)       ; Using Corfu as the provider
   (lsp-diagnostics-provider :flycheck)
   (lsp-session-file (locate-user-emacs-file ".lsp-session"))
-  (lsp-log-io nil)                      ; IMPORTANT! Use only for debugging! Drastically affects performance
+  (lsp-log-io t)                      ; IMPORTANT! Use only for debugging! Drastically affects performance
   (lsp-keep-workspace-alive nil)        ; Close LSP server if all project buffers are closed
   (lsp-idle-delay 0.5)                  ; Debounce timer for `after-change-function'
   ;; core
