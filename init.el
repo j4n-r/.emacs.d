@@ -1,3 +1,5 @@
+(setq read-process-output-max (* 10 1024 1024)) ;; 10mb
+(setq gc-cons-threshold 200000000)
 ;; Basic Options
 (when (display-graphic-p)
   (tool-bar-mode -1)
@@ -17,8 +19,9 @@
       frame-resize-pixelwise t
       display-line-numbers 'relative)
 (setq-default indent-tabs-mode nil)  ;; Use spaces instead of tabs
-(setq-default tab-width 4)           ;; Set default tab width to 4 spaces
+(setq-default tab-width 2)           ;; Set default tab width to 4
 
+(menu-bar--display-line-numbers-mode-relative)
 (setq default-frame-alist '((fullscreen . maximized)
                             ;; You can turn off scroll bars by uncommenting these lines:
                              (vertical-scroll-bars . nil)
@@ -75,6 +78,7 @@ If the new path's directories does not exist, create them."
 
 (use-package gnu-elpa-keyring-update)
 
+
 (use-package emacs
   :custom
   ;; Support opening new minibuffers from inside existing minibuffers.
@@ -95,6 +99,21 @@ If the new path's directories does not exist, create them."
           (cdr args)))
   (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
 
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name
+        "straight/repos/straight.el/bootstrap.el"
+        (or (bound-and-true-p straight-base-dir)
+            user-emacs-directory)))
+      (bootstrap-version 7))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 (use-package exec-path-from-shell
   :ensure t
   :config
@@ -205,43 +224,31 @@ If the new path's directories does not exist, create them."
 
 
 ;; Corfu - Completion UI
-(use-package corfu
-  ;; Optional customizations
-  :custom
-  ;; (corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
-  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
-  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
-  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
-  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
-  corfu-auto t
-  corfu-quit-no-match 'separator ;; or t
-
-  ;; Enable Corfu only for certain modes. See also `global-corfu-modes'.
-  ;; :hook ((prog-mode . corfu-mode)
-  ;;        (shell-mode . corfu-mode)
-  ;;        (eshell-mode . corfu-mode))
-
-  ;; Recommended: Enable Corfu globally.  This is recommended since Dabbrev can
-  ;; be used globally (M-/).  See also the customization variable
-  ;; `global-corfu-modes' to exclude certain modes.
-  :init
-  (global-corfu-mode))
-;; Enable auto completion and configure quitting
-
-;; Option 1: Specify explicitly to use Orderless for Eglot
-(setq completion-category-overrides '((eglot (styles orderless))
-                                      (eglot-capf (styles orderless))))
-
-;; Option 2: Undo the Eglot modification of completion-category-defaults
-(with-eval-after-load 'eglot
-   (setq completion-category-defaults nil))
-
-;; Enable cache busting, depending on if your server returns
-;; sufficiently many candidates in the first place.
-(advice-add 'eglot-completion-at-point :around #'cape-wrap-buster)
-(string-trim-right (shell-command-to-string "npm list --global --parseable typescript | head -n1"))
-
-
+    (use-package corfu
+      :ensure t
+      ;; Optional customizations
+      :custom
+      (corfu-cycle t)                 ; Allows cycling through candidates
+      (corfu-auto t)                  ; Enable auto completion
+      (corfu-auto-prefix 2)           ; Minimum length of prefix for completion
+      (corfu-auto-delay 0)            ; No delay for completion
+      (corfu-popupinfo-delay '(0.5 . 0.2))  ; Automatically update info popup after that numver of seconds
+      (corfu-preview-current 'insert) ; insert previewed candidate
+      (corfu-preselect 'prompt)
+      (corfu-on-exact-match nil)      ; Don't auto expand tempel snippets
+      ;; Optionally use TAB for cycling, default is `corfu-complete'.
+      :init
+      (global-corfu-mode)
+      (corfu-history-mode)
+      (corfu-popupinfo-mode) ; Popup completion info
+      :config
+      (add-hook 'eshell-mode-hook
+                (lambda () (setq-local corfu-quit-at-boundary t
+                                       corfu-quit-no-match t
+                                       corfu-auto nil)
+                  (corfu-mode))
+                nil
+                t))
 ;; A few more useful configurations...
 (use-package emacs
   :custom
@@ -286,11 +293,11 @@ If the new path's directories does not exist, create them."
   "TAB" '(perspective-map :which-key "perspective")
 
   "c" '(:igore t :which-key "code")
-  "ca" '(eglot-code-action :which-key "code actions")
+  "ca" '(eglot-code-actions :which-key "code actions")
   "cc" '(compile :which-key "compile")
   "cf" '(eglot-format-buffer :which-key "format buffer")
   "cr" '(eglot-rename :which-key "rename")
-  "co" '(eglot-organize-imports :which-key "organize imports")
+  "co" '(tide-organize-imports :which-key "organize imports")
 
   "e" '(:ignore t :which-key "eval elisp")
   "eb" '(eval-buffer :which-key "eval buffer")
@@ -298,16 +305,20 @@ If the new path's directories does not exist, create them."
   "ee" '(eval-expression :which-key "eval expression")
   "ed" '(eval-expression :which-key "eval expression")
 
-  "f" '(:ignore f :which-key "file")
+  "f" '(:ignore t :which-key "file")
   "ff" '(find-file :which-key "find file")
 
-  "g" '(:ignore g :which-key "git")
+  "g" '(:ignore t :which-key "git")
   "gg" '(magit-status :which-key "magit")
+  "gb" '(magit-blame  :which-key "magit blame")
 
-  "o" '(:igore o :which-key "open")
+  "o" '(:igore t :which-key "open")
   "od" '(dired-jump :which-key "open dired")
   "ot" '(vterm :which-key "open terminal")
 
+  "l" '(:ignore t :which-key "lsp/linter")
+  "ln" '(flycheck-next-error :which-key "lint next error")
+  "lN" '(flycheck-previous-error :which-key "lint previous error")
 
   "n" '(:ignore :which-key "nodes")
   "nf" '(org-roam-node-find :which-key "find node")
@@ -525,30 +536,185 @@ If the new path's directories does not exist, create them."
   :hook (emacs-startup . global-jinx-mode))
 
 ;;;; Treeitter and Eglot LSP ;;;;;;;;
-(use-package tree-sitter)
-(use-package tree-sitter-langs)
-
-(setq global-tree-sitter-mode t)
-(use-package emacs
+(use-package treesit
+  :ensure nil
+  :mode (("\\.tsx\\'" . tsx-ts-mode)
+         ;; … other mode associations …
+         ("\\.prisma\\'" . prisma-ts-mode))
+  :preface
+  (defun os/setup-install-grammars ()
+    "Install Tree-sitter grammars if they are absent."
+    (interactive)
+    (dolist (grammar
+             '((css . ("https://github.com/tree-sitter/tree-sitter-css" "v0.20.0"))
+               (bash . ("https://github.com/tree-sitter/tree-sitter-bash"))
+               (html . ("https://github.com/tree-sitter/tree-sitter-html" "v0.20.1"))
+               (javascript . ("https://github.com/tree-sitter/tree-sitter-javascript" "v0.21.2" "src"))
+               (json . ("https://github.com/tree-sitter/tree-sitter-json" "v0.20.2"))
+               (python . ("https://github.com/tree-sitter/tree-sitter-python" "v0.20.4"))
+               (go . ("https://github.com/tree-sitter/tree-sitter-go" "v0.20.0"))
+               ;; (markdown . ("https://github.com/tree-sitter-grammars/tree-sitter-markdown" "v0.3.2"))
+               (make . ("https://github.com/alemuller/tree-sitter-make"))
+               (elisp . ("https://github.com/Wilfred/tree-sitter-elisp"))
+               (cmake . ("https://github.com/uyha/tree-sitter-cmake"))
+               (c . ("https://github.com/tree-sitter/tree-sitter-c"))
+               (cpp . ("https://github.com/tree-sitter/tree-sitter-cpp"))
+               (toml . ("https://github.com/tree-sitter/tree-sitter-toml"))
+               (tsx . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "tsx/src"))
+               (typescript . ("https://github.com/tree-sitter/tree-sitter-typescript" "v0.20.3" "typescript/src"))
+               (yaml . ("https://github.com/ikatyang/tree-sitter-yaml" "v0.5.0"))
+               (prisma . ("https://github.com/victorhqc/tree-sitter-prisma"))))
+      (add-to-list 'treesit-language-source-alist grammar)
+      (unless (treesit-language-available-p (car grammar))
+        (treesit-install-language-grammar (car grammar)))))
   :config
-  ;; Treesitter config
-
-  ;; Tell Emacs to prefer the treesitter mode
-  ;; You'll want to run the command `M-x treesit-install-language-grammar' before editing.
-(setq major-mode-remap-alist
-      '((yaml-mode       . yaml-ts-mode)
-        (bash-mode       . bash-ts-mode)
-        (js2-mode        . js-ts-mode)
-        (typescript-mode . typescript-ts-mode)
-        (json-mode       . json-ts-mode)
-        (css-mode        . css-ts-mode)
-        (python-mode     . python-ts-mode)
-        (kotlin-mode     . kotlin-ts-mode)))
-  :hook
-  ;; Auto parenthesis matching
-  ((prog-mode . electric-pair-mode)))
-
+  (os/setup-install-grammars))
 (setq treesit-extra-load-path '("~/.emacs.d/tree-sitter-mac/"))
+
+(use-package lsp-mode
+      :diminish "LSP"
+      :ensure t
+      :hook ((lsp-mode . lsp-diagnostics-mode)
+             (lsp-mode . lsp-enable-which-key-integration)
+             ((tsx-ts-mode
+               typescript-ts-mode
+               js-ts-mode) . lsp-deferred))
+      :custom
+      (lsp-keymap-prefix "C-c l")           ; Prefix for LSP actions
+      (lsp-completion-provider :none)       ; Using Corfu as the provider
+      (lsp-diagnostics-provider :flycheck)
+      (lsp-session-file (locate-user-emacs-file ".lsp-session"))
+      (lsp-log-io nil)                      ; IMPORTANT! Use only for debugging! Drastically affects performance
+      (lsp-keep-workspace-alive nil)        ; Close LSP server if all project buffers are closed
+      (lsp-idle-delay 0.5)                  ; Debounce timer for `after-change-function'
+      ;; core
+      (lsp-enable-xref t)                   ; Use xref to find references
+      (lsp-auto-configure t)                ; Used to decide between current active servers
+      (lsp-eldoc-enable-hover t)            ; Display signature information in the echo area
+      (lsp-enable-dap-auto-configure t)     ; Debug support
+      (lsp-enable-file-watchers nil)
+      (lsp-enable-folding nil)              ; I disable folding since I use origami
+      (lsp-enable-imenu t)
+      (lsp-enable-indentation nil)          ; I use prettier
+      (lsp-enable-links nil)                ; No need since we have `browse-url'
+      (lsp-enable-on-type-formatting nil)   ; Prettier handles this
+      (lsp-enable-suggest-server-download t) ; Useful prompt to download LSP providers
+      (lsp-enable-symbol-highlighting t)     ; Shows usages of symbol at point in the current buffer
+      (lsp-enable-text-document-color nil)   ; This is Treesitter's job
+
+      (lsp-ui-sideline-show-hover nil)      ; Sideline used only for diagnostics
+      (lsp-ui-sideline-diagnostic-max-lines 20) ; 20 lines since typescript errors can be quite big
+      ;; completion
+      (lsp-completion-enable t)
+      (lsp-completion-enable-additional-text-edit t) ; Ex: auto-insert an import for a completion candidate
+      (lsp-enable-snippet t)                         ; Important to provide full JSX completion
+      (lsp-completion-show-kind t)                   ; Optional
+      ;; headerline
+      (lsp-headerline-breadcrumb-enable t)  ; Optional, I like the breadcrumbs
+      (lsp-headerline-breadcrumb-enable-diagnostics nil) ; Don't make them red, too noisy
+      (lsp-headerline-breadcrumb-enable-symbol-numbers nil)
+      (lsp-headerline-breadcrumb-icons-enable nil)
+      ;; modeline
+      (lsp-modeline-code-actions-enable nil) ; Modeline should be relatively clean
+      (lsp-modeline-diagnostics-enable nil)  ; Already supported through `flycheck'
+      (lsp-modeline-workspace-status-enable nil) ; Modeline displays "LSP" when lsp-mode is enabled
+      (lsp-signature-doc-lines 1)                ; Don't raise the echo area. It's distracting
+      (lsp-ui-doc-use-childframe t)              ; Show docs for symbol at point
+      (lsp-eldoc-render-all nil)            ; This would be very useful if it would respect `lsp-signature-doc-lines', currently it's distracting
+      ;; lens
+      (lsp-lens-enable nil)                 ; Optional, I don't need it
+      ;; semantic
+      (lsp-semantic-tokens-enable nil)      ; Related to highlighting, and we defer to treesitter
+
+      :init
+      (setq lsp-use-plists t)
+        :preface
+            (defun lsp-booster--advice-json-parse (old-fn &rest args)
+                "Try to parse bytecode instead of json."
+                (or
+                (when (equal (following-char) ?#)
+
+                (let ((bytecode (read (current-buffer))))
+                    (when (byte-code-function-p bytecode)
+                    (funcall bytecode))))
+                (apply old-fn args)))
+            (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
+                "Prepend emacs-lsp-booster command to lsp CMD."
+                (let ((orig-result (funcall old-fn cmd test?)))
+                (if (and (not test?)                             ;; for check lsp-server-present?
+                        (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
+                        lsp-use-plists
+                        (not (functionp 'json-rpc-connection))  ;; native json-rpc
+                        (executable-find "emacs-lsp-booster"))
+                    (progn
+                        (message "Using emacs-lsp-booster for %s!" orig-result)
+                        (cons "emacs-lsp-booster" orig-result))
+                    orig-result)))
+            :init
+            (setq lsp-use-plists t)
+            ;; Initiate https://github.com/blahgeek/emacs-lsp-booster for performance
+            (advice-add (if (progn (require 'json)
+                                    (fboundp 'json-parse-buffer))
+                            'json-parse-buffer
+                            'json-read)
+                        :around
+                        #'lsp-booster--advice-json-parse)
+            (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command))
+
+
+    (use-package lsp-ui
+      :ensure t
+      :commands
+      (lsp-ui-doc-show
+       lsp-ui-doc-glance)
+      :bind (:map lsp-mode-map
+                  ("C-c C-d" . 'lsp-ui-doc-glance))
+      :after (lsp-mode evil)
+      :config (setq lsp-ui-doc-enable t
+                    evil-lookup-func #'lsp-ui-doc-glance ; Makes K in evil-mode toggle the doc for symbol at point
+                    lsp-ui-doc-show-with-cursor nil      ; Don't show doc when cursor is over symbol - too distracting
+                    lsp-ui-doc-include-signature t       ; Show signature
+                    lsp-ui-doc-position 'at-point))
+
+
+(use-package lsp-tailwindcss
+  :straight '(lsp-tailwindcss :type git :host github :repo "merrickluo/lsp-tailwindcss")
+  :init (setq lsp-tailwindcss-add-on-mode t)
+  :config
+  (dolist (tw-major-mode
+           '(css-mode
+             css-ts-mode
+             typescript-mode
+             typescript-ts-mode
+             tsx-ts-mode
+             js2-mode
+             js-ts-mode
+             clojure-mode))
+    (add-to-list 'lsp-tailwindcss-major-modes tw-major-mode)))
+
+  (use-package combobulate
+    :preface
+    ;; You can customize Combobulate's key prefix here.
+    ;; Note that you may have to restart Emacs for this to take effect!
+    (setq combobulate-key-prefix "C-c o")
+
+    ;; Optional, but recommended.
+    ;;
+    ;; You can manually enable Combobulate with `M-x
+    ;; combobulate-mode'.
+    :hook
+    ((python-ts-mode . combobulate-mode)
+     (js-ts-mode . combobulate-mode)
+     (go-mode . go-ts-mode)
+     (html-ts-mode . combobulate-mode)
+     (css-ts-mode . combobulate-mode)
+     (yaml-ts-mode . combobulate-mode)
+     (typescript-ts-mode . combobulate-mode)
+     (json-ts-mode . combobulate-mode)
+     (tsx-ts-mode . combobulate-mode))
+    ;; Amend this to the directory where you keep Combobulate's source
+    ;; code.
+    :load-path ("~/.emacs.d/combobulate/"))
 
 (use-package markdown-mode
   :hook ((markdown-mode . visual-line-mode)))
@@ -558,31 +724,8 @@ If the new path's directories does not exist, create them."
 
 (use-package json-mode
   :ensure t)
-(use-package eglot
-  ;; no :ensure t here because it's built-in
 
-  ;; Configure hooks to automatically turn-on eglot for selected modes
-  ; :hook
-  ; (((python-mode ruby-mode elixir-mode) . eglot))
-
-  :custom
-  (eglot-send-changes-idle-time 0.1)
-  (eglot-extend-to-xref t)              ; activate Eglot in referenced non-project files
-
-  :config
-  (fset #'jsonrpc--log-event #'ignore)  ; massive perf boost---don't log every event
-  ;; Sometimes you need to tell Eglot where to find the language server
-  ; (add-to-list 'eglot-server-programs
-  ;              '(haskell-mode . ("haskell-language-server-wrapper" "--lsp")))
-  )
-(defun eglot-format-on-save ()
-  (add-hook 'before-save-hook #'eglot-format-buffer -10 t))
-
-(add-hook 'eglot-managed-mode-hook #'eglot-format-on-save)
 (use-package kotlin-ts-mode)
-(with-eval-after-load 'eglot
-  (add-to-list 'eglot-server-programs
-               '(typescript-ts-mode . ("typescript-language-server" "--stdio"))))
 
 (with-eval-after-load 'tree-sitter
   (add-to-list 'tree-sitter-major-mode-language-alist '(kotlin-mode . kotlin)))
@@ -590,3 +733,16 @@ If the new path's directories does not exist, create them."
 
 
 (put 'dired-find-alternate-file 'disabled nil)
+
+(use-package apheleia
+  :ensure apheleia
+  :diminish ""
+  :defines
+  apheleia-formatters
+  apheleia-mode-alist
+  :functions
+  apheleia-global-mode
+  :config
+  (setf (alist-get 'prettier-json apheleia-formatters)
+        '("prettier" "--stdin-filepath" filepath))
+  (apheleia-global-mode +1))
