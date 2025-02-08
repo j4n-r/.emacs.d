@@ -378,10 +378,10 @@ If the new path's directories does not exist, create them."
 
 (general-define-key
  :states 'normal
- "gd" 'eglot-find-declaration
- "gD" 'eglot-find-typeDefinition
- "gi" 'eglot-find-implementation
- "gr" 'xref-find-references
+ "gd" 'lsp-find-declaration
+ "gD" 'lsp-find-definition
+ "gi" 'lsp-find-implementation
+ "gr" 'lsp-find-references
  ;;"K"  'eldoc
  )
 
@@ -594,14 +594,14 @@ If the new path's directories does not exist, create them."
   (lsp-eldoc-enable-hover t)            ; Display signature information in the echo area
   (lsp-enable-dap-auto-configure t)     ; Debug support
   (lsp-enable-file-watchers nil)
-  (lsp-enable-folding nil)              ; I disable folding since I use origami
+  ;;(lsp-enable-folding nil)              ; I disable folding since I use origami
   (lsp-enable-imenu t)
-  (lsp-enable-indentation nil)          ; I use prettier
+  ;;(lsp-enable-indentation nil)          ; I use prettier
   (lsp-enable-links nil)                ; No need since we have `browse-url'
-  (lsp-enable-on-type-formatting nil)   ; Prettier handles this
+  ;;(lsp-enable-on-type-formatting nil)   ; Prettier handles this
   (lsp-enable-suggest-server-download t) ; Useful prompt to download LSP providers
   (lsp-enable-symbol-highlighting t)     ; Shows usages of symbol at point in the current buffer
-  (lsp-enable-text-document-color nil)   ; This is Treesitter's job
+  ;;(lsp-enable-text-document-color nil)   ; This is Treesitter's job
 
   (lsp-ui-sideline-show-hover nil)      ; Sideline used only for diagnostics
   (lsp-ui-sideline-diagnostic-max-lines 20) ; 20 lines since typescript errors can be quite big
@@ -747,3 +747,5 @@ If the new path's directories does not exist, create them."
   (setf (alist-get 'prettier-json apheleia-formatters)
         '("prettier" "--stdin-filepath" filepath))
   (apheleia-global-mode +1))
+
+(use-package yasnippet-snippets)
