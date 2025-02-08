@@ -56,7 +56,7 @@ If the new path's directories does not exist, create them."
 (setopt mouse-wheel-flip-direction t)
 (pixel-scroll-precision-mode)                         ; Smooth scrolling
 
-(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 150 )
+(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 120 )
 
 (setopt auto-revert-avoid-polling t)
 (setopt auto-revert-interval 5)
@@ -285,7 +285,7 @@ If the new path's directories does not exist, create them."
     :keymaps '(normal visual emacs )
     :prefix "SPC"
     :global-prefix "S-SPC"))
-
+(setq lsp-keymap-prefix "C-c l")
 (leader
   "SPC" '(projectile-find-file :which-key "project ff")
   "," '(switch-to-buffer :which-key "find buffer")
@@ -318,6 +318,7 @@ If the new path's directories does not exist, create them."
   "ot" '(vterm :which-key "open terminal")
 
   "l" '(:ignore t :which-key "lsp/linter")
+  ;;"ll" '(llsp-map :which-key "lsp")
   "ln" '(flycheck-next-error :which-key "lint next error")
   "lN" '(flycheck-previous-error :which-key "lint previous error")
 
@@ -376,14 +377,14 @@ If the new path's directories does not exist, create them."
   "wR" '(evil-window-rotate-upwards :which-key "rotate upwards")
   )
 
-(general-define-key
- :states 'normal
- "gd" 'lsp-find-declaration
- "gD" 'lsp-find-definition
- "gi" 'lsp-find-implementation
- "gr" 'lsp-find-references
- ;;"K"  'eldoc
- )
+;; (general-define-key
+;;  :states 'normal
+;;  "gd" 'lsp-find-declaration
+;;  "gD" 'lsp-find-definition
+;;  "gi" 'lsp-find-implementation
+;;  "gr" 'lsp-find-references
+;;  ;;"K"  'eldoc
+;;  )
 
 (general-define-key
  :states 'motion
@@ -395,6 +396,10 @@ If the new path's directories does not exist, create them."
  "n" 'dired-create-empty-file
  "h" 'dired-up-directory
  "l" 'dired-find-alternate-file)
+
+(defun llsp-map ()
+  (interactive)
+  (lsp-command-map))
 
 (defun jinx-correct-next ()
   "Move to next incorrect word and correct it"
@@ -735,7 +740,6 @@ If the new path's directories does not exist, create them."
 (put 'dired-find-alternate-file 'disabled nil)
 
 (use-package apheleia
-  :ensure apheleia
   :diminish ""
   :defines
   apheleia-formatters
