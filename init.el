@@ -24,8 +24,8 @@
 (menu-bar--display-line-numbers-mode-relative)
 (setq default-frame-alist '((fullscreen . maximized)
                             ;; You can turn off scroll bars by uncommenting these lines:
-                             (vertical-scroll-bars . nil)
-                             (horizontal-scroll-bars . nil)
+                            (vertical-scroll-bars . nil)
+                            (horizontal-scroll-bars . nil)
 
                             ;; Setting the face in here prevents flashes of
                             ;; color as the theme gets activated
@@ -99,51 +99,51 @@ If the new path's directories does not exist, create them."
           (cdr args)))
   (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
 
-(defvar bootstrap-version)
-(let ((bootstrap-file
-       (expand-file-name
-        "straight/repos/straight.el/bootstrap.el"
-        (or (bound-and-true-p straight-base-dir)
-            user-emacs-directory)))
-      (bootstrap-version 7))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-(use-package exec-path-from-shell
-  :ensure t
-  :config
-  (exec-path-from-shell-initialize))
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name
+          "straight/repos/straight.el/bootstrap.el"
+          (or (bound-and-true-p straight-base-dir)
+              user-emacs-directory)))
+        (bootstrap-version 7))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+  (use-package exec-path-from-shell
+    :ensure t
+    :config
+    (exec-path-from-shell-initialize))
 
 
-;; Enable vertico
-(use-package vertico
-  :custom
-  ;; (vertico-scroll-margin 0) ;; Different scroll margin
-  (vertico-count 15) ;; Show more candidates
-  ;; (vertico-resize t) ;; Grow and shrink the Vertico minibuffer
-  ;; (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
-  :init
-  (vertico-mode))
+  ;; Enable vertico
+  (use-package vertico
+    :custom
+    ;; (vertico-scroll-margin 0) ;; Different scroll margin
+    (vertico-count 15) ;; Show more candidates
+    ;; (vertico-resize t) ;; Grow and shrink the Vertico minibuffer
+    ;; (vertico-cycle t) ;; Enable cycling for `vertico-next/previous'
+    :init
+    (vertico-mode))
 
-;; Persist history over Emacs restarts. Vertico sorts by history position.
-(use-package savehist
-  :init
-  (savehist-mode))
+  ;; Persist history over Emacs restarts. Vertico sorts by history position.
+  (use-package savehist
+    :init
+    (savehist-mode))
 
-;; Optionally use the `orderless' completion style.
-(use-package orderless
-  :custom
-  ;; Configure a custom style dispatcher (see the Consult wiki)
-  ;; (orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch))
-  ;; (orderless-component-separator #'orderless-escapable-split-on-space)
-  (completion-styles '(orderless basic))
-  (completion-category-defaults nil)
-  (completion-category-overrides '((file (styles partial-completion)))))
+  ;; Optionally use the `orderless' completion style.
+  (use-package orderless
+    :custom
+    ;; Configure a custom style dispatcher (see the Consult wiki)
+    ;; (orderless-style-dispatchers '(+orderless-consult-dispatch orderless-affix-dispatch))
+    ;; (orderless-component-separator #'orderless-escapable-split-on-space)
+    (completion-styles '(orderless basic))
+    (completion-category-defaults nil)
+    (completion-category-overrides '((file (styles partial-completion)))))
 
   ;; Do not allow the cursor in the minibuffer prompt
   (setq minibuffer-prompt-properties
@@ -199,11 +199,11 @@ If the new path's directories does not exist, create them."
   ;; Optionally make narrowing help available in the minibuffer.
   ;; You may want to use `embark-prefix-help-command' or which-key instead.
   ;; (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
-)
+  )
 
 ;; Helpful
 (use-package helpful)
-  ;; Note that the built-in `describe-function' includes both functions
+;; Note that the built-in `describe-function' includes both functions
 ;; and macros. `helpful-function' is functions only, so we provide
 ;; `helpful-callable' as a drop-in replacement.
 (global-set-key (kbd "C-h f") #'helpful-callable)
@@ -224,31 +224,31 @@ If the new path's directories does not exist, create them."
 
 
 ;; Corfu - Completion UI
-    (use-package corfu
-      :ensure t
-      ;; Optional customizations
-      :custom
-      (corfu-cycle t)                 ; Allows cycling through candidates
-      (corfu-auto t)                  ; Enable auto completion
-      (corfu-auto-prefix 2)           ; Minimum length of prefix for completion
-      (corfu-auto-delay 0)            ; No delay for completion
-      (corfu-popupinfo-delay '(0.5 . 0.2))  ; Automatically update info popup after that numver of seconds
-      (corfu-preview-current 'insert) ; insert previewed candidate
-      (corfu-preselect 'prompt)
-      (corfu-on-exact-match nil)      ; Don't auto expand tempel snippets
-      ;; Optionally use TAB for cycling, default is `corfu-complete'.
-      :init
-      (global-corfu-mode)
-      (corfu-history-mode)
-      (corfu-popupinfo-mode) ; Popup completion info
-      :config
-      (add-hook 'eshell-mode-hook
-                (lambda () (setq-local corfu-quit-at-boundary t
-                                       corfu-quit-no-match t
-                                       corfu-auto nil)
-                  (corfu-mode))
-                nil
-                t))
+(use-package corfu
+  :ensure t
+  ;; Optional customizations
+  :custom
+  (corfu-cycle t)                 ; Allows cycling through candidates
+  (corfu-auto t)                  ; Enable auto completion
+  (corfu-auto-prefix 2)           ; Minimum length of prefix for completion
+  (corfu-auto-delay 0)            ; No delay for completion
+  (corfu-popupinfo-delay '(0.5 . 0.2))  ; Automatically update info popup after that numver of seconds
+  (corfu-preview-current 'insert) ; insert previewed candidate
+  (corfu-preselect 'prompt)
+  (corfu-on-exact-match nil)      ; Don't auto expand tempel snippets
+  ;; Optionally use TAB for cycling, default is `corfu-complete'.
+  :init
+  (global-corfu-mode)
+  (corfu-history-mode)
+  (corfu-popupinfo-mode) ; Popup completion info
+  :config
+  (add-hook 'eshell-mode-hook
+            (lambda () (setq-local corfu-quit-at-boundary t
+                                   corfu-quit-no-match t
+                                   corfu-auto nil)
+              (corfu-mode))
+            nil
+            t))
 ;; A few more useful configurations...
 (use-package emacs
   :custom
@@ -293,11 +293,12 @@ If the new path's directories does not exist, create them."
   "TAB" '(perspective-map :which-key "perspective")
 
   "c" '(:igore t :which-key "code")
-  "ca" '(eglot-code-actions :which-key "code actions")
+  "ca" '(lsp-execute-code-action :which-key "code actions")
   "cc" '(compile :which-key "compile")
-  "cf" '(eglot-format-buffer :which-key "format buffer")
-  "cr" '(eglot-rename :which-key "rename")
-  "co" '(tide-organize-imports :which-key "organize imports")
+  "cf" '(lsp-format :which-key "format buffer")
+  "cF" '(apheleia-format-buffer :which-key "format buffer")
+  "cr" '(lsp-rename :which-key "rename")
+  "co" '(lsp-organize-imports :which-key "organize imports")
 
   "e" '(:ignore t :which-key "eval elisp")
   "eb" '(eval-buffer :which-key "eval buffer")
@@ -409,7 +410,7 @@ If the new path's directories does not exist, create them."
 ;; Marginalia - Rich Annotations
 (use-package marginalia
   :bind (:map minibuffer-local-map
-         ("M-A" . marginalia-cycle))
+              ("M-A" . marginalia-cycle))
   :init
   (marginalia-mode))
 
@@ -417,8 +418,8 @@ If the new path's directories does not exist, create them."
 (use-package evil
   :init
   (setq evil-want-integration t
-	evil-want-C-u-scroll t
-	evil-undo-system 'undo-fu
+	      evil-want-C-u-scroll t
+	      evil-undo-system 'undo-fu
         evil-want-keybinding nil) ;; Disable default )
   :config
   (evil-mode 1)
@@ -572,109 +573,109 @@ If the new path's directories does not exist, create them."
 (setq treesit-extra-load-path '("~/.emacs.d/tree-sitter-mac/"))
 
 (use-package lsp-mode
-      :diminish "LSP"
-      :ensure t
-      :hook ((lsp-mode . lsp-diagnostics-mode)
-             (lsp-mode . lsp-enable-which-key-integration)
-             ((tsx-ts-mode
-               typescript-ts-mode
-               js-ts-mode) . lsp-deferred))
-      :custom
-      (lsp-keymap-prefix "C-c l")           ; Prefix for LSP actions
-      (lsp-completion-provider :none)       ; Using Corfu as the provider
-      (lsp-diagnostics-provider :flycheck)
-      (lsp-session-file (locate-user-emacs-file ".lsp-session"))
-      (lsp-log-io nil)                      ; IMPORTANT! Use only for debugging! Drastically affects performance
-      (lsp-keep-workspace-alive nil)        ; Close LSP server if all project buffers are closed
-      (lsp-idle-delay 0.5)                  ; Debounce timer for `after-change-function'
-      ;; core
-      (lsp-enable-xref t)                   ; Use xref to find references
-      (lsp-auto-configure t)                ; Used to decide between current active servers
-      (lsp-eldoc-enable-hover t)            ; Display signature information in the echo area
-      (lsp-enable-dap-auto-configure t)     ; Debug support
-      (lsp-enable-file-watchers nil)
-      (lsp-enable-folding nil)              ; I disable folding since I use origami
-      (lsp-enable-imenu t)
-      (lsp-enable-indentation nil)          ; I use prettier
-      (lsp-enable-links nil)                ; No need since we have `browse-url'
-      (lsp-enable-on-type-formatting nil)   ; Prettier handles this
-      (lsp-enable-suggest-server-download t) ; Useful prompt to download LSP providers
-      (lsp-enable-symbol-highlighting t)     ; Shows usages of symbol at point in the current buffer
-      (lsp-enable-text-document-color nil)   ; This is Treesitter's job
+  :diminish "LSP"
+  :ensure t
+  :hook ((lsp-mode . lsp-diagnostics-mode)
+         (lsp-mode . lsp-enable-which-key-integration)
+         ((tsx-ts-mode
+           typescript-ts-mode
+           js-ts-mode) . lsp-deferred))
+  :custom
+  (lsp-keymap-prefix "C-c l")           ; Prefix for LSP actions
+  (lsp-completion-provider :none)       ; Using Corfu as the provider
+  (lsp-diagnostics-provider :flycheck)
+  (lsp-session-file (locate-user-emacs-file ".lsp-session"))
+  (lsp-log-io nil)                      ; IMPORTANT! Use only for debugging! Drastically affects performance
+  (lsp-keep-workspace-alive nil)        ; Close LSP server if all project buffers are closed
+  (lsp-idle-delay 0.5)                  ; Debounce timer for `after-change-function'
+  ;; core
+  (lsp-enable-xref t)                   ; Use xref to find references
+  (lsp-auto-configure t)                ; Used to decide between current active servers
+  (lsp-eldoc-enable-hover t)            ; Display signature information in the echo area
+  (lsp-enable-dap-auto-configure t)     ; Debug support
+  (lsp-enable-file-watchers nil)
+  (lsp-enable-folding nil)              ; I disable folding since I use origami
+  (lsp-enable-imenu t)
+  (lsp-enable-indentation nil)          ; I use prettier
+  (lsp-enable-links nil)                ; No need since we have `browse-url'
+  (lsp-enable-on-type-formatting nil)   ; Prettier handles this
+  (lsp-enable-suggest-server-download t) ; Useful prompt to download LSP providers
+  (lsp-enable-symbol-highlighting t)     ; Shows usages of symbol at point in the current buffer
+  (lsp-enable-text-document-color nil)   ; This is Treesitter's job
 
-      (lsp-ui-sideline-show-hover nil)      ; Sideline used only for diagnostics
-      (lsp-ui-sideline-diagnostic-max-lines 20) ; 20 lines since typescript errors can be quite big
-      ;; completion
-      (lsp-completion-enable t)
-      (lsp-completion-enable-additional-text-edit t) ; Ex: auto-insert an import for a completion candidate
-      (lsp-enable-snippet t)                         ; Important to provide full JSX completion
-      (lsp-completion-show-kind t)                   ; Optional
-      ;; headerline
-      (lsp-headerline-breadcrumb-enable t)  ; Optional, I like the breadcrumbs
-      (lsp-headerline-breadcrumb-enable-diagnostics nil) ; Don't make them red, too noisy
-      (lsp-headerline-breadcrumb-enable-symbol-numbers nil)
-      (lsp-headerline-breadcrumb-icons-enable nil)
-      ;; modeline
-      (lsp-modeline-code-actions-enable nil) ; Modeline should be relatively clean
-      (lsp-modeline-diagnostics-enable nil)  ; Already supported through `flycheck'
-      (lsp-modeline-workspace-status-enable nil) ; Modeline displays "LSP" when lsp-mode is enabled
-      (lsp-signature-doc-lines 1)                ; Don't raise the echo area. It's distracting
-      (lsp-ui-doc-use-childframe t)              ; Show docs for symbol at point
-      (lsp-eldoc-render-all nil)            ; This would be very useful if it would respect `lsp-signature-doc-lines', currently it's distracting
-      ;; lens
-      (lsp-lens-enable nil)                 ; Optional, I don't need it
-      ;; semantic
-      (lsp-semantic-tokens-enable nil)      ; Related to highlighting, and we defer to treesitter
+  (lsp-ui-sideline-show-hover nil)      ; Sideline used only for diagnostics
+  (lsp-ui-sideline-diagnostic-max-lines 20) ; 20 lines since typescript errors can be quite big
+  ;; completion
+  (lsp-completion-enable t)
+  (lsp-completion-enable-additional-text-edit t) ; Ex: auto-insert an import for a completion candidate
+  (lsp-enable-snippet t)                         ; Important to provide full JSX completion
+  (lsp-completion-show-kind t)                   ; Optional
+  ;; headerline
+  (lsp-headerline-breadcrumb-enable t)  ; Optional, I like the breadcrumbs
+  (lsp-headerline-breadcrumb-enable-diagnostics nil) ; Don't make them red, too noisy
+  (lsp-headerline-breadcrumb-enable-symbol-numbers nil)
+  (lsp-headerline-breadcrumb-icons-enable nil)
+  ;; modeline
+  (lsp-modeline-code-actions-enable nil) ; Modeline should be relatively clean
+  (lsp-modeline-diagnostics-enable nil)  ; Already supported through `flycheck'
+  (lsp-modeline-workspace-status-enable nil) ; Modeline displays "LSP" when lsp-mode is enabled
+  (lsp-signature-doc-lines 1)                ; Don't raise the echo area. It's distracting
+  (lsp-ui-doc-use-childframe t)              ; Show docs for symbol at point
+  (lsp-eldoc-render-all nil)            ; This would be very useful if it would respect `lsp-signature-doc-lines', currently it's distracting
+  ;; lens
+  (lsp-lens-enable nil)                 ; Optional, I don't need it
+  ;; semantic
+  (lsp-semantic-tokens-enable nil)      ; Related to highlighting, and we defer to treesitter
 
-      :init
-      (setq lsp-use-plists t)
-        :preface
-            (defun lsp-booster--advice-json-parse (old-fn &rest args)
-                "Try to parse bytecode instead of json."
-                (or
-                (when (equal (following-char) ?#)
+  :init
+  (setq lsp-use-plists t)
+  :preface
+  (defun lsp-booster--advice-json-parse (old-fn &rest args)
+    "Try to parse bytecode instead of json."
+    (or
+     (when (equal (following-char) ?#)
 
-                (let ((bytecode (read (current-buffer))))
-                    (when (byte-code-function-p bytecode)
-                    (funcall bytecode))))
-                (apply old-fn args)))
-            (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
-                "Prepend emacs-lsp-booster command to lsp CMD."
-                (let ((orig-result (funcall old-fn cmd test?)))
-                (if (and (not test?)                             ;; for check lsp-server-present?
-                        (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
-                        lsp-use-plists
-                        (not (functionp 'json-rpc-connection))  ;; native json-rpc
-                        (executable-find "emacs-lsp-booster"))
-                    (progn
-                        (message "Using emacs-lsp-booster for %s!" orig-result)
-                        (cons "emacs-lsp-booster" orig-result))
-                    orig-result)))
-            :init
-            (setq lsp-use-plists t)
-            ;; Initiate https://github.com/blahgeek/emacs-lsp-booster for performance
-            (advice-add (if (progn (require 'json)
-                                    (fboundp 'json-parse-buffer))
-                            'json-parse-buffer
-                            'json-read)
-                        :around
-                        #'lsp-booster--advice-json-parse)
-            (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command))
+       (let ((bytecode (read (current-buffer))))
+         (when (byte-code-function-p bytecode)
+           (funcall bytecode))))
+     (apply old-fn args)))
+  (defun lsp-booster--advice-final-command (old-fn cmd &optional test?)
+    "Prepend emacs-lsp-booster command to lsp CMD."
+    (let ((orig-result (funcall old-fn cmd test?)))
+      (if (and (not test?)                             ;; for check lsp-server-present?
+               (not (file-remote-p default-directory)) ;; see lsp-resolve-final-command, it would add extra shell wrapper
+               lsp-use-plists
+               (not (functionp 'json-rpc-connection))  ;; native json-rpc
+               (executable-find "emacs-lsp-booster"))
+          (progn
+            (message "Using emacs-lsp-booster for %s!" orig-result)
+            (cons "emacs-lsp-booster" orig-result))
+        orig-result)))
+  :init
+  (setq lsp-use-plists t)
+  ;; Initiate https://github.com/blahgeek/emacs-lsp-booster for performance
+  (advice-add (if (progn (require 'json)
+                         (fboundp 'json-parse-buffer))
+                  'json-parse-buffer
+                'json-read)
+              :around
+              #'lsp-booster--advice-json-parse)
+  (advice-add 'lsp-resolve-final-command :around #'lsp-booster--advice-final-command))
 
 
-    (use-package lsp-ui
-      :ensure t
-      :commands
-      (lsp-ui-doc-show
-       lsp-ui-doc-glance)
-      :bind (:map lsp-mode-map
-                  ("C-c C-d" . 'lsp-ui-doc-glance))
-      :after (lsp-mode evil)
-      :config (setq lsp-ui-doc-enable t
-                    evil-lookup-func #'lsp-ui-doc-glance ; Makes K in evil-mode toggle the doc for symbol at point
-                    lsp-ui-doc-show-with-cursor nil      ; Don't show doc when cursor is over symbol - too distracting
-                    lsp-ui-doc-include-signature t       ; Show signature
-                    lsp-ui-doc-position 'at-point))
+(use-package lsp-ui
+  :ensure t
+  :commands
+  (lsp-ui-doc-show
+   lsp-ui-doc-glance)
+  :bind (:map lsp-mode-map
+              ("C-c C-d" . 'lsp-ui-doc-glance))
+  :after (lsp-mode evil)
+  :config (setq lsp-ui-doc-enable t
+                evil-lookup-func #'lsp-ui-doc-glance ; Makes K in evil-mode toggle the doc for symbol at point
+                lsp-ui-doc-show-with-cursor nil      ; Don't show doc when cursor is over symbol - too distracting
+                lsp-ui-doc-include-signature t       ; Show signature
+                lsp-ui-doc-position 'at-point))
 
 
 (use-package lsp-tailwindcss
@@ -692,29 +693,29 @@ If the new path's directories does not exist, create them."
              clojure-mode))
     (add-to-list 'lsp-tailwindcss-major-modes tw-major-mode)))
 
-  (use-package combobulate
-    :preface
-    ;; You can customize Combobulate's key prefix here.
-    ;; Note that you may have to restart Emacs for this to take effect!
-    (setq combobulate-key-prefix "C-c o")
+(use-package combobulate
+  :preface
+  ;; You can customize Combobulate's key prefix here.
+  ;; Note that you may have to restart Emacs for this to take effect!
+  (setq combobulate-key-prefix "C-c o")
 
-    ;; Optional, but recommended.
-    ;;
-    ;; You can manually enable Combobulate with `M-x
-    ;; combobulate-mode'.
-    :hook
-    ((python-ts-mode . combobulate-mode)
-     (js-ts-mode . combobulate-mode)
-     (go-mode . go-ts-mode)
-     (html-ts-mode . combobulate-mode)
-     (css-ts-mode . combobulate-mode)
-     (yaml-ts-mode . combobulate-mode)
-     (typescript-ts-mode . combobulate-mode)
-     (json-ts-mode . combobulate-mode)
-     (tsx-ts-mode . combobulate-mode))
-    ;; Amend this to the directory where you keep Combobulate's source
-    ;; code.
-    :load-path ("~/.emacs.d/combobulate/"))
+  ;; Optional, but recommended.
+  ;;
+  ;; You can manually enable Combobulate with `M-x
+  ;; combobulate-mode'.
+  :hook
+  ((python-ts-mode . combobulate-mode)
+   (js-ts-mode . combobulate-mode)
+   (go-mode . go-ts-mode)
+   (html-ts-mode . combobulate-mode)
+   (css-ts-mode . combobulate-mode)
+   (yaml-ts-mode . combobulate-mode)
+   (typescript-ts-mode . combobulate-mode)
+   (json-ts-mode . combobulate-mode)
+   (tsx-ts-mode . combobulate-mode))
+  ;; Amend this to the directory where you keep Combobulate's source
+  ;; code.
+  :load-path ("~/.emacs.d/combobulate/"))
 
 (use-package markdown-mode
   :hook ((markdown-mode . visual-line-mode)))
