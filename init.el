@@ -119,7 +119,7 @@ If the new path's directories does not exist, create them."
 (setopt indicate-buffer-boundaries 'left)  ; Show buffer top and bottom in the margin
 (add-hook 'text-mode-hook 'visual-line-mode)
 
-(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 120 )
+(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 150 ); 150
 
 ;; Gruber Darker Theme
 (use-package doom-themes
@@ -237,6 +237,7 @@ If the new path's directories does not exist, create them."
 
 ;; Context sensitive commands
 (use-package embark)
+(use-package embark-consult)
 
 ;; Add Completion at Point sources
 (use-package cape
@@ -298,6 +299,12 @@ If the new path's directories does not exist, create them."
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
+(when (display-graphic-p)
+  (require 'all-the-icons))
+;; or
+(use-package all-the-icons
+  :if (display-graphic-p))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;            MISCELLANEOUS               ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -358,17 +365,15 @@ If the new path's directories does not exist, create them."
 
 (use-package yasnippet-snippets)
 
-(defun breadcrumb-setup ()
-  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-  (lsp-headerline-breadcrumb-mode))
 
 (use-package lsp-mode
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l")
-  :hook
-  (lsp-mode . lsp-enable-which-key-integration)
-  (lsp-mode . breadcrump-setup)
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (typescript-ts-mode . lsp)
+         ;; if you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred))
 
 (use-package lsp-ui :commands lsp-ui-mode)
