@@ -86,15 +86,25 @@ If the new path's directories does not exist, create them."
   (tool-bar-mode -1)
   (menu-bar-mode -1))
 
-(add-to-list 'default-frame-alist '(undecorated . t))
+(setq default-frame-alist '((fullscreen . maximized)
+                            ;; You can turn off scroll bars by uncommenting these lines:
+                            (vertical-scroll-bars . nil)
+                            (horizontal-scroll-bars . nil)
+
+                            ;; Setting the face in here prevents flashes of
+                            ;; color as the theme gets activated
+                            (background-color . "#000000")
+                            (foreground-color . "#ffffff")
+                            (ns-appearance . dark)
+                            (ns-transparent-titlebar . t)))
 
 (setq inhibit-startup-message t
       blink-cursor-mode nil
       custom-file "~/.emacs.d/custom.el"
-      tool-bar-mode -1
+      tool-bar-mode nil
       vc-follow-symlinks t
-      scroll-bar-mode -1
-      tooltip-mode -1
+      scroll-bar-mode nil
+      tooltip-mode nil
       global-display-line-numbers-mode t
       column-number-mode t
       frame-resize-pixelwise t
@@ -108,11 +118,6 @@ If the new path's directories does not exist, create them."
 (setopt show-trailing-whitespace nil)      ; By default, don't underline trailing spaces
 (setopt indicate-buffer-boundaries 'left)  ; Show buffer top and bottom in the margin
 (add-hook 'text-mode-hook 'visual-line-mode)
-
-;; Enable horizontal scrolling
-(setopt mouse-wheel-tilt-scroll t)
-(setopt mouse-wheel-flip-direction t)
-(pixel-scroll-precision-mode)                         ; Smooth scrolling
 
 (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 120 )
 
@@ -188,9 +193,8 @@ If the new path's directories does not exist, create them."
   ;;(setq consult-narrow-key "<") ;; "C-+"
   ;; Optionally make narrowing help available in the minibuffer.
   ;; You may want to use `embark-prefix-help-command' or which-key instead.
-  (keymap-set consult-narrow-map (concat consult-narrow-key " ?") #'consult-narrow-help)
+  ;;(keymap-set consult-narrow-map (concat consult-narrow-key "?") #'consult-narrow-help)
   )
-
 ;; better matching (searching)
 (use-package orderless
   :custom
@@ -232,9 +236,7 @@ If the new path's directories does not exist, create them."
   (marginalia-mode))
 
 ;; Context sensitive commands
-(use-package embark
-  :general
-  ("M-e" 'embark-act))
+(use-package embark)
 
 ;; Add Completion at Point sources
 (use-package cape
@@ -355,6 +357,58 @@ If the new path's directories does not exist, create them."
   (apheleia-global-mode +1))
 
 (use-package yasnippet-snippets)
+
+(defun breadcrumb-setup ()
+  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+  (lsp-headerline-breadcrumb-mode))
+
+(use-package lsp-mode
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-c l")
+  :hook
+  (lsp-mode . lsp-enable-which-key-integration)
+  (lsp-mode . breadcrump-setup)
+  :commands (lsp lsp-deferred))
+
+(use-package lsp-ui :commands lsp-ui-mode)
+(use-package consult-lsp :commands consult-lsp-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
+;; optionally if you want to use debugger
+;;(use-package dap-mode)
+;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+
+(with-eval-after-load 'lsp-mode
+  ;; :global/:workspace/:file
+  (setq lsp-modeline-diagnostics-scope :workspace))
+
+(use-package typescript-mode
+  :hook (typescript-mode . lsp-deferred)
+  :config
+  (setq typescript-indent-level 2))
+
+
+(use-package lsp-tailwindcss
+  :straight '(lsp-tailwindcss :type git :host github :repo "merrickluo/lsp-tailwindcss")
+  :init (setq lsp-tailwindcss-add-on-mode t)
+  :config
+  (dolist (tw-major-mode
+           '(css-mode
+             css-ts-mode
+             typescript-mode
+             typescript-ts-mode
+             tsx-ts-mode
+             js2-mode
+             js-ts-mode
+             clojure-mode))
+    (add-to-list 'lsp-tailwindcss-major-modes tw-major-mode)))
+
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . typescript-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         ORG MODE & NOTES               ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -502,6 +556,9 @@ If the new path's directories does not exist, create them."
 (general-define-key
  :states 'motion
  "gc" 'comment-or-uncomment-region)
+
+(general-define-key
+ "M-e" 'embark-act)
 
 (general-define-key
  :states 'normal
