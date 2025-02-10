@@ -352,16 +352,8 @@ If the new path's directories does not exist, create them."
 
 
 (use-package apheleia
-  :diminish ""
-  :defines
-  apheleia-formatters
-  apheleia-mode-alist
-  :functions
-  apheleia-global-mode
-  :config
-  (setf (alist-get 'prettier-json apheleia-formatters)
-        '("prettier" "--stdin-filepath" filepath))
-  (apheleia-global-mode +1))
+  :custom
+  apheleia-global-mode +1)
 
 (use-package yasnippet-snippets)
 
