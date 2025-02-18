@@ -407,13 +407,7 @@ If the new path's directories does not exist, create them."
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
 
-;; code folding
-(use-package dash)
-(use-package s)
-(use-package origami
-  :config
-  (global-origami-mode t))
-
+;; just use z-a for code folding
 
 
 
@@ -483,7 +477,6 @@ If the new path's directories does not exist, create them."
   "cF" '(apheleia-format-buffer :which-key "format buffer")
   "cr" '(lsp-rename :which-key "rename")
   "co" '(lsp-organize-imports :which-key "organize imports")
-  "ct" '(origami-toggle-node :which-key "toggle fold node")
 
   "e" '(:ignore t :which-key "eval elisp")
   "eb" '(eval-buffer :which-key "eval buffer")
