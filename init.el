@@ -111,7 +111,7 @@ If the new path's directories does not exist, create them."
       display-line-numbers 'relative)
 
 (setq-default indent-tabs-mode nil  ;; Use spaces instead of tabs
-              tab-width 2)           ;; Set default tab width to 4
+              tab-width 4)           ;; Set default tab width to 4
 
 (menu-bar--display-line-numbers-mode-relative)
 (setopt x-underline-at-descent-line nil)           ; Prettier underlines
@@ -119,7 +119,7 @@ If the new path's directories does not exist, create them."
 (setopt indicate-buffer-boundaries 'left)  ; Show buffer top and bottom in the margin
 (add-hook 'text-mode-hook 'visual-line-mode)
 
-(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 150 ); 150
+(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 120 ); 150
 
 ;; Gruber Darker Theme
 (use-package doom-themes
@@ -350,7 +350,6 @@ If the new path's directories does not exist, create them."
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
-
 (use-package apheleia
   :custom
   apheleia-global-mode +1)
@@ -363,7 +362,9 @@ If the new path's directories does not exist, create them."
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l")
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         (typescript-ts-mode . lsp)
+         ;;(typescript-ts-mode . lsp)
+         (tsx-ts-mode . lsp)
+         (c-ts-mode . lsp)
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred))
@@ -380,11 +381,7 @@ If the new path's directories does not exist, create them."
   ;; :global/:workspace/:file
   (setq lsp-modeline-diagnostics-scope :workspace))
 
-(use-package typescript-mode
-  :hook (typescript-mode . lsp-deferred)
-  :config
-  (setq typescript-indent-level 2))
-
+(use-package cmake-mode)
 
 (use-package lsp-tailwindcss
   :straight '(lsp-tailwindcss :type git :host github :repo "merrickluo/lsp-tailwindcss")
@@ -393,7 +390,6 @@ If the new path's directories does not exist, create them."
   (dolist (tw-major-mode
            '(css-mode
              css-ts-mode
-             typescript-mode
              typescript-ts-mode
              tsx-ts-mode
              js2-mode
@@ -401,10 +397,20 @@ If the new path's directories does not exist, create them."
              clojure-mode))
     (add-to-list 'lsp-tailwindcss-major-modes tw-major-mode)))
 
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx\\'" . typescript-mode))
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . tsx-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
+
+;; code folding
+(use-package dash)
+(use-package s)
+(use-package origami
+  :config
+  (global-origami-mode t))
+
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         ORG MODE & NOTES               ;;
@@ -459,7 +465,6 @@ If the new path's directories does not exist, create them."
     :keymaps '(normal visual emacs )
     :prefix "SPC"
     :global-prefix "S-SPC"))
-(setq lsp-keymap-prefix "C-c l")
 (leader
   "SPC" '(projectile-find-file :which-key "project ff")
   "," '(switch-to-buffer :which-key "find buffer")
@@ -473,6 +478,7 @@ If the new path's directories does not exist, create them."
   "cF" '(apheleia-format-buffer :which-key "format buffer")
   "cr" '(lsp-rename :which-key "rename")
   "co" '(lsp-organize-imports :which-key "organize imports")
+  "ct" '(origami-toggle-node :which-key "toggle fold node")
 
   "e" '(:ignore t :which-key "eval elisp")
   "eb" '(eval-buffer :which-key "eval buffer")
@@ -580,8 +586,8 @@ If the new path's directories does not exist, create them."
 (use-package evil
   :init
   (setq evil-want-integration t
-	      evil-want-C-u-scroll t
-	      evil-undo-system 'undo-fu
+	    evil-want-C-u-scroll t
+	    evil-undo-system 'undo-fu
         evil-want-keybinding nil) ;; Disable default )
   :config
   (evil-mode 1)
@@ -600,3 +606,4 @@ If the new path's directories does not exist, create them."
   :config
   (evil-collection-init))
 
+(put 'dired-find-alternate-file 'disabled nil)
