@@ -613,5 +613,8 @@ If the new path's directories does not exist, create them."
   :ensure t
   :config
   (evil-collection-init))
-
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
 (put 'dired-find-alternate-file 'disabled nil)
