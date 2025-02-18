@@ -369,7 +369,12 @@ If the new path's directories does not exist, create them."
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred))
 
-(use-package lsp-ui :commands lsp-ui-mode)
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :config
+  (setq lsp-ui-doc-enable t
+        lsp-ui-doc-position 'at-point
+        lsp-ui-doc-side 'right))
 (use-package consult-lsp :commands consult-lsp-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
@@ -555,6 +560,16 @@ If the new path's directories does not exist, create them."
   "wr" '(evil-window-rotate-downwards :which-key "rotate downwards")
   "wR" '(evil-window-rotate-upwards :which-key "rotate upwards")
   )
+
+(general-define-key
+ :states 'normal
+ "gd"  'lsp-find-definition   
+ "gr"  'lsp-find-references    
+ "gI"  'lsp-find-implementation 
+ "gy"  'lsp-find-type-definition 
+ "gD"  'lsp-find-declaration      
+ "K"   'lsp-ui-doc-glance          
+ )
 
 (general-define-key
  :states 'motion
