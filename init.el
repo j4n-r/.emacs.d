@@ -111,7 +111,7 @@ If the new path's directories does not exist, create them."
       display-line-numbers 'relative)
 
 (setq-default indent-tabs-mode nil  ;; Use spaces instead of tabs
-              tab-width 2)           ;; Set default tab width to 4
+              tab-width 4)           ;; Set default tab width to 4
 
 (menu-bar--display-line-numbers-mode-relative)
 (setopt x-underline-at-descent-line nil)           ; Prettier underlines
@@ -350,7 +350,6 @@ If the new path's directories does not exist, create them."
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
-
 (use-package apheleia
   :custom
   apheleia-global-mode +1)
@@ -363,13 +362,19 @@ If the new path's directories does not exist, create them."
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l")
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         (typescript-ts-mode . lsp)
          (kotlin-mode . lsp)
+         (tsx-ts-mode . lsp)
+         (c-ts-mode . lsp)
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred))
 
-(use-package lsp-ui :commands lsp-ui-mode)
+(use-package lsp-ui
+  :commands lsp-ui-mode
+  :config
+  (setq lsp-ui-doc-enable t
+        lsp-ui-doc-position 'at-point
+        lsp-ui-doc-side 'right))
 (use-package consult-lsp :commands consult-lsp-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
@@ -381,11 +386,7 @@ If the new path's directories does not exist, create them."
   ;; :global/:workspace/:file
   (setq lsp-modeline-diagnostics-scope :workspace))
 
-(use-package typescript-mode
-  :hook (typescript-mode . lsp-deferred)
-  :config
-  (setq typescript-indent-level 2))
-
+(use-package cmake-mode)
 
 (use-package lsp-tailwindcss
   :straight '(lsp-tailwindcss :type git :host github :repo "merrickluo/lsp-tailwindcss")
@@ -394,7 +395,6 @@ If the new path's directories does not exist, create them."
   (dolist (tw-major-mode
            '(css-mode
              css-ts-mode
-             typescript-mode
              typescript-ts-mode
              tsx-ts-mode
              js2-mode
@@ -402,10 +402,14 @@ If the new path's directories does not exist, create them."
              clojure-mode))
     (add-to-list 'lsp-tailwindcss-major-modes tw-major-mode)))
 
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx\\'" . typescript-mode))
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
-(add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . tsx-mode))
+(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
+
+;; just use z-a for code folding
+
+
 
 (use-package kotlin-mode)
 
@@ -462,7 +466,6 @@ If the new path's directories does not exist, create them."
     :keymaps '(normal visual emacs )
     :prefix "SPC"
     :global-prefix "S-SPC"))
-(setq lsp-keymap-prefix "C-c l")
 (leader
   "SPC" '(projectile-find-file :which-key "project ff")
   "," '(switch-to-buffer :which-key "find buffer")
@@ -557,6 +560,16 @@ If the new path's directories does not exist, create them."
   )
 
 (general-define-key
+ :states 'normal
+ "gd"  'lsp-find-definition   
+ "gr"  'lsp-find-references    
+ "gI"  'lsp-find-implementation 
+ "gy"  'lsp-find-type-definition 
+ "gD"  'lsp-find-declaration      
+ "K"   'lsp-ui-doc-glance          
+ )
+
+(general-define-key
  :states 'motion
  "gc" 'comment-or-uncomment-region)
 
@@ -605,5 +618,8 @@ If the new path's directories does not exist, create them."
   :ensure t
   :config
   (evil-collection-init))
-
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
 (put 'dired-find-alternate-file 'disabled nil)
