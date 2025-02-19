@@ -119,7 +119,7 @@ If the new path's directories does not exist, create them."
 (setopt indicate-buffer-boundaries 'left)  ; Show buffer top and bottom in the margin
 (add-hook 'text-mode-hook 'visual-line-mode)
 
-(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 150 ); 150
+(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 130 ); 150
 
 ;; Gruber Darker Theme
 (use-package doom-themes
@@ -364,6 +364,7 @@ If the new path's directories does not exist, create them."
   (setq lsp-keymap-prefix "C-c l")
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (typescript-ts-mode . lsp)
+         (kotlin-mode . lsp)
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred))
@@ -405,6 +406,8 @@ If the new path's directories does not exist, create them."
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . typescript-mode))
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . typescript-mode))
+
+(use-package kotlin-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         ORG MODE & NOTES               ;;
@@ -465,6 +468,9 @@ If the new path's directories does not exist, create them."
   "," '(switch-to-buffer :which-key "find buffer")
   "." '(find-file-at-point :which-key "ff in dir")
   "TAB" '(perspective-map :which-key "perspective")
+
+  "b" '(:ignore :which-key "buffer")
+  "br" '(rename-buffer :which-key "rename buffer")
 
   "c" '(:igore t :which-key "code")
   "ca" '(lsp-execute-code-action :which-key "code actions")
@@ -600,3 +606,4 @@ If the new path's directories does not exist, create them."
   :config
   (evil-collection-init))
 
+(put 'dired-find-alternate-file 'disabled nil)
