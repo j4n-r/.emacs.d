@@ -124,7 +124,7 @@ If the new path's directories does not exist, create them."
 (setopt indicate-buffer-boundaries 'left)  ; Show buffer top and bottom in the margin
 (add-hook 'text-mode-hook 'visual-line-mode)
 
-(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 120 ); 150
+(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 145 ); 
 
 ;; Gruber Darker Theme
 (use-package doom-themes
@@ -304,11 +304,7 @@ If the new path's directories does not exist, create them."
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
-(when (display-graphic-p)
-  (require 'all-the-icons))
-;; or
-(use-package all-the-icons
-  :if (display-graphic-p))
+(use-package all-the-icons)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;            MISCELLANEOUS               ;;
@@ -370,8 +366,9 @@ If the new path's directories does not exist, create them."
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l")
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         ;;(typescript-ts-mode . lsp)
+         (kotlin-mode . lsp)
          (tsx-ts-mode . lsp)
+         (typescript-ts-mode . lsp)
          (c-ts-mode . lsp)
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
@@ -415,8 +412,19 @@ If the new path's directories does not exist, create them."
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
 
-;; just use z-a for code folding
+;; code folding
+(use-package dash)
+(use-package s)
+(use-package origami
+  :config
+  (global-origami-mode t))
 
+
+
+(use-package kotlin-mode)
+
+(use-package pg :vc (:url "https://github.com/emarsden/pg-el/"))
+(use-package pgmacs :vc (:url "https://github.com/emarsden/pgmacs/"))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -477,6 +485,9 @@ If the new path's directories does not exist, create them."
   "," '(switch-to-buffer :which-key "find buffer")
   "." '(find-file-at-point :which-key "ff in dir")
   "TAB" '(perspective-map :which-key "perspective")
+
+  "b" '(:ignore :which-key "buffer")
+  "br" '(rename-buffer :which-key "rename buffer")
 
   "c" '(:igore t :which-key "code")
   "ca" '(lsp-execute-code-action :which-key "code actions")
