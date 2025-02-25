@@ -426,6 +426,24 @@ If the new path's directories does not exist, create them."
 (use-package pg :vc (:url "https://github.com/emarsden/pg-el/"))
 (use-package pgmacs :vc (:url "https://github.com/emarsden/pgmacs/"))
 
+(defun get-gemini-key ()
+  "Retrieve the password from the first entry in .authinfo for generativelanguage.googleapis.com.
+Returns the password string, or nil if no matching entry is found."
+  (let ((entry (car (auth-source-search :host "generativelanguage.googleapis.com" :max 1))))
+    (when entry
+      (let ((secret (plist-get entry :secret)))
+        (if (functionp secret)
+            (funcall secret)
+          secret)))))
+
+(use-package gptel)
+(setq gptel-model 'gemini-pro
+      gptel-backend (gptel-make-gemini "Gemini"
+                      :key get-gemini-key
+                      :stream t)))
+
+
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         ORG MODE & NOTES               ;;
@@ -476,10 +494,9 @@ If the new path's directories does not exist, create them."
   :config
   (general-evil-setup t)
 
-  (general-create-definer leader
-    :keymaps '(normal visual emacs )
-    :prefix "SPC"
-    :global-prefix "S-SPC"))
+  :keymaps '(normal visual emacs )
+  :prefix "SPC"
+  :global-prefix "S-SPC"))
 (leader
   "SPC" '(projectile-find-file :which-key "project ff")
   "," '(switch-to-buffer :which-key "find buffer")
@@ -509,6 +526,16 @@ If the new path's directories does not exist, create them."
   "g" '(:ignore t :which-key "git")
   "gg" '(magit-status :which-key "magit")
   "gb" '(magit-blame  :which-key "magit blame")
+
+  ;; gptel keybindings under the "gt" prefix:
+  "gt" '(:ignore t :which-key "gptel")
+  "gts" '(gptel-send            :which-key "Send Query")
+  "gtc" '(gptel                 :which-key "New Chat Buffer")
+  "gtr" '(gptel-rewrite         :which-key "Rewrite/Refactor")
+  "gta" '(gptel-add             :which-key "Add Context")
+  "gtf" '(gptel-add-file        :which-key "Add File to Context")
+  "gto" '(gptel-org-set-topic   :which-key "Set Org Topic")
+  "gtp" '(gptel-org-set-properties :which-key "Set Org Properties")
 
   "o" '(:igore t :which-key "open")
   "od" '(dired-jump :which-key "open dired")
