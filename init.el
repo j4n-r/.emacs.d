@@ -404,7 +404,12 @@ If the new path's directories does not exist, create them."
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
 
-;; just use z-a for code folding
+;; code folding
+(use-package dash)
+(use-package s)
+(use-package origami
+  :config
+  (global-origami-mode t))
 
 
 
