@@ -119,7 +119,7 @@ If the new path's directories does not exist, create them."
 (setopt indicate-buffer-boundaries 'left)  ; Show buffer top and bottom in the margin
 (add-hook 'text-mode-hook 'visual-line-mode)
 
-(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 130 ); 150
+(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 145 ); 
 
 ;; Gruber Darker Theme
 (use-package doom-themes
@@ -299,11 +299,7 @@ If the new path's directories does not exist, create them."
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
-(when (display-graphic-p)
-  (require 'all-the-icons))
-;; or
-(use-package all-the-icons
-  :if (display-graphic-p))
+(use-package all-the-icons)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;            MISCELLANEOUS               ;;
@@ -364,6 +360,7 @@ If the new path's directories does not exist, create them."
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (kotlin-mode . lsp)
          (tsx-ts-mode . lsp)
+         (typescript-ts-mode . lsp)
          (c-ts-mode . lsp)
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
@@ -412,6 +409,10 @@ If the new path's directories does not exist, create them."
 
 
 (use-package kotlin-mode)
+
+(use-package pg :vc (:url "https://github.com/emarsden/pg-el/"))
+(use-package pgmacs :vc (:url "https://github.com/emarsden/pgmacs/"))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         ORG MODE & NOTES               ;;
@@ -599,8 +600,8 @@ If the new path's directories does not exist, create them."
 (use-package evil
   :init
   (setq evil-want-integration t
-	      evil-want-C-u-scroll t
-	      evil-undo-system 'undo-fu
+	    evil-want-C-u-scroll t
+	    evil-undo-system 'undo-fu
         evil-want-keybinding nil) ;; Disable default )
   :config
   (evil-mode 1)
