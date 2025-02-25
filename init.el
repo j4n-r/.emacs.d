@@ -16,6 +16,10 @@ If the new path's directories does not exist, create them."
     backupFilePath))
 (setopt make-backup-file-name-function 'bedrock--backup-file-name)
 (setopt switch-to-buffer-obey-display-actions t)   ; Make switching buffers more consistent
+(setq auth-sources '("~/.authinfo"))
+;; kill dired buffers
+(setq dired-kill-when-opening-new-dired-bufferl t)
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         PACKAGE MANAGEMENT            ;;
@@ -43,6 +47,7 @@ If the new path's directories does not exist, create them."
   ;; Enable indentation+completion using the TAB key.
   ;; `completion-at-point' is often bound to M-TAB.
   (tab-always-indent 'complete)
+  (recentf-mode)
   ;; Hide commands in M-x which do not work in the current mode.  Vertico
   ;; commands are hidden in normal buffers. This setting is useful beyond
   ;; Vertico.
@@ -336,6 +341,9 @@ If the new path's directories does not exist, create them."
 ;;         DEV & LSP CONFIGURATION       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package magit)
+(use-package forge
+  :after magit)
+
 ;; refresh buffers on source control change
 (setopt auto-revert-avoid-polling t)
 (setopt auto-revert-interval 5)
@@ -535,6 +543,7 @@ If the new path's directories does not exist, create them."
   "wos" '(olivetti-set-width :which-key "set width")
 
   "ww" '(other-window :which-key "switch window")
+  "w." '(balance-windows :which-key "switch window")
   "w<" '(evil-window-decrease-width :which-key "decrease width")
   "w>" '(evil-window-increase-width :which-key "increase width")
   "w+" '(evil-window-increase-height :which-key "increase height")
@@ -617,4 +626,4 @@ If the new path's directories does not exist, create them."
   :ensure t
   :config
   (global-evil-surround-mode 1))
-(put 'dired-find-alternate-file 'disabled nil)
+
