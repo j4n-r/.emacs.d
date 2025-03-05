@@ -124,7 +124,7 @@ If the new path's directories does not exist, create them."
 (setopt indicate-buffer-boundaries 'left)  ; Show buffer top and bottom in the margin
 (add-hook 'text-mode-hook 'visual-line-mode)
 
-(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 135 ); 
+(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 145 ); 
 
 ;; Gruber Darker Theme
 (use-package doom-themes
@@ -629,6 +629,11 @@ Returns the password string, or nil if no matching entry is found."
  "n" 'dired-create-empty-file
  "h" 'dired-up-directory
  "l" 'dired-find-alternate-file)
+
+(general-define-key
+ :states 'normal
+ :keymaps 'magit-mode-map
+ "N" nil)
 
 (defun jinx-correct-next ()
   "Move to next incorrect word and correct it"
