@@ -124,7 +124,7 @@ If the new path's directories does not exist, create them."
 (setopt indicate-buffer-boundaries 'left)  ; Show buffer top and bottom in the margin
 (add-hook 'text-mode-hook 'visual-line-mode)
 
-(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 145 ); 
+(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 135 ); 
 
 ;; Gruber Darker Theme
 (use-package doom-themes
@@ -293,6 +293,9 @@ If the new path's directories does not exist, create them."
   :init
   :config
   (projectile-mode +1))
+;; shit solution
+(setq projectile-git-submodule-command nil)
+
 ;; Which-Key - Keybinding Help
 (use-package which-key
   :ensure t
@@ -436,171 +439,172 @@ Returns the password string, or nil if no matching entry is found."
             (funcall secret)
           secret)))))
 
-  (use-package gptel)
-  (setq gptel-model 'gemini-pro
-        gptel-backend (gptel-make-gemini "Gemini"
-                        :key 'get-gemini-key
-                        :stream t))
+(use-package gptel)
+(setq gptel-model 'gemini-2.0-flash-thinking-exp-01-21
+      gptel-backend (gptel-make-gemini "Gemini"
+                      :key 'get-gemini-key
+                      :stream t))
 
 
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;;         ORG MODE & NOTES               ;;
+;;         ORG MODE & NOTES               ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  (use-package olivetti)
-  (add-hook 'olivetti-mode-on-hook (lambda () (olivetti-set-width 100))) 
+(use-package olivetti)
+(add-hook 'olivetti-mode-on-hook (lambda () (olivetti-set-width 100))) 
 
-  ;; Must do this so the agenda knows where to look for my files
-  (setq org-agenda-files '("~/org-roam"))
+;; Must do this so the agenda knows where to look for my files
+(setq org-agenda-files '("~/org-roam"))
 
-  ;; When a TODO is set to a done state, record a timestamp
-  (setq org-log-done 'time)
+;; When a TODO is set to a done state, record a timestamp
+(setq org-log-done 'time)
 
-  ;; Follow the links
-  (setq org-return-follows-link  t)
+;; Follow the links
+(setq org-return-follows-link  t)
 
-  ;; Associate all org files with org mode
-  (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
+;; Associate all org files with org mode
+(add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 
-  ;; Make the indentation look nicer
-  (add-hook 'org-mode-hook 'org-indent-mode)
-  (use-package org-roam
-    :ensure t
-    :custom
-    (org-roam-directory (file-truename "~/org-roam"))
-    :config
-    ;; If you're using a vertical completion framework, you might want a more informative completion interface
-    (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
-    (org-roam-db-autosync-mode)
-    ;; If using org-roam-protocol
-    (require 'org-roam-protocol))
+;; Make the indentation look nicer
+(add-hook 'org-mode-hook 'org-indent-mode)
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory (file-truename "~/org-roam"))
+  :config
+  ;; If you're using a vertical completion framework, you might want a more informative completion interface
+  (setq org-roam-node-display-template (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag)))
+  (org-roam-db-autosync-mode)
+  ;; If using org-roam-protocol
+  (require 'org-roam-protocol))
 
-  (use-package jinx
-    :hook (emacs-startup . global-jinx-mode))
+(use-package jinx
+  :hook (emacs-startup . global-jinx-mode))
 
-  ;; Use Dabbrev with Corfu!
-  (use-package dabbrev
-    :config
-    (add-to-list 'dabbrev-ignored-buffer-regexps "\\` "))
+;; Use Dabbrev with Corfu!
+(use-package dabbrev
+  :config
+  (add-to-list 'dabbrev-ignored-buffer-regexps "\\` "))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;;            KEYBINDINGS                ;;
+;;            KEYBINDINGS                ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-  ;; Generale
-  (use-package general
-    :config
-    (general-evil-setup t)
+;; Generale
+(use-package general
+  :config
+  (general-evil-setup t)
 
   (general-create-definer leader
     :keymaps '(normal visual emacs )
     :prefix "SPC"
     :global-prefix "S-SPC"))
 (leader
- "SPC" '(projectile-find-file :which-key "project ff")
- "," '(switch-to-buffer :which-key "find buffer")
- "." '(find-file-at-point :which-key "ff in dir")
- "TAB" '(perspective-map :which-key "perspective")
+  "SPC" '(projectile-find-file :which-key "project ff")
+  "," '(switch-to-buffer :which-key "find buffer")
+  "." '(find-file-at-point :which-key "ff in dir")
+  "TAB" '(perspective-map :which-key "perspective")
 
- "b" '(:ignore :which-key "buffer")
- "br" '(rename-buffer :which-key "rename buffer")
+  "b" '(:ignore :which-key "buffer")
+  "br" '(rename-buffer :which-key "rename buffer")
 
- "c" '(:igore t :which-key "code")
- "ca" '(lsp-execute-code-action :which-key "code actions")
- "cc" '(compile :which-key "compile")
- "cf" '(lsp-format :which-key "format buffer")
- "cF" '(apheleia-format-buffer :which-key "format buffer")
- "cr" '(lsp-rename :which-key "rename")
- "co" '(lsp-organize-imports :which-key "organize imports")
+  "c" '(:igore t :which-key "code")
+  "ca" '(lsp-execute-code-action :which-key "code actions")
+  "cc" '(compile :which-key "compile")
+  "cf" '(lsp-format :which-key "format buffer")
+  "cF" '(apheleia-format-buffer :which-key "format buffer")
+  "cr" '(lsp-rename :which-key "rename")
+  "co" '(lsp-organize-imports :which-key "organize imports")
 
- "e" '(:ignore t :which-key "eval elisp")
- "eb" '(eval-buffer :which-key "eval buffer")
- "er" '(eval-region :which-key "eval region")
- "ee" '(eval-expression :which-key "eval expression")
- "ed" '(eval-expression :which-key "eval expression")
+  "e" '(:ignore t :which-key "eval elisp")
+  "eb" '(eval-buffer :which-key "eval buffer")
+  "er" '(eval-region :which-key "eval region")
+  "ee" '(eval-expression :which-key "eval expression")
+  "ed" '(eval-expression :which-key "eval expression")
 
- "f" '(:ignore t :which-key "file")
- "ff" '(find-file :which-key "find file")
+  "f" '(:ignore t :which-key "file")
+  "ff" '(find-file :which-key "find file")
 
- "g" '(:ignore t :which-key "git")
- "gg" '(magit-status :which-key "magit")
- "gb" '(magit-blame  :which-key "magit blame")
+  "g" '(:ignore t :which-key "git")
+  "gg" '(magit-status :which-key "magit")
+  "gb" '(magit-blame  :which-key "magit blame")
 
- ;; gptel keybindings under the "gt" prefix:
- "gt" '(:ignore t :which-key "gptel")
- "gts" '(gptel-send            :which-key "Send Query")
- "gtc" '(gptel                 :which-key "New Chat Buffer")
- "gtr" '(gptel-rewrite         :which-key "Rewrite/Refactor")
- "gta" '(gptel-add             :which-key "Add Context")
- "gtf" '(gptel-add-file        :which-key "Add File to Context")
- "gto" '(gptel-org-set-topic   :which-key "Set Org Topic")
- "gtp" '(gptel-org-set-properties :which-key "Set Org Properties")
+  ;; gptel keybindings under the "gt" prefix:
+  "gt" '(:ignore t :which-key "gptel")
+  "gts" '(gptel-send            :which-key "Send Query")
+  "gtn" '(gptel                 :which-key "New Chat Buffer")
+  "gtr" '(gptel-rewrite         :which-key "Rewrite/Refactor")
+  "gta" '(gptel-add             :which-key "Add Context")
+  "gtf" '(gptel-add-file        :which-key "Add File to Context")
+  "gto" '(gptel-org-set-topic   :which-key "Set Org Topic")
+  "gtp" '(gptel-org-set-properties :which-key "Set Org Properties")
+  "gtm" '(gptel-menu :which-key "Set Org Properties")
 
- "o" '(:igore t :which-key "open")
- "od" '(dired-jump :which-key "open dired")
- "ot" '(vterm :which-key "open terminal")
+  "o" '(:igore t :which-key "open")
+  "od" '(dired-jump :which-key "open dired")
+  "ot" '(vterm :which-key "open terminal")
 
- "l" '(:ignore t :which-key "lsp/linter")
- "ln" '(flycheck-next-error :which-key "lint next error")
- "lN" '(flycheck-previous-error :which-key "lint previous error")
+  "l" '(:ignore t :which-key "lsp/linter")
+  "ln" '(flycheck-next-error :which-key "lint next error")
+  "lN" '(flycheck-previous-error :which-key "lint previous error")
 
- "n" '(:ignore :which-key "nodes")
- "nf" '(org-roam-node-find :which-key "find node")
- "ng" '(org-roam-graph :which-key "show graph")
- "ni" '(org-roam-node-insert :which-key "insert node")
- "nc" '(org-roam-capture :which-key "capture node")
- "nj" '(org-roam-dailies-capture-today :which-key "capture daily node") 
+  "n" '(:ignore :which-key "nodes")
+  "nf" '(org-roam-node-find :which-key "find node")
+  "ng" '(org-roam-graph :which-key "show graph")
+  "ni" '(org-roam-node-insert :which-key "insert node")
+  "nc" '(org-roam-capture :which-key "capture node")
+  "nj" '(org-roam-dailies-capture-today :which-key "capture daily node") 
 
- "p" '(projectile-command-map p :which-key "project")
+  "p" '(projectile-command-map p :which-key "project")
 
- "qq" '(evil-quit :which-key "quit emcas")
+  "qq" '(evil-quit :which-key "quit emcas")
 
- "s" '(:ignore :which-key "spelling")
- "ss" '(jinx-correct :which-key "correct spelling")
- "sl" '(jinx-languages :which-key "set language")
- "sn" '(jinx-correct-next :which-key "jinx next")
- "sN" '(jinx-correct-previous :which-key "jinx previous")
- "sa" '(jinx-correct-all :which-key "jinx corect all")
+  "s" '(:ignore :which-key "spelling")
+  "ss" '(jinx-correct :which-key "correct spelling")
+  "sl" '(jinx-languages :which-key "set language")
+  "sn" '(jinx-correct-next :which-key "jinx next")
+  "sN" '(jinx-correct-previous :which-key "jinx previous")
+  "sa" '(jinx-correct-all :which-key "jinx corect all")
 
- "t"  '(:ignore t :which-key "toggles")
- "tt" '(multi-vterm-dedicated-toggle :which-key "Toggle dedicated terminal")
- "tT" '(multi-vterm-project :which-key "Project-based terminal")
- "tn" '(multi-vterm-next :which-key "Switch to next terminal")
- "tp" '(multi-vterm-prev :which-key "Switch to previous terminal")
+  "t"  '(:ignore t :which-key "toggles")
+  "tt" '(multi-vterm-dedicated-toggle :which-key "Toggle dedicated terminal")
+  "tT" '(multi-vterm-project :which-key "Project-based terminal")
+  "tn" '(multi-vterm-next :which-key "Switch to next terminal")
+  "tp" '(multi-vterm-prev :which-key "Switch to previous terminal")
 
- "w" '(:ignore w :which-key "window")
- "wv" '(evil-window-vsplit :which-key "split vertically")
- "ws" '(evil-window-split :which-key "split horizontally")
- "wq" '(delete-window :which-key "delete window")
+  "w" '(:ignore w :which-key "window")
+  "wv" '(evil-window-vsplit :which-key "split vertically")
+  "ws" '(evil-window-split :which-key "split horizontally")
+  "wq" '(delete-window :which-key "delete window")
 
- "wo" '(:ignore t :which-key "olivetti")
- "woo" '(olivetti-mode :which-key "center")
- "wo>" '(olivetti-expand :which-key "expand margin")
- "wo<" '(olivetti-shrink :which-key "shrink margin")
- "wos" '(olivetti-set-width :which-key "set width")
+  "wo" '(:ignore t :which-key "olivetti")
+  "woo" '(olivetti-mode :which-key "center")
+  "wo>" '(olivetti-expand :which-key "expand margin")
+  "wo<" '(olivetti-shrink :which-key "shrink margin")
+  "wos" '(olivetti-set-width :which-key "set width")
 
- "ww" '(other-window :which-key "switch window")
- "w." '(balance-windows :which-key "switch window")
- "w<" '(evil-window-decrease-width :which-key "decrease width")
- "w>" '(evil-window-increase-width :which-key "increase width")
- "w+" '(evil-window-increase-height :which-key "increase height")
- "w-" '(evil-window-decrease-height :which-key "decrease height")
- "wh" '(evil-window-left :which-key "window left")
- "wl" '(evil-window-right :which-key "window right")
- "wj" '(evil-window-down :which-key "window down")
- "wk" '(evil-window-up :which-key "window up")
- "wH" '(evil-window-move-far-left :which-key "move window far left")
- "wL" '(evil-window-move-far-right :which-key "move window far right")
- "wJ" '(evil-window-move-very-bottom :which-key "move window very bottom")
- "wK" '(evil-window-move-very-top :which-key "move window very top")
- "wt" '(evil-window-top-left :which-key "top-left window")
- "wb" '(evil-window-bottom-right :which-key "bottom-right window")
- "w=" '(balance-windows :which-key "balance windows")
- "wr" '(evil-window-rotate-downwards :which-key "rotate downwards")
- "wR" '(evil-window-rotate-upwards :which-key "rotate upwards")
- )
+  "ww" '(other-window :which-key "switch window")
+  "w." '(balance-windows :which-key "switch window")
+  "w<" '(evil-window-decrease-width :which-key "decrease width")
+  "w>" '(evil-window-increase-width :which-key "increase width")
+  "w+" '(evil-window-increase-height :which-key "increase height")
+  "w-" '(evil-window-decrease-height :which-key "decrease height")
+  "wh" '(evil-window-left :which-key "window left")
+  "wl" '(evil-window-right :which-key "window right")
+  "wj" '(evil-window-down :which-key "window down")
+  "wk" '(evil-window-up :which-key "window up")
+  "wH" '(evil-window-move-far-left :which-key "move window far left")
+  "wL" '(evil-window-move-far-right :which-key "move window far right")
+  "wJ" '(evil-window-move-very-bottom :which-key "move window very bottom")
+  "wK" '(evil-window-move-very-top :which-key "move window very top")
+  "wt" '(evil-window-top-left :which-key "top-left window")
+  "wb" '(evil-window-bottom-right :which-key "bottom-right window")
+  "w=" '(balance-windows :which-key "balance windows")
+  "wr" '(evil-window-rotate-downwards :which-key "rotate downwards")
+  "wR" '(evil-window-rotate-upwards :which-key "rotate upwards")
+  )
 
 (general-define-key
  :states 'normal
@@ -666,3 +670,4 @@ Returns the password string, or nil if no matching entry is found."
   :config
   (global-evil-surround-mode 1))
 
+(put 'dired-find-alternate-file 'disabled nil)
