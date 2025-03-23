@@ -385,6 +385,19 @@ If the new path's directories does not exist, create them."
         lsp-ui-doc-side 'right))
 (use-package consult-lsp :commands consult-lsp-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+(use-package lsp-mode
+  :ensure t)
+
+(use-package lsp-nix
+  :ensure lsp-mode
+  :after (lsp-mode)
+  :demand t
+  :custom
+  (lsp-nix-nil-formatter ["nixfmt"]))
+
+(use-package nix-mode
+  :hook (nix-mode . lsp-deferred)
+  :ensure t)
 
 ;; optionally if you want to use debugger
 ;;(use-package dap-mode)
