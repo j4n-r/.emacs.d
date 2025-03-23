@@ -20,6 +20,7 @@ If the new path's directories does not exist, create them."
 ;; kill dired buffers
 (setq dired-kill-when-opening-new-dired-bufferl t)
 
+(setq ring-bell-function 'ignore)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         PACKAGE MANAGEMENT            ;;
