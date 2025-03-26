@@ -18,7 +18,7 @@ If the new path's directories does not exist, create them."
 (setopt switch-to-buffer-obey-display-actions t)   ; Make switching buffers more consistent
 (setq auth-sources '("~/.authinfo"))
 ;; kill dired buffers
-(setq dired-kill-when-opening-new-dired-bufferl t)
+(setq dired-kill-when-opening-new-dired-buffer t)
 
 (setq ring-bell-function 'ignore)
 
@@ -92,18 +92,25 @@ If the new path's directories does not exist, create them."
   (tool-bar-mode -1)
   (menu-bar-mode -1))
 
-(setq default-frame-alist '((fullscreen . maximized)
-                            ;; You can turn off scroll bars by uncommenting these lines:
-                            (vertical-scroll-bars . nil)
-                            (horizontal-scroll-bars . nil)
 
-                            ;; Setting the face in here prevents flashes of
-                            ;; color as the theme gets activated
-                            (background-color . "#000000")
-                            (foreground-color . "#ffffff")
-                            (ns-appearance . dark)
-                            (ns-transparent-titlebar . t)))
+;; Gruber Darker Theme
+(use-package doom-themes
+  :ensure t
+  :config
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
 
+  ;; Enable custom neotree theme (nerd-icons must be installed!)
+  (doom-themes-neotree-config)
+  ;; or for treemacs users
+  (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+  (doom-themes-treemacs-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
+
+(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
+(load-theme 'doom-rose-pine t)
 (setq inhibit-startup-message t
       blink-cursor-mode nil
       custom-file "~/.emacs.d/custom.el"
@@ -127,24 +134,6 @@ If the new path's directories does not exist, create them."
 
 (set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 145 ); 
 
-;; Gruber Darker Theme
-(use-package doom-themes
-  :ensure t
-  :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-        doom-themes-enable-italic t) ; if nil, italics is universally disabled
-
-  ;; Enable custom neotree theme (nerd-icons must be installed!)
-  (doom-themes-neotree-config)
-  ;; or for treemacs users
-  (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
-  (doom-themes-treemacs-config)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config))
-
-(add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(load-theme 'doom-rose-pine t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;             ESSENTIALS                  ;;
@@ -362,6 +351,10 @@ If the new path's directories does not exist, create them."
   :custom
   apheleia-global-mode +1)
 
+(use-package yasnippet
+  :ensure t
+  :config
+  (yas-global-mode 1)) 
 (use-package yasnippet-snippets)
 
 
@@ -400,6 +393,13 @@ If the new path's directories does not exist, create them."
   :hook (nix-mode . lsp-deferred)
   :ensure t)
 
+(use-package rust-mode)
+(add-hook 'rust-mode-hook #'lsp)
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+
+(use-package direnv
+  :config
+  (direnv-mode))
 ;; optionally if you want to use debugger
 ;;(use-package dap-mode)
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
@@ -510,9 +510,9 @@ Returns the password string, or nil if no matching entry is found."
 (use-package general
   :config
   (general-evil-setup t)
-
+  (general-auto-unbind-keys)
   (general-create-definer leader
-    :keymaps '(normal visual emacs )
+    :keymaps '(normal visual emacs dired-mode-map)
     :prefix "SPC"
     :global-prefix "S-SPC"))
 (leader
@@ -523,6 +523,7 @@ Returns the password string, or nil if no matching entry is found."
 
   "b" '(:ignore :which-key "buffer")
   "br" '(rename-buffer :which-key "rename buffer")
+  "bk" '(kill-buffer :which-key "kill buffer")
 
   "c" '(:igore t :which-key "code")
   "ca" '(lsp-execute-code-action :which-key "code actions")
@@ -540,6 +541,7 @@ Returns the password string, or nil if no matching entry is found."
 
   "f" '(:ignore t :which-key "file")
   "ff" '(find-file :which-key "find file")
+  "fr" '(rename-visited-file :which-key "rename file")
 
   "g" '(:ignore t :which-key "git")
   "gg" '(magit-status :which-key "magit")
@@ -628,6 +630,8 @@ Returns the password string, or nil if no matching entry is found."
  "gy"  'lsp-find-type-definition 
  "gD"  'lsp-find-declaration      
  "K"   'lsp-ui-doc-glance          
+ "J" 'lsp-ui-doc-focus-frame
+ "H" 'lsp-ui-doc-hide 
  )
 
 (general-define-key
@@ -642,7 +646,9 @@ Returns the password string, or nil if no matching entry is found."
  :keymaps 'dired-mode-map
  "n" 'dired-create-empty-file
  "h" 'dired-up-directory
- "l" 'dired-find-alternate-file)
+ "l" 'dired-find-alternate-file
+ "SPC" 'nil
+ )
 
 (general-define-key
  :states 'normal
