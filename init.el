@@ -22,6 +22,14 @@ If the new path's directories does not exist, create them."
 
 (setq ring-bell-function 'ignore)
 
+(setq proced-update-interval 2)
+(defun my-proced-setup ()
+  (unless proced-auto-update-flag
+    (proced-toggle-auto-update))
+  (proced-sort 'mem))
+
+(add-hook 'proced-mode-hook #'my-proced-setup)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         PACKAGE MANAGEMENT            ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
