@@ -22,13 +22,21 @@ If the new path's directories does not exist, create them."
 
 (setq ring-bell-function 'ignore)
 
-(setq proced-update-interval 2)
-(defun my-proced-setup ()
-  (unless proced-auto-update-flag
-    (proced-toggle-auto-update))
-  (proced-sort 'mem))
 
-(add-hook 'proced-mode-hook #'my-proced-setup)
+(use-package proced
+  :ensure nil
+  :commands proced
+  :custom
+  (proced-auto-update-flag t)
+  (proced-goal-attribute nil)
+  (proced-show-remote-processes t)
+  (proced-enable-color-flag t)
+  (proced-sort 'pmem)
+  (proced-format 'custom)
+  :config
+  (add-to-list
+   'proced-format-alist
+   '(custom user pid  pcpu pmem rss start time state (args comm))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         PACKAGE MANAGEMENT            ;;
@@ -569,6 +577,7 @@ Returns the password string, or nil if no matching entry is found."
   "o" '(:igore t :which-key "open")
   "od" '(dired-jump :which-key "open dired")
   "ot" '(vterm :which-key "open terminal")
+  "op" '(proced :which-key "open proced")
 
   "l" '(:ignore t :which-key "lsp/linter")
   "ln" '(flycheck-next-error :which-key "lint next error")
