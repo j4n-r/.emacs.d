@@ -140,7 +140,8 @@ If the new path's directories does not exist, create them."
 (setopt indicate-buffer-boundaries 'left)  ; Show buffer top and bottom in the margin
 (add-hook 'text-mode-hook 'visual-line-mode)
 
-(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 145 ); 
+(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 110 ); 
+
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -306,7 +307,6 @@ If the new path's directories does not exist, create them."
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
 (use-package all-the-icons)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;            MISCELLANEOUS               ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -520,7 +520,7 @@ Returns the password string, or nil if no matching entry is found."
   (general-evil-setup t)
   (general-auto-unbind-keys)
   (general-create-definer leader
-    :keymaps '(normal visual emacs dired-mode-map)
+    :keymaps '(normal visual emacs )
     :prefix "SPC"
     :global-prefix "S-SPC"))
 (leader
@@ -655,8 +655,12 @@ Returns the password string, or nil if no matching entry is found."
  "n" 'dired-create-empty-file
  "h" 'dired-up-directory
  "l" 'dired-find-alternate-file
- "SPC" 'nil
  )
+
+(defun my-dired-unbind-spc ()
+  "Unbind SPC in dired-mode's normal state map."
+  (general-unbind :keymaps 'dired-mode-map :states 'normal "SPC"))
+(add-hook 'dired-mode-hook #'my-dired-unbind-spc)
 
 (general-define-key
  :states 'normal
