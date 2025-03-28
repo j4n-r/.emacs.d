@@ -22,22 +22,6 @@ If the new path's directories does not exist, create them."
 
 (setq ring-bell-function 'ignore)
 
-
-(use-package proced
-  :ensure nil
-  :commands proced
-  :custom
-  (proced-auto-update-flag t)
-  (proced-goal-attribute nil)
-  (proced-show-remote-processes t)
-  (proced-enable-color-flag t)
-  (proced-sort 'pmem)
-  (proced-format 'custom)
-  :config
-  (add-to-list
-   'proced-format-alist
-   '(custom user pid  pcpu pmem rss start time state (args comm))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         PACKAGE MANAGEMENT            ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -315,9 +299,25 @@ If the new path's directories does not exist, create them."
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
 (use-package all-the-icons)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;            MISCELLANEOUS               ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package proced
+  :ensure nil
+  :commands proced
+  :custom
+  (proced-auto-update-flag t)
+  (proced-goal-attribute nil)
+  (proced-show-remote-processes t)
+  (proced-enable-color-flag t)
+  (proced-sort 'pmem)
+  (proced-format 'custom)
+  :config
+  (add-to-list
+   'proced-format-alist
+   '(custom user pid  pcpu pmem rss start time state (args comm))))
 
 ;; Doom Modeline configuration
 (use-package doom-modeline
