@@ -22,6 +22,9 @@ If the new path's directories does not exist, create them."
 
 (setq ring-bell-function 'ignore)
 
+(setq scroll-step 1)
+(setq scroll-margin 10)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         PACKAGE MANAGEMENT            ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
