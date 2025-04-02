@@ -88,6 +88,7 @@ If the new path's directories does not exist, create them."
   :config
   (exec-path-from-shell-initialize))
 
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;              GUI STUFF                   ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -609,6 +610,8 @@ Returns the password string, or nil if no matching entry is found."
   "tT" '(multi-vterm-project :which-key "Project-based terminal")
   "tn" '(multi-vterm-next :which-key "Switch to next terminal")
   "tp" '(multi-vterm-prev :which-key "Switch to previous terminal")
+  "ti" '(timeclock-in :which-key "Clock in")
+  "to" '(timeclock-out :which-key "Clock out")
 
   "w" '(:ignore w :which-key "window")
   "wv" '(evil-window-vsplit :which-key "split vertically")
