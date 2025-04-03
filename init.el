@@ -423,8 +423,7 @@ If the new path's directories does not exist, create them."
   :ensure t)
 
 (use-package rust-mode)
-(add-hook 'rust-mode-hook #'lsp)
-(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+(add-hook 'rust-ts-mode-hook #'lsp)
 
 (use-package direnv
   :config
@@ -527,8 +526,8 @@ Returns the password string, or nil if no matching entry is found."
   ;; If using org-roam-protocol
   (require 'org-roam-protocol))
 
-(use-package jinx
-  :hook (emacs-startup . global-jinx-mode))
+;; (use-package jinx
+;;   :hook (emacs-startup . global-jinx-mode))
 
 ;; Use Dabbrev with Corfu!
 (use-package dabbrev
