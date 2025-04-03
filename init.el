@@ -578,10 +578,18 @@ Returns the password string, or nil if no matching entry is found."
   "gtp" '(gptel-org-set-properties :which-key "Set Org Properties")
   "gtm" '(gptel-menu :which-key "Set Org Properties")
 
-  "o" '(:igore t :which-key "open")
+  "o" '(:igore t :which-key "open/org")
   "od" '(dired-jump :which-key "open dired")
   "ot" '(vterm :which-key "open terminal")
   "op" '(proced :which-key "open proced")
+  "oc" '(:ignore t :which-key "org clock")
+  "oci" '(org-clock-in :which-key "clock in")
+  "oco" '(org-clock-out :which-key "clock out")
+  "ocr" '(org-clock-report :which-key "clock report")
+  "oca"  '(org-clock-goto :which-key "goto active clock")
+  "obu" '(org-dblock-update :which-key "org block update")
+  "obU" '(org-update-all-dblocks :which-key "org block update all")
+
 
   "l" '(:ignore t :which-key "lsp/linter")
   "ln" '(flycheck-next-error :which-key "lint next error")
@@ -610,8 +618,6 @@ Returns the password string, or nil if no matching entry is found."
   "tT" '(multi-vterm-project :which-key "Project-based terminal")
   "tn" '(multi-vterm-next :which-key "Switch to next terminal")
   "tp" '(multi-vterm-prev :which-key "Switch to previous terminal")
-  "ti" '(timeclock-in :which-key "Clock in")
-  "to" '(timeclock-out :which-key "Clock out")
 
   "w" '(:ignore w :which-key "window")
   "wv" '(evil-window-vsplit :which-key "split vertically")
