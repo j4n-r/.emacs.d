@@ -140,6 +140,14 @@ If the new path's directories does not exist, create them."
 
 
 
+( display-battery-mode )
+(setq display-time-24hr-format t)
+(setq display-time-day-and-date t)
+(setq display-time-interval 30)
+(setq display-time-use-mail-icon nil)
+(setq display-time-format "%d.%m.%y %H:%M")
+(setq display-time-default-load-average nil)
+(display-time-mode 1)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;             ESSENTIALS                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -384,6 +392,7 @@ If the new path's directories does not exist, create them."
   (setq lsp-keymap-prefix "C-c l")
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (kotlin-mode . lsp)
+         (python-mode .lsp)
          (tsx-ts-mode . lsp)
          (typescript-ts-mode . lsp)
          (c-ts-mode . lsp)
@@ -420,6 +429,9 @@ If the new path's directories does not exist, create them."
 (use-package direnv
   :config
   (direnv-mode))
+
+(use-package ruff-format)
+(add-hook 'python-mode-hook 'ruff-format-on-save-mode)
 ;; optionally if you want to use debugger
 ;;(use-package dap-mode)
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
@@ -448,6 +460,7 @@ If the new path's directories does not exist, create them."
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . tsx-mode))
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
 
 ;; code folding
 (use-package dash)
