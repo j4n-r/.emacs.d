@@ -717,6 +717,7 @@ Returns the password string, or nil if no matching entry is found."
 (use-package evil
   :init
   (setq evil-want-integration t
+        ;;evil-want-minibuffer t
 	    evil-want-C-u-scroll t
 	    evil-undo-system 'undo-fu
         evil-want-keybinding nil) ;; Disable default )
