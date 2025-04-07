@@ -475,6 +475,7 @@ If the new path's directories does not exist, create them."
 
 (use-package pg :vc (:url "https://github.com/emarsden/pg-el/"))
 (use-package pgmacs :vc (:url "https://github.com/emarsden/pgmacs/"))
+(setq sql-sqlite-program "sqlite3")
 
 (defun get-gemini-key ()
   "Retrieve the password from the first entry in .authinfo for generativelanguage.googleapis.com.
