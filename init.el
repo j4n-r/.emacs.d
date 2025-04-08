@@ -418,6 +418,13 @@ If the new path's directories does not exist, create them."
   :custom
   (lsp-nix-nil-formatter ["nixfmt"]))
 
+(use-package lsp-pyright
+  :ensure t
+  :custom (lsp-pyright-langserver-command "pyright") ;; or basedpyright
+  :hook (python-mode . (lambda ()
+                         (require 'lsp-pyright)
+                         (lsp))))  ; or lsp-deferred
+
 (use-package nix-mode
   :hook (nix-mode . lsp-deferred)
   :ensure t)
@@ -687,6 +694,7 @@ Returns the password string, or nil if no matching entry is found."
  :states 'normal
  :keymaps 'dired-mode-map
  "n" 'dired-create-empty-file
+ "N" 'dired-create-directory
  "h" 'dired-up-directory
  "l" 'dired-find-alternate-file
  )
