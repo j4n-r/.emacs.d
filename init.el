@@ -541,6 +541,11 @@ Returns the password string, or nil if no matching entry is found."
   :config
   (add-to-list 'dabbrev-ignored-buffer-regexps "\\` "))
 
+(use-package tablist)
+(use-package pdf-tools)
+(pdf-tools-install)  ; Standard activation command
+(pdf-loader-install) ; On demand loading, leads to faster startup time
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;            KEYBINDINGS                ;;
