@@ -446,19 +446,31 @@ If the new path's directories does not exist, create them."
 
 (use-package cmake-mode)
 
-(use-package lsp-tailwindcss
-  :straight '(lsp-tailwindcss :type git :host github :repo "merrickluo/lsp-tailwindcss")
-  :init (setq lsp-tailwindcss-add-on-mode t)
-  :config
-  (dolist (tw-major-mode
-           '(css-mode
-             css-ts-mode
-             typescript-ts-mode
-             tsx-ts-mode
-             js2-mode
-             js-ts-mode
-             clojure-mode))
-    (add-to-list 'lsp-tailwindcss-major-modes tw-major-mode)))
+(add-to-list 'lsp-language-id-configuration '(html-mode . "html"))
+(add-to-list 'lsp-language-id-configuration '(css-mode . "css"))
+(add-to-list 'lsp-language-id-configuration '(tsx-ts-mode . "tsx"))
+
+(lsp-register-client
+ (make-lsp-client
+  :new-connection (lsp-stdio-connection '("tailwindcss-language-server" "--stdio"))
+  :activation-fn (lsp-activate-on "html" "css" "tsx")
+  :server-id 'tailwindcss))
+
+;; (setq lsp-tailwindcss-server-path "/nix/store/i2v6wfg8i2sibaddpacq01fwbky5zvvb-tailwindcss-language-server-0.14.4/bin/tailwindcss-language-server")
+;; (use-package lsp-tailwindcss
+;;   :straight '(lsp-tailwindcss :type git :host github :repo "merrickluo/lsp-tailwindcss")
+;;   :init (setq lsp-tailwindcss-add-on-mode t)
+;;   :config
+;;   (dolist (tw-major-mode
+;;            '(css-mode
+;;              html-mode
+;;              css-ts-mode
+;;              typescript-ts-mode
+;;              tsx-ts-mode
+;;              js2-mode
+;;              js-ts-mode
+;;              clojure-mode))
+;;     (add-to-list 'lsp-tailwindcss-major-modes tw-major-mode)))
 
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . tsx-mode))
