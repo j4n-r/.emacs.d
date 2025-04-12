@@ -562,7 +562,7 @@ Returns the password string, or nil if no matching entry is found."
     :global-prefix "S-SPC"))
 (leader
   "SPC" '(projectile-find-file :which-key "project ff")
-  "," '(switch-to-buffer :which-key "find buffer")
+  "," '(consult-buffer :which-key "find buffer")
   "." '(find-file-at-point :which-key "ff in dir")
   "TAB" '(perspective-map :which-key "perspective")
 
@@ -631,12 +631,16 @@ Returns the password string, or nil if no matching entry is found."
 
   "qq" '(evil-quit :which-key "quit emcas")
 
-  "s" '(:ignore :which-key "spelling")
-  "ss" '(jinx-correct :which-key "correct spelling")
+  "s" '(:ignore :which-key "spelling/search")
+  "sc" '(jinx-correct :which-key "correct spelling")
   "sl" '(jinx-languages :which-key "set language")
   "sn" '(jinx-correct-next :which-key "jinx next")
   "sN" '(jinx-correct-previous :which-key "jinx previous")
   "sa" '(jinx-correct-all :which-key "jinx corect all")
+  "sg" '(consult-ripgrep :which-key "search grep")
+  "sm" '(consult-ripgrep :which-key "search manpages")
+  "ss" '(consult-lsp-file-symbols :which-key "workspace symbol")
+  "sS" '(consult-lsp-workspace-symbol :which-key "workspace symbol")
 
   "t"  '(:ignore t :which-key "toggles")
   "tt" '(multi-vterm-dedicated-toggle :which-key "Toggle dedicated terminal")
