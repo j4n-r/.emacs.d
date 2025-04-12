@@ -392,7 +392,7 @@ If the new path's directories does not exist, create them."
   (setq lsp-keymap-prefix "C-c l")
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
          (kotlin-mode . lsp)
-         (python-mode .lsp)
+         (python-mode . lsp)
          (tsx-ts-mode . lsp)
          (typescript-ts-mode . lsp)
          (c-ts-mode . lsp)
@@ -418,12 +418,10 @@ If the new path's directories does not exist, create them."
   :custom
   (lsp-nix-nil-formatter ["nixfmt"]))
 
-(use-package lsp-pyright
-  :ensure t
-  :custom (lsp-pyright-langserver-command "pyright") ;; or basedpyright
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (lsp))))  ; or lsp-deferred
+(use-package pyvenv
+  :config
+  (pyvenv-mode 0))
+
 
 (use-package nix-mode
   :hook (nix-mode . lsp-deferred)
@@ -565,6 +563,7 @@ Returns the password string, or nil if no matching entry is found."
   "," '(consult-buffer :which-key "find buffer")
   "." '(find-file-at-point :which-key "ff in dir")
   "TAB" '(perspective-map :which-key "perspective")
+  "TAB TAB" '(persp-switch :which-key "perspective")
 
   "b" '(:ignore :which-key "buffer")
   "br" '(rename-buffer :which-key "rename buffer")
@@ -591,6 +590,8 @@ Returns the password string, or nil if no matching entry is found."
   "g" '(:ignore t :which-key "git")
   "gg" '(magit-status :which-key "magit")
   "gb" '(magit-blame  :which-key "magit blame")
+  "gd" '(magit-diff-buffer-file  :which-key "magit diff")
+  "gr" '(magit-refresh-buffer  :which-key "magit refresh buffer")
 
   ;; gptel keybindings under the "gt" prefix:
   "gt" '(:ignore t :which-key "gptel")
