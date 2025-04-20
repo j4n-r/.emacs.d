@@ -52,6 +52,9 @@ If the new path's directories does not exist, create them."
   ;; `completion-at-point' is often bound to M-TAB.
   (tab-always-indent 'complete)
   (recentf-mode)
+  (create-lockfiles nil)   ; No backup files
+  (make-backup-files nil)  ; No backup files
+  (backup-inhibited t)     ; No backup files
   ;; Hide commands in M-x which do not work in the current mode.  Vertico
   ;; commands are hidden in normal buffers. This setting is useful beyond
   ;; Vertico.
@@ -387,15 +390,20 @@ If the new path's directories does not exist, create them."
 
 
 (use-package lsp-mode
+  :ensure t
   :init
   ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
   (setq lsp-keymap-prefix "C-c l")
   :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         (kotlin-mode . lsp)
-         (python-mode . lsp)
+         (kotlin-ts-mode . lsp)
+         (rust-ts-mode . lsp)
+         (python-ts-mode . lsp)
+         (rust-ts-mode . lsp)
          (tsx-ts-mode . lsp)
          (typescript-ts-mode . lsp)
          (c-ts-mode . lsp)
+         (css-ts-mode . lsp)        
+         (html-ts-mode . lsp)      
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred))
@@ -408,8 +416,6 @@ If the new path's directories does not exist, create them."
         lsp-ui-doc-side 'right))
 (use-package consult-lsp :commands consult-lsp-workspace-symbol)
 (use-package lsp-treemacs :commands lsp-treemacs-errors-list)
-(use-package lsp-mode
-  :ensure t)
 
 (use-package lsp-nix
   :ensure lsp-mode
@@ -427,15 +433,12 @@ If the new path's directories does not exist, create them."
   :hook (nix-mode . lsp-deferred)
   :ensure t)
 
-(use-package rust-mode)
-(add-hook 'rust-ts-mode-hook #'lsp)
-
 (use-package direnv
   :config
   (direnv-mode))
 
 (use-package ruff-format)
-(add-hook 'python-mode-hook 'ruff-format-on-save-mode)
+(add-hook 'python-ts-mode-hook 'ruff-format-on-save-mode)
 ;; optionally if you want to use debugger
 ;;(use-package dap-mode)
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
@@ -446,15 +449,15 @@ If the new path's directories does not exist, create them."
 
 (use-package cmake-mode)
 
-(add-to-list 'lsp-language-id-configuration '(html-mode . "html"))
-(add-to-list 'lsp-language-id-configuration '(css-mode . "css"))
-(add-to-list 'lsp-language-id-configuration '(tsx-ts-mode . "tsx"))
+;; (add-to-list 'lsp-language-id-configuration '(html-mode . "html"))
+;; (add-to-list 'lsp-language-id-configuration '(css-mode . "css"))
+;; (add-to-list 'lsp-language-id-configuration '(tsx-ts-mode . "tsx"))
 
-(lsp-register-client
- (make-lsp-client
-  :new-connection (lsp-stdio-connection '("tailwindcss-language-server" "--stdio"))
-  :activation-fn (lsp-activate-on "html" "css" "tsx")
-  :server-id 'tailwindcss))
+;; (lsp-register-client
+;; (make-lsp-client
+;;  :new-connection (lsp-stdio-connection '("tailwindcss-language-server" "--stdio"))
+;;  :activation-fn (lsp-activate-on "html" "css" "tsx")
+;;  :server-id 'tailwindcss))
 
 ;; (setq lsp-tailwindcss-server-path "/nix/store/i2v6wfg8i2sibaddpacq01fwbky5zvvb-tailwindcss-language-server-0.14.4/bin/tailwindcss-language-server")
 ;; (use-package lsp-tailwindcss
@@ -477,6 +480,7 @@ If the new path's directories does not exist, create them."
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.py\\'" . python-mode))
+(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-ts-mode))
 
 ;; code folding
 (use-package dash)
@@ -618,7 +622,8 @@ Returns the password string, or nil if no matching entry is found."
 
   "o" '(:igore t :which-key "open/org")
   "od" '(dired-jump :which-key "open dired")
-  "ot" '(vterm :which-key "open terminal")
+  "ot" '(multi-vterm-project :which-key "open project terminal")
+  "oT" '(vterm :which-key "open terminal")
   "op" '(proced :which-key "open proced")
   "oc" '(:ignore t :which-key "org clock")
   "oci" '(org-clock-in :which-key "clock in")
@@ -656,10 +661,6 @@ Returns the password string, or nil if no matching entry is found."
   "sS" '(consult-lsp-workspace-symbol :which-key "workspace symbol")
 
   "t"  '(:ignore t :which-key "toggles")
-  "tt" '(multi-vterm-dedicated-toggle :which-key "Toggle dedicated terminal")
-  "tT" '(multi-vterm-project :which-key "Project-based terminal")
-  "tn" '(multi-vterm-next :which-key "Switch to next terminal")
-  "tp" '(multi-vterm-prev :which-key "Switch to previous terminal")
 
   "w" '(:ignore w :which-key "window")
   "wv" '(evil-window-vsplit :which-key "split vertically")
