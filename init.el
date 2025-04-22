@@ -424,6 +424,17 @@ If the new path's directories does not exist, create them."
   :custom
   (lsp-nix-nil-formatter ["nixfmt"]))
 
+;;;; Python ;;;;;
+(use-package lsp-pyright
+  :ensure t
+  :custom
+  (lsp-pyright-langserver-command "basedpyright")
+  ( lsp-pyright-python-executable-cmd (executable-find "python"))
+  :hook (python-ts-mode . lsp-deferred))
+(setf (alist-get 'python-ts-mode apheleia-mode-alist)
+      '(ruff-isort ruff))
+
+;; no automatic venv activation since managed with nix flake
 (use-package pyvenv
   :config
   (pyvenv-mode 0))
@@ -433,12 +444,15 @@ If the new path's directories does not exist, create them."
   :hook (nix-mode . lsp-deferred)
   :ensure t)
 
-(use-package direnv
+(use-package envrc
+  :ensure t
   :config
-  (direnv-mode))
+  (envrc-global-mode))
 
-(use-package ruff-format)
-(add-hook 'python-ts-mode-hook 'ruff-format-on-save-mode)
+;; (use-package direnv
+;;   :config
+;;   (direnv-mode))
+
 ;; optionally if you want to use debugger
 ;;(use-package dap-mode)
 ;; (use-package dap-LANGUAGE) to load the dap adapter for your language
