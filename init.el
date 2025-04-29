@@ -55,6 +55,8 @@ If the new path's directories does not exist, create them."
   (create-lockfiles nil)   ; No backup files
   (make-backup-files nil)  ; No backup files
   (backup-inhibited t)     ; No backup files
+  (auto-save-default nil) ; stop creating #autosave# files
+  (org-duration-format 'h:mm)
   ;; Hide commands in M-x which do not work in the current mode.  Vertico
   ;; commands are hidden in normal buffers. This setting is useful beyond
   ;; Vertico.
@@ -70,6 +72,14 @@ If the new path's directories does not exist, create them."
   (setq minibuffer-prompt-properties
         '(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode))
+
+;; Set a directory for auto-save files
+(defvar my-auto-save-folder (expand-file-name "~/.emacs.d/autosaves/"))
+(unless (file-exists-p my-auto-save-folder)
+  (make-directory my-auto-save-folder t))
+
+(setq auto-save-file-name-transforms
+      `((".*" ,my-auto-save-folder t)))
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
@@ -360,7 +370,10 @@ If the new path's directories does not exist, create them."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         DEV & LSP CONFIGURATION       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package magit)
+(use-package magit
+  :custom
+  (magit-clone-submodules 'recursive))
+
 (use-package forge
   :after magit)
 
@@ -370,13 +383,13 @@ If the new path's directories does not exist, create them."
 (setopt auto-revert-check-vc-info t)
 (global-auto-revert-mode)
 
-;; Treesitter
-(use-package treesit-auto
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode))
+;; ;; Treesitter
+;; (use-package treesit-auto
+;;   :custom
+;;   (treesit-auto-install 'prompt)
+;;   :config
+;;   (treesit-auto-add-to-auto-mode-alist 'all)
+;;   (global-treesit-auto-mode))
 
 (use-package apheleia
   :custom
@@ -510,6 +523,8 @@ If the new path's directories does not exist, create them."
 (use-package pg :vc (:url "https://github.com/emarsden/pg-el/"))
 (use-package pgmacs :vc (:url "https://github.com/emarsden/pgmacs/"))
 (setq sql-sqlite-program "sqlite3")
+(setq sql-postgres-program "/run/current-system/sw/bin/psql")
+
 
 (defun get-gemini-key ()
   "Retrieve the password from the first entry in .authinfo for generativelanguage.googleapis.com.
@@ -526,7 +541,22 @@ Returns the password string, or nil if no matching entry is found."
       gptel-backend (gptel-make-gemini "Gemini"
                       :key 'get-gemini-key
                       :stream t))
-
+(use-package aider
+  :straight (:host github :repo "tninja/aider.el")
+  :config
+  ;; For latest claude sonnet model
+  ;; (setq aider-args '("--model" "sonnet" "--no-auto-accept-architect"))
+  ;; (setenv "ANTHROPIC_API_KEY" anthropic-api-key)
+  ;; Or chatgpt model
+  (setq aider-args '("--model" "o4-mini"))
+  (setenv "OPENAI_API_KEY" "")
+  ;; Or gemini model
+  ;; (setq aider-args '("--model" "gemini-exp"))
+  ;; (setenv "GEMINI_API_KEY" <your-gemini-api-key>)
+  ;; Or use your personal config file
+  ;; (setq aider-args `("--config" ,(expand-file-name "~/.aider.conf.yml")))
+  ;; ;;
+  )
 
 
 
@@ -594,6 +624,8 @@ Returns the password string, or nil if no matching entry is found."
   "." '(find-file-at-point :which-key "ff in dir")
   "TAB" '(perspective-map :which-key "perspective")
   "TAB TAB" '(persp-switch :which-key "perspective")
+
+  "a" '(aider-transient-menu :which-key "aider")
 
   "b" '(:ignore :which-key "buffer")
   "br" '(rename-buffer :which-key "rename buffer")
