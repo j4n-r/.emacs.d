@@ -634,7 +634,7 @@ Returns the password string, or nil if no matching entry is found."
   "c" '(:igore t :which-key "code")
   "ca" '(lsp-execute-code-action :which-key "code actions")
   "cc" '(compile :which-key "compile")
-  "cf" '(lsp-format :which-key "format buffer")
+  "cf" '(lsp-format-buffer :which-key "format buffer")
   "cF" '(apheleia-format-buffer :which-key "format buffer")
   "cr" '(lsp-rename :which-key "rename")
   "co" '(lsp-organize-imports :which-key "organize imports")
