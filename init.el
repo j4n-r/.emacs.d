@@ -411,15 +411,25 @@ If the new path's directories does not exist, create them."
          (kotlin-ts-mode . lsp)
          (rust-ts-mode . lsp)
          (python-ts-mode . lsp)
-         (rust-ts-mode . lsp)
          (tsx-ts-mode . lsp)
          (typescript-ts-mode . lsp)
+         (js-ts-mode . lsp)
          (c-ts-mode . lsp)
          (css-ts-mode . lsp)        
          (html-ts-mode . lsp)      
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
-  :commands (lsp lsp-deferred))
+  :commands (lsp lsp-deferred)
+  ;; :custom
+  ;; (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
+  ;; (lsp-rust-analyzer-display-chaining-hints t)
+  ;; (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
+  ;; (lsp-rust-analyzer-display-closure-return-type-hints t)
+  ;; (lsp-rust-analyzer-display-parameter-hints nil)
+  ;; (lsp-rust-analyzer-display-reborrow-hints nil)
+  )
+
+(use-package rustic)
 
 (use-package lsp-ui
   :commands lsp-ui-mode
@@ -604,6 +614,10 @@ Returns the password string, or nil if no matching entry is found."
 (pdf-tools-install)  ; Standard activation command
 (pdf-loader-install) ; On demand loading, leads to faster startup time
 
+(use-package markdown-mode
+  :ensure t
+  :mode ("README\\.md\\'" . gfm-mode)
+  :init (setq markdown-command "comrak"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;            KEYBINDINGS                ;;
@@ -693,6 +707,8 @@ Returns the password string, or nil if no matching entry is found."
 
   "p" '(projectile-command-map p :which-key "project")
 
+  "qr" '(query-replace :which-key "Query Replace")
+  "qR" '(query-replace-regexp :which-key "Query regex Replace")
   "qq" '(evil-quit :which-key "quit emcas")
 
   "s" '(:ignore :which-key "spelling/search")
