@@ -24,6 +24,7 @@ If the new path's directories does not exist, create them."
 
 (setq scroll-step 1)
 (setq scroll-margin 10)
+(set-default-coding-systems 'utf-8)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         PACKAGE MANAGEMENT            ;;
