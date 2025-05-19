@@ -324,6 +324,7 @@ If the new path's directories does not exist, create them."
   (add-hook 'after-init-hook #'global-flycheck-mode))
 
 (use-package all-the-icons)
+(use-package avy)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;            MISCELLANEOUS               ;;
@@ -773,6 +774,7 @@ Returns the password string, or nil if no matching entry is found."
  "gc" 'comment-or-uncomment-region)
 
 (general-define-key
+ "s-j" 'avy-goto-char-2
  "M-e" 'embark-act)
 
 (general-define-key
