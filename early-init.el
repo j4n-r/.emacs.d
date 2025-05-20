@@ -1,6 +1,6 @@
 (setenv "LSP_USE_PLISTS" "true") ;; in early-init.el
 (setq package-enable-at-startup nil)
-
+(set-language-environment "UTF-8")
 (setq default-frame-alist '((fullscreen . maximized)
                             ;; You can turn off scroll bars by uncommenting these lines:
                             (vertical-scroll-bars . nil)

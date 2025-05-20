@@ -24,7 +24,8 @@ If the new path's directories does not exist, create them."
 
 (setq scroll-step 1)
 (setq scroll-margin 10)
-(set-default-coding-systems 'utf-8)
+
+(prefer-coding-system 'utf-8)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         PACKAGE MANAGEMENT            ;;
@@ -376,6 +377,9 @@ If the new path's directories does not exist, create them."
   :custom
   (magit-clone-submodules 'recursive))
 
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+(setq ediff-split-window-function 'split-window-horizontally)
+
 (use-package forge
   :after magit)
 
@@ -571,6 +575,7 @@ Returns the password string, or nil if no matching entry is found."
   )
 
 
+(use-package verb)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         ORG MODE & NOTES               ;;
@@ -620,6 +625,7 @@ Returns the password string, or nil if no matching entry is found."
   :ensure t
   :mode ("README\\.md\\'" . gfm-mode)
   :init (setq markdown-command "comrak"))
+
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;            KEYBINDINGS                ;;
@@ -713,6 +719,8 @@ Returns the password string, or nil if no matching entry is found."
   "qR" '(query-replace-regexp :which-key "Query regex Replace")
   "qq" '(evil-quit :which-key "quit emcas")
 
+  "r" '(verb-command-map :which-key "restclient")
+
   "s" '(:ignore :which-key "spelling/search")
   "sc" '(jinx-correct :which-key "correct spelling")
   "sl" '(jinx-languages :which-key "set language")
@@ -786,6 +794,7 @@ Returns the password string, or nil if no matching entry is found."
  "h" 'dired-up-directory
  "l" 'dired-find-alternate-file
  )
+
 
 (defun my-dired-unbind-spc ()
   "Unbind SPC in dired-mode's normal state map."
