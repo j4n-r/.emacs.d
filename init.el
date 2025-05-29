@@ -423,6 +423,8 @@ If the new path's directories does not exist, create them."
          (c-ts-mode . lsp)
          (css-ts-mode . lsp)        
          (html-ts-mode . lsp)      
+         (c-ts-mode .lsp)
+         (c++-ts-mode .lsp)
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred)
