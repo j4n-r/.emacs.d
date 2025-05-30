@@ -370,6 +370,13 @@ If the new path's directories does not exist, create them."
   :init
   (persp-mode))
 
+(use-package leetcode
+  :custom
+  leetcode-prefer-language "rust"
+  leetcode-prefer-sql "postgresql"
+  leetcode-save-solutions t
+  leetcode-directory "~/dev/leetcode")
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         DEV & LSP CONFIGURATION       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -817,8 +824,12 @@ Returns the password string, or nil if no matching entry is found.
 
 (defun my-dired-unbind-spc ()
   "Unbind SPC in dired-mode's normal state map."
-  (general-unbind :keymaps 'dired-mode-map :states 'normal "SPC"))
+  (general-unbind :keymaps  'dired-mode-map :states 'normal "SPC"))
 (add-hook 'dired-mode-hook #'my-dired-unbind-spc)
+
+(defun my-leetcode-unbind-spc ()
+  (general-unbind :keymaps 'leetcode--problem-detail-mode-map :states 'normal "SPC"))
+(add-hook 'leetcode--problems-mode-hook #'my-leetcode-unbind-spc)
 
 (general-define-key
  :states 'normal
