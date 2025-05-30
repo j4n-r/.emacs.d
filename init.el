@@ -550,7 +550,11 @@ If the new path's directories does not exist, create them."
 
 (defun get-gemini-key ()
   "Retrieve the password from the first entry in .authinfo for generativelanguage.googleapis.com.
-Returns the password string, or nil if no matching entry is found."
+Returns the password string, or nil if no matching entry is found.
+
+~/.authinfo
+machine generativelanguage.googleapis.com login apikey password {key}
+"
   (let ((entry (car (auth-source-search :host "generativelanguage.googleapis.com" :max 1))))
     (when entry
       (let ((secret (plist-get entry :secret)))
@@ -558,28 +562,38 @@ Returns the password string, or nil if no matching entry is found."
             (funcall secret)
           secret)))))
 
-(use-package gptel)
-(setq gptel-model 'gemini-2.0-flash-thinking-exp-01-21
-      gptel-backend (gptel-make-gemini "Gemini"
-                      :key 'get-gemini-key
-                      :stream t))
-(use-package aider
-  :straight (:host github :repo "tninja/aider.el")
-  :config
-  ;; For latest claude sonnet model
-  ;; (setq aider-args '("--model" "sonnet" "--no-auto-accept-architect"))
-  ;; (setenv "ANTHROPIC_API_KEY" anthropic-api-key)
-  ;; Or chatgpt model
-  (setq aider-args '("--model" "o4-mini"))
-  (setenv "OPENAI_API_KEY" "")
-  ;; Or gemini model
-  ;; (setq aider-args '("--model" "gemini-exp"))
-  ;; (setenv "GEMINI_API_KEY" <your-gemini-api-key>)
-  ;; Or use your personal config file
-  ;; (setq aider-args `("--config" ,(expand-file-name "~/.aider.conf.yml")))
-  ;; ;;
-  )
+(defun get-claude-key ()
+  "Retrieve the password from the first entry in .authinfo for generativelanguage.googleapis.com.
+Returns the password string, or nil if no matching entry is found.
 
+~/.authinfo
+ machine api.anthropic.com login apikey password {key}
+"
+  (let ((entry (car (auth-source-search :host "api.anthropic.com" :max 1))))
+    (when entry
+      (let ((secret (plist-get entry :secret)))
+        (if (functionp secret)
+            (funcall secret)
+          secret)))))
+
+(use-package gptel)
+(setq
+ gptel-model 'gemini-2.5-pro-preview-05-06
+ gptel-backend (gptel-make-gemini "Gemini"
+                 :key (get-gemini-key)
+                 :stream t))
+(setq gptel-backend (gptel-make-anthropic "Claude"          
+                      :stream t                             
+                      :key (get-claude-key)))
+(add-hook 'gptel-post-response-functions 'gptel-end-of-response)
+(add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
+
+(use-package aidermacs
+  :config
+  (setenv "GEMINI_API_KEY" (get-gemini-key))
+  :custom
+  (aidermacs-use-architect-mode t)
+  (aidermacs-default-model "gemini"))
 
 (use-package verb)
 
@@ -653,7 +667,7 @@ Returns the password string, or nil if no matching entry is found."
   "TAB" '(perspective-map :which-key "perspective")
   "TAB TAB" '(persp-switch :which-key "perspective")
 
-  "a" '(aider-transient-menu :which-key "aider")
+  "a" '(aidermacs-transient-menu :which-key "aider")
 
   "b" '(:ignore :which-key "buffer")
   "br" '(rename-buffer :which-key "rename buffer")
@@ -683,7 +697,6 @@ Returns the password string, or nil if no matching entry is found."
   "gd" '(magit-diff-buffer-file  :which-key "magit diff")
   "gr" '(magit-refresh-buffer  :which-key "magit refresh buffer")
 
-  ;; gptel keybindings under the "gt" prefix:
   "gt" '(:ignore t :which-key "gptel")
   "gts" '(gptel-send            :which-key "Send Query")
   "gtn" '(gptel                 :which-key "New Chat Buffer")
