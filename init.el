@@ -183,22 +183,22 @@
 (display-time-mode 1)
 
 
-(use-package pulsar
-  :defer t
-  :straight t
-  :ensure t
-  :hook
-  (after-init . pulsar-global-mode)
-  :config
-  (setq pulsar-pulse t)
-  (setq pulsar-delay 0.025)
-  (setq pulsar-iterations 10)
-  (setq pulsar-face 'evil-ex-lazy-highlight)
+;; (use-package pulsar
+;;   :defer t
+;;   :straight t
+;;   :ensure t
+;;   :hook
+;;   (after-init . pulsar-global-mode)
+;;   :config
+;;   (setq pulsar-pulse t)
+;;   (setq pulsar-delay 0.035)
+;;   (setq pulsar-iterations 5)
+;;   (setq pulsar-face 'evil-ex-lazy-highlight)
 
-  (add-to-list 'pulsar-pulse-functions 'evil-yank)
-  (add-to-list 'pulsar-pulse-functions 'evil-yank-line)
-  (add-to-list 'pulsar-pulse-functions 'evil-delete)
-  (add-to-list 'pulsar-pulse-functions 'evil-delete-line))
+;;   (add-to-list 'pulsar-pulse-functions 'evil-yank)
+;;   (add-to-list 'pulsar-pulse-functions 'evil-yank-line)
+;;   (add-to-list 'pulsar-pulse-functions 'evil-delete)
+;;   (add-to-list 'pulsar-pulse-functions 'evil-delete-line))
 
 
 (use-package nerd-icons
@@ -993,7 +993,7 @@ Returns the password string, or nil if no matching entry is found.
   (setq evil-want-integration t
         ;;evil-want-minibuffer t
 	    evil-want-C-u-scroll t
-	    evil-undo-system 'undo-fu
+	    evil-undo-system 'undo-tree
         evil-want-keybinding nil) ;; Disable default )
   :config
   (evil-mode 1)
@@ -1003,7 +1003,7 @@ Returns the password string, or nil if no matching entry is found.
   (evil-set-initial-state 'message-buffer-mode 'normal)
   (evil-set-initial-state 'dashboard-mode 'normal))
 
-(use-package undo-fu)
+;; (use-package undo-fu)
 
 ;; Evil Collection - Integration for Evil Mode
 (use-package evil-collection
