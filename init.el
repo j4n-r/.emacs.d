@@ -5,27 +5,10 @@
       gc-cons-threshold 200000000
       enable-recursive-minibuffers t)
 
-;; Don't litter file system with *~ backup files; put them all inside ~/.emacs.d/backup or wherever
-(defun bedrock--backup-file-name (fpath)
-  "Return a new file path of a given file path.
-If the new path's directories does not exist, create them."
-  (let* ((backupRootDir (concat user-emacs-directory "emacs-backup/"))
-         (filePath (replace-regexp-in-string "[A-Za-z]:" "" fpath )) ; remove Windows driver letter in path
-         (backupFilePath (replace-regexp-in-string "//" "/" (concat backupRootDir filePath "~") )))
-    (make-directory (file-name-directory backupFilePath) (file-name-directory backupFilePath))
-    backupFilePath))
-(setopt make-backup-file-name-function 'bedrock--backup-file-name)
 (setopt switch-to-buffer-obey-display-actions t)   ; Make switching buffers more consistent
 (setq auth-sources '("~/.authinfo"))
-;; kill dired buffers
-(setq dired-kill-when-opening-new-dired-buffer t)
-
-(setq ring-bell-function 'ignore)
-
-(setq scroll-step 1)
-(setq scroll-margin 10)
-
 (prefer-coding-system 'utf-8)
+(modify-coding-system-alist 'file "" 'utf-8)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         PACKAGE MANAGEMENT            ;;
@@ -53,27 +36,40 @@ If the new path's directories does not exist, create them."
   ;; Enable indentation+completion using the TAB key.
   ;; `completion-at-point' is often bound to M-TAB.
   (tab-always-indent 'complete)
-  (recentf-mode)
+  (recentf-mode t)
+  (dired-kill-when-opening-new-dired-buffer t)
+  (dired-listing-switches "-lah --group-directories-first")  ;; Display files in a human-readable format and group directories first.
+  (ring-bell-function 'ignore)
+  (scroll-step 1)
+  (delete-by-moving-to-trash t)                   ;; Move deleted files to the trash instead of permanently deleting them.
+  (global-auto-revert-non-file-buffers t)         ;; Automatically refresh non-file buffers.
+  (inhibit-startup-message t)                     ;; Disable the startup message when Emacs launches.
+  (truncate-lines t)                              ;; Enable line truncation to avoid wrapping long lines.
+  (use-dialog-box nil)                            ;; Disable dialog boxes in favor of minibuffer prompts.
+  (use-short-answers t)                           ;; Use short answers in prompts for quicker responses (y instead of yes)
+  (initial-scratch-message "")                    ;; Clear the initial message in the *scratch* buffer.
+  (scroll-margin 10)
   (create-lockfiles nil)   ; No backup files
   (make-backup-files nil)  ; No backup files
   (backup-inhibited t)     ; No backup files
   (auto-save-default nil) ; stop creating #autosave# files
+  (save-place-mode t)
   (org-duration-format 'h:mm)
   ;; Hide commands in M-x which do not work in the current mode.  Vertico
   ;; commands are hidden in normal buffers. This setting is useful beyond
   ;; Vertico.
-  (read-extended-command-predicate #'command-completion-default-include-p)
-  (defun crm-indicator (args)
-    (cons (format "[CRM%s] %s"
-                  (replace-regexp-in-string
-                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                   crm-separator)
-                  (car args))
-          (cdr args)))
-  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
-  (setq minibuffer-prompt-properties
-        '(read-only t cursor-intangible t face minibuffer-prompt))
-  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode))
+  (read-extended-command-predicate #'command-completion-default-include-p))
+(defun crm-indicator (args)
+  (cons (format "[CRM%s] %s"
+                (replace-regexp-in-string
+                 "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
+                 crm-separator)
+                (car args))
+        (cdr args)))
+(advice-add #'completing-read-multiple :filter-args #'crm-indicator)
+(setq minibuffer-prompt-properties
+      '(read-only t cursor-intangible t face minibuffer-prompt))
+(add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
 ;; Set a directory for auto-save files
 (defvar my-auto-save-folder (expand-file-name "~/.emacs.d/autosaves/"))
@@ -101,7 +97,22 @@ If the new path's directories does not exist, create them."
 (use-package exec-path-from-shell
   :ensure t
   :config
-  (exec-path-from-shell-initialize))
+  (exec-path-from-shell-initialize)
+  :init
+  (add-hook 'after-init-hook
+            (lambda ()
+              (message "Emacs has fully loaded. This code runs after startup.")
+
+              ;; Insert a welcome message in the *scratch* buffer displaying loading time and activated packages.
+              (with-current-buffer (get-buffer-create "*scratch*")
+                (insert (format
+                         ";;    Welcome to Emacs!
+;;
+;;    Loading time : %s
+;;    Packages     : %s
+"
+                         (emacs-init-time)
+                         (number-to-string (length package-activated-list))))))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -140,7 +151,12 @@ If the new path's directories does not exist, create them."
       global-display-line-numbers-mode t
       column-number-mode t
       frame-resize-pixelwise t
+	  global-hl-line-mode t
+	  global-auto-revert-mode t
       display-line-numbers 'relative)
+
+
+(set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
 
 (setq-default indent-tabs-mode nil  ;; Use spaces instead of tabs
               tab-width 4)           ;; Set default tab width to 4
@@ -151,7 +167,9 @@ If the new path's directories does not exist, create them."
 (setopt indicate-buffer-boundaries 'left)  ; Show buffer top and bottom in the margin
 (add-hook 'text-mode-hook 'visual-line-mode)
 
-(set-face-attribute 'default nil :font "JetBrainsMono Nerd Font" :height 110 ); 
+(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"  :height 110)
+(when (eq system-type 'darwin)       ;; Check if the system is macOS.
+  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 145))
 
 
 
@@ -163,9 +181,54 @@ If the new path's directories does not exist, create them."
 (setq display-time-format "%d.%m.%y %H:%M")
 (setq display-time-default-load-average nil)
 (display-time-mode 1)
+
+
+(use-package pulsar
+  :defer t
+  :straight t
+  :ensure t
+  :hook
+  (after-init . pulsar-global-mode)
+  :config
+  (setq pulsar-pulse t)
+  (setq pulsar-delay 0.025)
+  (setq pulsar-iterations 10)
+  (setq pulsar-face 'evil-ex-lazy-highlight)
+
+  (add-to-list 'pulsar-pulse-functions 'evil-yank)
+  (add-to-list 'pulsar-pulse-functions 'evil-yank-line)
+  (add-to-list 'pulsar-pulse-functions 'evil-delete)
+  (add-to-list 'pulsar-pulse-functions 'evil-delete-line))
+
+
+(use-package nerd-icons
+  :ensure t                               ;; Ensure the package is installed.
+  :straight t
+  :defer t)                               ;; Load the package only when needed to improve startup time.
+
+(use-package nerd-icons-dired
+  :ensure t                               ;; Ensure the package is installed.
+  :straight t
+  :defer t                                ;; Load the package only when needed to improve startup time.
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
+
+(use-package nerd-icons-completion
+  :ensure t                               ;; Ensure the package is installed.
+  :straight t
+  :after (:all nerd-icons marginalia)     ;; Load after `nerd-icons' and `marginalia' to ensure proper integration.
+  :config
+  (nerd-icons-completion-mode)            ;; Activate nerd icons for completion interfaces.
+  (add-hook 'marginalia-mode-hook #'nerd-icons-completion-marginalia-setup)) ;; Setup icons in the marginalia mode for enhanced completion display.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;             ESSENTIALS                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+(use-package eldoc
+  :ensure nil          ;; This is built-in, no need to fetch it.
+  :init
+  (global-eldoc-mode))
 
 ;; Vertical minibuffer interface
 (use-package vertico
@@ -173,6 +236,7 @@ If the new path's directories does not exist, create them."
   (vertico-count 15) ;; Show more candidates
   :init
   (vertico-mode))
+
 ;; Persist history over Emacs restarts. Vertico sorts by history position.
 (use-package savehist
   :init
@@ -328,6 +392,27 @@ If the new path's directories does not exist, create them."
 (use-package all-the-icons)
 (use-package avy)
 
+(use-package undo-tree
+  :defer t
+  :ensure t
+  :straight t
+  :hook
+  (after-init . global-undo-tree-mode)
+  :init
+  (setq undo-tree-visualizer-timestamps t
+        undo-tree-visualizer-diff t
+        ;; Increase undo limits to avoid losing history due to Emacs' garbage collection.
+        ;; These values can be adjusted based on your needs.
+        ;; 10X bump of the undo limits to avoid issues with premature
+        ;; Emacs GC which truncates the undo history very aggressively.
+        undo-limit 800000                     ;; Limit for undo entries.
+        undo-strong-limit 12000000            ;; Strong limit for undo entries.
+        undo-outer-limit 120000000)           ;; Outer limit for undo entries.
+  :config
+  ;; Set the directory where `undo-tree' will save its history files.
+  ;; This keeps undo history across sessions, stored in a cache directory.
+  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/.cache/undo"))))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;            MISCELLANEOUS               ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -384,6 +469,23 @@ If the new path's directories does not exist, create them."
   :custom
   (magit-clone-submodules 'recursive))
 
+(use-package diff-hl
+  :defer t
+  :straight t
+  :ensure t
+  :hook
+  (find-file . (lambda ()
+                 (global-diff-hl-mode)           ;; Enable Diff-HL mode for all files.
+                 (diff-hl-flydiff-mode)          ;; Automatically refresh diffs.
+                 (diff-hl-margin-mode)))         ;; Show diff indicators in the margin.
+  :custom
+  (diff-hl-side 'left)                           ;; Set the side for diff indicators.
+  (diff-hl-margin-symbols-alist '((insert . "│") ;; Customize symbols for each change type.
+                                  (delete . "-")
+                                  (change . "│")
+                                  (unknown . "?")
+                                  (ignored . "i"))))
+
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 (setq ediff-split-window-function 'split-window-horizontally)
 
@@ -396,13 +498,15 @@ If the new path's directories does not exist, create them."
 (setopt auto-revert-check-vc-info t)
 (global-auto-revert-mode)
 
-;; ;; Treesitter
-;; (use-package treesit-auto
-;;   :custom
-;;   (treesit-auto-install 'prompt)
-;;   :config
-;;   (treesit-auto-add-to-auto-mode-alist 'all)
-;;   (global-treesit-auto-mode))
+(use-package treesit-auto
+  :ensure t
+  :straight t
+  :after emacs
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode t))
 
 (use-package apheleia
   :custom
@@ -435,6 +539,47 @@ If the new path's directories does not exist, create them."
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred)
+  :custom
+  (lsp-keymap-prefix "C-c l")                           ;; Set the prefix for LSP commands.
+  (lsp-inlay-hint-enable t)                             ;; Enable inlay hints.
+  (lsp-completion-provider :none)                       ;; Disable the default completion provider.
+  (lsp-session-file (locate-user-emacs-file ".lsp-session")) ;; Specify session file location.
+  (lsp-log-io nil)                                      ;; Disable IO logging for speed.
+  (lsp-idle-delay 0)                                    ;; Set the delay for LSP to 0 (debouncing).
+  (lsp-keep-workspace-alive nil)                        ;; Disable keeping the workspace alive.
+  ;; Core settings
+  (lsp-enable-xref t)                                   ;; Enable cross-references.
+  (lsp-auto-configure t)                                ;; Automatically configure LSP.
+  (lsp-enable-links nil)                                ;; Disable links.
+  (lsp-eldoc-enable-hover t)                            ;; Enable ElDoc hover.
+  (lsp-enable-file-watchers nil)                        ;; Disable file watchers.
+  (lsp-enable-folding nil)                              ;; Disable folding.
+  (lsp-enable-imenu t)                                  ;; Enable Imenu support.
+  (lsp-enable-indentation nil)                          ;; Disable indentation.
+  (lsp-enable-on-type-formatting nil)                   ;; Disable on-type formatting.
+  (lsp-enable-suggest-server-download t)                ;; Enable server download suggestion.
+  (lsp-enable-symbol-highlighting t)                    ;; Enable symbol highlighting.
+  (lsp-enable-text-document-color nil)                  ;; Disable text document color.
+  ;; Modeline settings
+  (lsp-modeline-code-actions-enable nil)                ;; Keep modeline clean.
+  (lsp-modeline-diagnostics-enable nil)                 ;; Use `flymake' instead.
+  (lsp-modeline-workspace-status-enable t)              ;; Display "LSP" in the modeline when enabled.
+  (lsp-signature-doc-lines 1)                           ;; Limit echo area to one line.
+  (lsp-eldoc-render-all nil)                              ;; Render all ElDoc messages.
+  ;; Completion settings
+  (lsp-completion-enable t)                             ;; Enable completion.
+  (lsp-completion-enable-additional-text-edit t)        ;; Enable additional text edits for completions.
+  (lsp-enable-snippet nil)                              ;; Disable snippets
+  (lsp-completion-show-kind t)                          ;; Show kind in completions.
+  ;; Lens settings
+  (lsp-lens-enable t)                                   ;; Enable lens support.
+  ;; Headerline settings
+  (lsp-headerline-breadcrumb-enable-symbol-numbers t)   ;; Enable symbol numbers in the headerline.
+  (lsp-headerline-arrow "▶")                            ;; Set arrow for headerline.
+  (lsp-headerline-breadcrumb-enable-diagnostics nil)    ;; Disable diagnostics in headerline.
+  (lsp-headerline-breadcrumb-icons-enable nil)          ;; Disable icons in breadcrumb.
+  ;; Semantic settings
+  (lsp-semantic-tokens-enable nil)                     ;; Disable semantic tokens.
   ;; :custom
   ;; (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
   ;; (lsp-rust-analyzer-display-chaining-hints t)
@@ -505,27 +650,16 @@ If the new path's directories does not exist, create them."
 ;; (add-to-list 'lsp-language-id-configuration '(css-mode . "css"))
 ;; (add-to-list 'lsp-language-id-configuration '(tsx-ts-mode . "tsx"))
 
-;; (lsp-register-client
-;; (make-lsp-client
-;;  :new-connection (lsp-stdio-connection '("tailwindcss-language-server" "--stdio"))
-;;  :activation-fn (lsp-activate-on "html" "css" "tsx")
-;;  :server-id 'tailwindcss))
+(use-package lsp-tailwindcss
+  :ensure t
+  :straight t
+  :defer t
+  :config
+  (add-to-list 'lsp-language-id-configuration '(".*\\.erb$" . "html")) ;; Associate ERB files with HTML.
+  :init
+  (setq lsp-tailwindcss-add-on-mode t))
 
-;; (setq lsp-tailwindcss-server-path "/nix/store/i2v6wfg8i2sibaddpacq01fwbky5zvvb-tailwindcss-language-server-0.14.4/bin/tailwindcss-language-server")
-;; (use-package lsp-tailwindcss
-;;   :straight '(lsp-tailwindcss :type git :host github :repo "merrickluo/lsp-tailwindcss")
-;;   :init (setq lsp-tailwindcss-add-on-mode t)
-;;   :config
-;;   (dolist (tw-major-mode
-;;            '(css-mode
-;;              html-mode
-;;              css-ts-mode
-;;              typescript-ts-mode
-;;              tsx-ts-mode
-;;              js2-mode
-;;              js-ts-mode
-;;              clojure-mode))
-;;     (add-to-list 'lsp-tailwindcss-major-modes tw-major-mode)))
+
 
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . tsx-mode))
@@ -802,10 +936,15 @@ Returns the password string, or nil if no matching entry is found.
  "K"   'lsp-ui-doc-glance          
  "J" 'lsp-ui-doc-focus-frame
  "H" 'lsp-ui-doc-hide 
+ "gcc" '(lambda ()
+          (interactive)
+          (if (not (use-region-p))
+              (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
  )
 
 (general-define-key
  :states 'motion
+ 
  "gc" 'comment-or-uncomment-region)
 
 (general-define-key
@@ -876,5 +1015,12 @@ Returns the password string, or nil if no matching entry is found.
   :ensure t
   :config
   (global-evil-surround-mode 1))
+
+(use-package evil-matchit
+  :ensure t
+  :straight t
+  :after evil-collection
+  :config
+  (global-evil-matchit-mode 1))
 
 (put 'dired-find-alternate-file 'disabled nil)
