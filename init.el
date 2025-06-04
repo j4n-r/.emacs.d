@@ -758,6 +758,8 @@ Returns the password string, or nil if no matching entry is found.
 ;; Follow the links
 (setq org-return-follows-link  t)
 
+(setq org-startup-with-inline-images t)
+
 ;; Associate all org files with org mode
 (add-to-list 'auto-mode-alist '("\\.org\\'" . org-mode))
 
@@ -792,7 +794,13 @@ Returns the password string, or nil if no matching entry is found.
   :mode ("README\\.md\\'" . gfm-mode)
   :init (setq markdown-command "comrak"))
 
+(use-package org-download
+  :custom
+  org-download-image-dir "~/org-roam/attachments"
+  )
 
+;; Drag-and-drop to `dired`
+(add-hook 'dired-mode-hook 'org-download-enable)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;            KEYBINDINGS                ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
