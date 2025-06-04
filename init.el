@@ -38,7 +38,7 @@
   (tab-always-indent 'complete)
   (recentf-mode t)
   (dired-kill-when-opening-new-dired-buffer t)
-  (dired-listing-switches "-lah --group-directories-first")  ;; Display files in a human-readable format and group directories first.
+  (dired-listing-switches "-lah")  ;; Display files in a human-readable format and group directories first.
   (ring-bell-function 'ignore)
   (scroll-step 1)
   (delete-by-moving-to-trash t)                   ;; Move deleted files to the trash instead of permanently deleting them.
@@ -462,6 +462,7 @@
   leetcode-save-solutions t
   leetcode-directory "~/dev/leetcode")
 
+(use-package sudo-edit)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         DEV & LSP CONFIGURATION       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
