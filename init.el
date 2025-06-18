@@ -169,6 +169,7 @@
 
 (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"  :height 110)
 (when (eq system-type 'darwin)       ;; Check if the system is macOS.
+  (setq insert-directory-program "/etc/profiles/per-user/jr/bin/gls")
   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 145))
 
 
@@ -463,6 +464,9 @@
   leetcode-directory "~/dev/leetcode")
 
 (use-package sudo-edit)
+
+(use-package harpoon)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         DEV & LSP CONFIGURATION       ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -809,6 +813,20 @@ Returns the password string, or nil if no matching entry is found.
   "TAB" '(perspective-map :which-key "perspective")
   "TAB TAB" '(persp-switch :which-key "perspective")
 
+  "hh" '(harpoon-quick-menu-hydra :which-key "harpoon menu")
+  "1" '(harpoon-go-to-1)
+  "2" '(harpoon-go-to-2)
+  "3" '(harpoon-go-to-3)
+  "4" '(harpoon-go-to-4)
+  "5" '(harpoon-go-to-5)
+  "6" '(harpoon-go-to-6)
+  "7" '(harpoon-go-to-7)
+  "8" '(harpoon-go-to-8)
+  "9" '(harpoon-go-to-9)
+  "ha" '(harpoon-add-file :which-key "add file")
+  "hc" '(harpoon-clear :which-key "clear")
+  "hf" '(harpoon-toggle-file :which-key "edit harpoon files")
+
   "a" '(aidermacs-transient-menu :which-key "aider")
 
   "b" '(:ignore :which-key "buffer")
@@ -959,8 +977,8 @@ Returns the password string, or nil if no matching entry is found.
  "N" 'dired-create-directory
  "h" 'dired-up-directory
  "l" 'dired-find-alternate-file
+ "M-s" 'dired-do-shell-command
  )
-
 
 (defun my-dired-unbind-spc ()
   "Unbind SPC in dired-mode's normal state map."
