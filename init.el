@@ -167,7 +167,7 @@
 (setopt indicate-buffer-boundaries 'left)  ; Show buffer top and bottom in the margin
 (add-hook 'text-mode-hook 'visual-line-mode)
 
-(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"  :height 110)
+(set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"  :height 155)
 (when (eq system-type 'darwin)       ;; Check if the system is macOS.
   (setq insert-directory-program "/etc/profiles/per-user/jr/bin/gls")
   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 145))
@@ -179,7 +179,7 @@
 (setq display-time-day-and-date t)
 (setq display-time-interval 30)
 (setq display-time-use-mail-icon nil)
-(setq display-time-format "%d.%m.%y %H:%M")
+(setq display-time-format "%d.%m.%y %H:%M ")
 (setq display-time-default-load-average nil)
 (display-time-mode 1)
 
@@ -776,8 +776,10 @@ Returns the password string, or nil if no matching entry is found.
   ;; If using org-roam-protocol
   (require 'org-roam-protocol))
 
-;; (use-package jinx
-;;   :hook (emacs-startup . global-jinx-mode))
+(use-package jinx)
+;;(dolist (hook '(org-mode-hook)
+;;            (add-hook hook #'jinx-mode)))
+;; :hook (emacs-startup . global-jinx-mode))
 
 ;; Use Dabbrev with Corfu!
 (use-package dabbrev
@@ -798,6 +800,16 @@ Returns the password string, or nil if no matching entry is found.
   :custom
   org-download-image-dir "~/org-roam/attachments"
   )
+(use-package ox-hugo
+  :config 
+  :after ox)
+
+;; Take the cursor to the post heading and using the default Shift+left (S-<left>) binding to mark that subtree as DONE.
+;; Now save the file, take the cursor to the end of the post and type the bindings C-c C-e H H.
+;; You should see the site preview in your browser auto-update!
+;; Now as you make changes in your post, save and do C-c C-e H H to see the post update in the browser.
+
+(setq org-hugo-default-section-directory "post")
 
 ;; Drag-and-drop to `dired`
 (add-hook 'dired-mode-hook 'org-download-enable)
