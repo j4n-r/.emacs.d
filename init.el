@@ -114,6 +114,49 @@
                          (emacs-init-time)
                          (number-to-string (length package-activated-list))))))))
 
+;;; TRAMP 
+;; https://coredumped.dev/2025/06/18/making-tramp-go-brrrr./
+(setq remote-file-name-inhibit-locks t
+      tramp-use-scp-direct-remote-copying t
+      remote-file-name-inhibit-auto-save-visited t)
+(setq tramp-copy-size-limit (* 1024 1024) ;; 1MB
+      tramp-verbose 2)
+(connection-local-set-profile-variables
+ 'remote-direct-async-process
+ '((tramp-direct-async-process . t)))
+
+(connection-local-set-profiles
+ '(:application tramp :protocol "scp")
+ 'remote-direct-async-process)
+
+(setq magit-tramp-pipe-stty-settings 'pty)
+(with-eval-after-load 'tramp
+  (with-eval-after-load 'compile
+    (remove-hook 'compilation-mode-hook #'tramp-compile-disable-ssh-controlmaster-options)))
+
+(remove-hook 'evil-insert-state-exit-hook #'doom-modeline-update-buffer-file-name)
+(remove-hook 'find-file-hook #'doom-modeline-update-buffer-file-name)
+(remove-hook 'find-file-hook 'forge-bug-reference-setup)
+
+(setq projectile-enable-caching t)
+(setq projectile-file-exists-cache-timeout 120)
+;; (setq vc-handled-backends '(Git))
+(setq vc-ignore-dir-regexp
+      (format "\\(%s\\)\\|\\(%s\\)"
+              vc-ignore-dir-regexp
+              tramp-file-name-regexp))
+(connection-local-set-profile-variables
+ 'my-auto-save-profile
+ '((buffer-auto-save-file-name . nil)))
+
+(connection-local-set-profiles
+ '(:application tramp :protocol "sudo")
+ 'my-auto-save-profile)
+;; More aggressive approach - disable all nerd-icons functions for remote files
+(defadvice nerd-icons-dired-mode (around disable-for-tramp activate)
+  "Don't enable nerd-icons-dired-mode for TRAMP buffers."
+  (unless (file-remote-p default-directory)
+    ad-do-it))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;              GUI STUFF                   ;;
@@ -170,7 +213,7 @@
 (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"  :height 155)
 (when (eq system-type 'darwin)       ;; Check if the system is macOS.
   (setq insert-directory-program "/etc/profiles/per-user/jr/bin/gls")
-  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 145))
+  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 135))
 
 
 
@@ -997,7 +1040,7 @@ Returns the password string, or nil if no matching entry is found.
  "N" 'dired-create-directory
  "h" 'dired-up-directory
  "l" 'dired-find-alternate-file
- "M-s" 'dired-do-shell-command
+ ;; "M-s" 'dired-do-shell-command
  )
 
 (defun my-dired-unbind-spc ()
