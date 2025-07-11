@@ -736,6 +736,15 @@
 (setq sql-sqlite-program "sqlite3")
 (setq sql-postgres-program "/run/current-system/sw/bin/psql")
 
+(use-package jtsx
+  :ensure t
+  :mode (("\\.jsx?\\'" . jtsx-jsx-mode)
+         ("\\.tsx\\'" . jtsx-tsx-mode)
+         ("\\.ts\\'" . jtsx-typescript-mode))
+  :commands jtsx-install-treesit-language
+  :hook ((jtsx-jsx-mode . hs-minor-mode)
+         (jtsx-tsx-mode . hs-minor-mode)
+         (jtsx-typescript-mode . hs-minor-mode)))
 
 (defun get-gemini-key ()
   "Retrieve the password from the first entry in .authinfo for generativelanguage.googleapis.com.
@@ -867,8 +876,8 @@ Returns the password string, or nil if no matching entry is found.
   (general-auto-unbind-keys)
   (general-create-definer leader
     :keymaps '(normal visual emacs )
-    :prefix "SPC"
-    :global-prefix "S-SPC"))
+    :prefix "SPC"))
+;;:global-prefix "C-SPC"))
 (leader
   "SPC" '(projectile-find-file :which-key "project ff")
   "," '(consult-buffer :which-key "find buffer")
@@ -1006,7 +1015,18 @@ Returns the password string, or nil if no matching entry is found.
   "w=" '(balance-windows :which-key "balance windows")
   "wr" '(evil-window-rotate-downwards :which-key "rotate downwards")
   "wR" '(evil-window-rotate-upwards :which-key "rotate upwards")
+
   )
+(leader
+  :states 'normal
+  :keymaps '(jtsx-jsx-mode-map jtsx-tsx-mode-map)
+  "x" '(:ignore t :which-key "jsx/tsx")
+  "xr" '(jtsx-rename-jsx-element :which-key "rename jsx element")
+  "xw" '(jtsx-wrap-in-jsx-element :which-key "wrap in jsx element")
+  "xu" '(jtsx-unwrap-jsx :which-key "unwrap jsx")
+  "xD" '(jtsx-delete-jsx-node :which-key "delete jsx node")
+  "xd" '(jtsx-delete-jsx-attribute :which-key "delete attribute")
+  "xx" '(jtsx-jump-jsx-element-tag-dwim :which-key "jump jsx tag"))
 
 (general-define-key
  :states 'normal
@@ -1026,8 +1046,13 @@ Returns the password string, or nil if no matching entry is found.
 
 (general-define-key
  :states 'motion
- 
  "gc" 'comment-or-uncomment-region)
+
+(general-define-key
+ :states 'motion
+ :keymaps '(jtsx-jsx-mode-map jtsx-tsx-mode-map)
+ "gc" 'jtsx-comment-dwim)
+
 
 (general-define-key
  "s-j" 'avy-goto-char-2
