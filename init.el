@@ -639,6 +639,11 @@
 
 (use-package rustic)
 
+(use-package typst-ts-mode
+  :straight (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
+  :custom
+  (typst-ts-mode-watch-options "--open"))
+
 (use-package lsp-ui
   :commands lsp-ui-mode
   :config
@@ -798,6 +803,14 @@ Returns the password string, or nil if no matching entry is found.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         ORG MODE & NOTES               ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (shell . t)
+   (emacs-lisp . t)
+   ))
+
 (use-package olivetti)
 (add-hook 'olivetti-mode-on-hook (lambda () (olivetti-set-width 100))) 
 
@@ -865,6 +878,7 @@ Returns the password string, or nil if no matching entry is found.
 
 ;; Drag-and-drop to `dired`
 (add-hook 'dired-mode-hook 'org-download-enable)
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;            KEYBINDINGS                ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -981,7 +995,7 @@ Returns the password string, or nil if no matching entry is found.
   "sg" '(consult-ripgrep :which-key "search grep")
   "sm" '(consult-ripgrep :which-key "search manpages")
   "ss" '(consult-lsp-file-symbols :which-key "workspace symbol")
-  "sS" '(consult-lsp-workspace-symbol :which-key "workspace symbol")
+  "sS" '(consult-lsp-symbols :which-key "workspace symbol")
 
   "t"  '(:ignore t :which-key "toggles")
 
@@ -1061,6 +1075,7 @@ Returns the password string, or nil if no matching entry is found.
 (general-define-key
  :states 'normal
  :keymaps 'dired-mode-map
+ "f" 'find-file
  "n" 'dired-create-empty-file
  "N" 'dired-create-directory
  "h" 'dired-up-directory
