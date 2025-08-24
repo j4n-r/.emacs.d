@@ -895,7 +895,7 @@ Returns the password string, or nil if no matching entry is found.
 (leader
   "SPC" '(projectile-find-file :which-key "project ff")
   "," '(consult-buffer :which-key "find buffer")
-  "." '(find-file-at-point :which-key "ff in dir")
+  "." '(find-file-at-point :which-key "find file under cursor")
   "TAB" '(perspective-map :which-key "perspective")
   "TAB TAB" '(persp-switch :which-key "perspective")
 
@@ -988,6 +988,7 @@ Returns the password string, or nil if no matching entry is found.
 
   "s" '(:ignore :which-key "spelling/search")
   "sc" '(jinx-correct :which-key "correct spelling")
+  "sd" '(consult-lsp-diagnostics :which-key "lsp diagnostics")
   "sl" '(jinx-languages :which-key "set language")
   "sn" '(jinx-correct-next :which-key "jinx next")
   "sN" '(jinx-correct-previous :which-key "jinx previous")
