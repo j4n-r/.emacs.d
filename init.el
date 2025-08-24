@@ -584,6 +584,7 @@
          (html-ts-mode . lsp)      
          (c-ts-mode .lsp)
          (c++-ts-mode .lsp)
+         (typst-ts-mode .lsp)
          ;; if you want which-key integration
          (lsp-mode . lsp-enable-which-key-integration))
   :commands (lsp lsp-deferred)
@@ -643,6 +644,16 @@
   :straight (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
   :custom
   (typst-ts-mode-watch-options "--open"))
+(with-eval-after-load 'lsp-mode
+  (add-to-list 'lsp-language-id-configuration '(typst-ts-mode . "typst"))
+
+  ;; Register Tinymist (if your lsp-mode doesn’t ship it yet)
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-stdio-connection '("tinymist"))
+    :activation-fn (lsp-activate-on "typst")
+    :priority 1
+    :server-id 'tinymist)))
 
 (use-package lsp-ui
   :commands lsp-ui-mode
@@ -712,9 +723,8 @@
   :init
   (setq lsp-tailwindcss-add-on-mode t))
 
-
-
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . tsx-ts-mode))
+(add-to-list 'auto-mode-alist '("\\.typ\\'" . typst-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . tsx-mode))
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-ts-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js-ts-mode))
