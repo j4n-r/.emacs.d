@@ -36,6 +36,7 @@
   ;; Enable indentation+completion using the TAB key.
   ;; `completion-at-point' is often bound to M-TAB.
   (tab-always-indent 'complete)
+  (tab-first-completion 'word-or-paren)
   (recentf-mode t)
   (dired-kill-when-opening-new-dired-buffer t)
   (dired-listing-switches "-lah")  ;; Display files in a human-readable format and group directories first.
@@ -579,10 +580,9 @@
          (tsx-ts-mode . lsp)
          (typescript-ts-mode . lsp)
          (js-ts-mode . lsp)
-         (c-ts-mode . lsp)
+         ;; (c-ts-mode . lsp)
          (css-ts-mode . lsp)        
          (html-ts-mode . lsp)      
-         (c-ts-mode .lsp)
          (c++-ts-mode .lsp)
          (typst-ts-mode .lsp)
          ;; if you want which-key integration
@@ -638,6 +638,7 @@
   ;; (lsp-rust-analyzer-display-reborrow-hints nil)
   )
 
+(setq c-ts-mode-indent-offset 4)
 (use-package rustic)
 
 (use-package typst-ts-mode
@@ -1055,6 +1056,11 @@ Returns the password string, or nil if no matching entry is found.
 
 (general-define-key
  :states 'normal
+ "M-t" 'tab-to-tab-stop
+ "M-i" 'consult-imenu
+ "M-I" 'consult-imenu-multi
+ "M-d" 'xref-find-definitions-at-mouse
+ "M-r" 'xref-find-references
  "gd"  'lsp-find-definition   
  "gr"  'lsp-find-references    
  "gI"  'lsp-find-implementation 
