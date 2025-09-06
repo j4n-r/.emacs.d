@@ -139,9 +139,6 @@
 (remove-hook 'find-file-hook #'doom-modeline-update-buffer-file-name)
 (remove-hook 'find-file-hook 'forge-bug-reference-setup)
 
-(setq projectile-enable-caching t)
-(setq projectile-file-exists-cache-timeout 120)
-;; (setq vc-handled-backends '(Git))
 (setq vc-ignore-dir-regexp
       (format "\\(%s\\)\\|\\(%s\\)"
               vc-ignore-dir-regexp
@@ -268,7 +265,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;             ESSENTIALS                  ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
 
 (use-package eldoc
   :ensure nil          ;; This is built-in, no need to fetch it.
@@ -413,15 +409,6 @@
 ;; already links to the manual, if a function is referenced there.
 (global-set-key (kbd "C-h F") #'helpful-function)
 
-
-;; Projectile - Project Management
-(use-package projectile
-  :ensure t
-  :init
-  :config
-  (projectile-mode +1))
-;; shit solution
-(setq projectile-git-submodule-command nil)
 
 ;; Which-Key - Keybinding Help
 (use-package which-key
@@ -568,75 +555,28 @@
 (use-package yasnippet-snippets)
 
 
-(use-package lsp-mode
-  :ensure t
-  :init
-  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
-  (setq lsp-keymap-prefix "C-c l")
-  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-         (kotlin-ts-mode . lsp)
-         (rust-ts-mode . lsp)
-         (python-ts-mode . lsp)
-         (tsx-ts-mode . lsp)
-         (typescript-ts-mode . lsp)
-         (js-ts-mode . lsp)
-         ;; (c-ts-mode . lsp)
-         (css-ts-mode . lsp)        
-         (html-ts-mode . lsp)      
-         (c++-ts-mode .lsp)
-         (typst-ts-mode .lsp)
-         ;; if you want which-key integration
-         (lsp-mode . lsp-enable-which-key-integration))
-  :commands (lsp lsp-deferred)
-  :custom
-  (lsp-keymap-prefix "C-c l")                           ;; Set the prefix for LSP commands.
-  (lsp-inlay-hint-enable t)                             ;; Enable inlay hints.
-  (lsp-completion-provider :none)                       ;; Disable the default completion provider.
-  (lsp-session-file (locate-user-emacs-file ".lsp-session")) ;; Specify session file location.
-  (lsp-log-io nil)                                      ;; Disable IO logging for speed.
-  (lsp-idle-delay 0)                                    ;; Set the delay for LSP to 0 (debouncing).
-  (lsp-keep-workspace-alive nil)                        ;; Disable keeping the workspace alive.
-  ;; Core settings
-  (lsp-enable-xref t)                                   ;; Enable cross-references.
-  (lsp-auto-configure t)                                ;; Automatically configure LSP.
-  (lsp-enable-links nil)                                ;; Disable links.
-  (lsp-eldoc-enable-hover t)                            ;; Enable ElDoc hover.
-  (lsp-enable-file-watchers nil)                        ;; Disable file watchers.
-  (lsp-enable-folding nil)                              ;; Disable folding.
-  (lsp-enable-imenu t)                                  ;; Enable Imenu support.
-  (lsp-enable-indentation nil)                          ;; Disable indentation.
-  (lsp-enable-on-type-formatting nil)                   ;; Disable on-type formatting.
-  (lsp-enable-suggest-server-download t)                ;; Enable server download suggestion.
-  (lsp-enable-symbol-highlighting t)                    ;; Enable symbol highlighting.
-  (lsp-enable-text-document-color nil)                  ;; Disable text document color.
-  ;; Modeline settings
-  (lsp-modeline-code-actions-enable nil)                ;; Keep modeline clean.
-  (lsp-modeline-diagnostics-enable nil)                 ;; Use `flymake' instead.
-  (lsp-modeline-workspace-status-enable t)              ;; Display "LSP" in the modeline when enabled.
-  (lsp-signature-doc-lines 1)                           ;; Limit echo area to one line.
-  (lsp-eldoc-render-all nil)                              ;; Render all ElDoc messages.
-  ;; Completion settings
-  (lsp-completion-enable t)                             ;; Enable completion.
-  (lsp-completion-enable-additional-text-edit t)        ;; Enable additional text edits for completions.
-  (lsp-enable-snippet nil)                              ;; Disable snippets
-  (lsp-completion-show-kind t)                          ;; Show kind in completions.
-  ;; Lens settings
-  (lsp-lens-enable t)                                   ;; Enable lens support.
-  ;; Headerline settings
-  (lsp-headerline-breadcrumb-enable-symbol-numbers t)   ;; Enable symbol numbers in the headerline.
-  (lsp-headerline-arrow "▶")                            ;; Set arrow for headerline.
-  (lsp-headerline-breadcrumb-enable-diagnostics nil)    ;; Disable diagnostics in headerline.
-  (lsp-headerline-breadcrumb-icons-enable nil)          ;; Disable icons in breadcrumb.
-  ;; Semantic settings
-  (lsp-semantic-tokens-enable nil)                     ;; Disable semantic tokens.
-  ;; :custom
-  ;; (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
-  ;; (lsp-rust-analyzer-display-chaining-hints t)
-  ;; (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
-  ;; (lsp-rust-analyzer-display-closure-return-type-hints t)
-  ;; (lsp-rust-analyzer-display-parameter-hints nil)
-  ;; (lsp-rust-analyzer-display-reborrow-hints nil)
-  )
+(add-hook 'kotlin-ts-mode 'eglot-ensure)
+(add-hook 'rust-ts-mode  'eglot-ensure)
+(add-hook 'python-ts-mode  'eglot-ensure)
+(add-hook 'tsx-ts-mode  'eglot-ensure)
+(add-hook 'typescript-ts-mode  'eglot-ensure)
+(add-hook 'js-ts-mode  'eglot-ensure)
+(add-hook 'c-ts-mode  'eglot-ensure)
+(add-hook 'css-ts-mode  'eglot-ensure)        
+(add-hook 'html-ts-mode  'eglot-ensure)      
+(add-hook 'c++-ts-mode  'eglot-ensure)
+(add-hook 'typst-ts-mode  'eglot-ensure)
+
+(with-eval-after-load 'eglot
+  (add-to-list 'eglot-server-programs
+               '(typst-ts-mode . ("tinymist" "--lsp"))
+               '(nix-mode . ("nil" "--stdio"))))
+
+(use-package eldoc-box)
+(add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-mode t)
+(setq eldoc-echo-area-use-multiline-p nil
+      eldoc-echo-area-prefer-doc-buffer nil)
+
 
 (setq c-ts-mode-indent-offset 4)
 (use-package rustic)
@@ -645,42 +585,6 @@
   :straight (:type git :host sourcehut :repo "meow_king/typst-ts-mode")
   :custom
   (typst-ts-mode-watch-options "--open"))
-(with-eval-after-load 'lsp-mode
-  (add-to-list 'lsp-language-id-configuration '(typst-ts-mode . "typst"))
-
-  ;; Register Tinymist (if your lsp-mode doesn’t ship it yet)
-  (lsp-register-client
-   (make-lsp-client
-    :new-connection (lsp-stdio-connection '("tinymist"))
-    :activation-fn (lsp-activate-on "typst")
-    :priority 1
-    :server-id 'tinymist)))
-
-(use-package lsp-ui
-  :commands lsp-ui-mode
-  :config
-  (setq lsp-ui-doc-enable t
-        lsp-ui-doc-position 'at-point
-        lsp-ui-doc-side 'right))
-(use-package consult-lsp :commands consult-lsp-workspace-symbol)
-(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
-
-(use-package lsp-nix
-  :ensure lsp-mode
-  :after (lsp-mode)
-  :demand t
-  :custom
-  (lsp-nix-nil-formatter ["nixfmt"]))
-
-;;;; Python ;;;;;
-(use-package lsp-pyright
-  :ensure t
-  :custom
-  (lsp-pyright-langserver-command "basedpyright")
-  ( lsp-pyright-python-executable-cmd (executable-find "python"))
-  :hook (python-ts-mode . lsp-deferred))
-(setf (alist-get 'python-ts-mode apheleia-mode-alist)
-      '(ruff-isort ruff))
 
 ;; no automatic venv activation since managed with nix flake
 (use-package pyvenv
@@ -697,23 +601,8 @@
   :config
   (envrc-global-mode))
 
-;; (use-package direnv
-;;   :config
-;;   (direnv-mode))
-
-;; optionally if you want to use debugger
-;;(use-package dap-mode)
-;; (use-package dap-LANGUAGE) to load the dap adapter for your language
-
-(with-eval-after-load 'lsp-mode
-  ;; :global/:workspace/:file
-  (setq lsp-modeline-diagnostics-scope :workspace))
 
 (use-package cmake-mode)
-
-;; (add-to-list 'lsp-language-id-configuration '(html-mode . "html"))
-;; (add-to-list 'lsp-language-id-configuration '(css-mode . "css"))
-;; (add-to-list 'lsp-language-id-configuration '(tsx-ts-mode . "tsx"))
 
 (use-package lsp-tailwindcss
   :ensure t
@@ -744,9 +633,6 @@
   (global-origami-mode t))
 
 
-
-(use-package kotlin-mode)
-
 (use-package pg :vc (:url "https://github.com/emarsden/pg-el/"))
 (use-package pgmacs :vc (:url "https://github.com/emarsden/pgmacs/"))
 (setq sql-sqlite-program "sqlite3")
@@ -761,55 +647,6 @@
   :hook ((jtsx-jsx-mode . hs-minor-mode)
          (jtsx-tsx-mode . hs-minor-mode)
          (jtsx-typescript-mode . hs-minor-mode)))
-
-(defun get-gemini-key ()
-  "Retrieve the password from the first entry in .authinfo for generativelanguage.googleapis.com.
-Returns the password string, or nil if no matching entry is found.
-
-~/.authinfo
-machine generativelanguage.googleapis.com login apikey password {key}
-"
-  (let ((entry (car (auth-source-search :host "generativelanguage.googleapis.com" :max 1))))
-    (when entry
-      (let ((secret (plist-get entry :secret)))
-        (if (functionp secret)
-            (funcall secret)
-          secret)))))
-
-(defun get-claude-key ()
-  "Retrieve the password from the first entry in .authinfo for generativelanguage.googleapis.com.
-Returns the password string, or nil if no matching entry is found.
-
-~/.authinfo
- machine api.anthropic.com login apikey password {key}
-"
-  (let ((entry (car (auth-source-search :host "api.anthropic.com" :max 1))))
-    (when entry
-      (let ((secret (plist-get entry :secret)))
-        (if (functionp secret)
-            (funcall secret)
-          secret)))))
-
-(use-package gptel)
-(setq
- gptel-model 'gemini-2.5-pro-preview-05-06
- gptel-backend (gptel-make-gemini "Gemini"
-                 :key (get-gemini-key)
-                 :stream t))
-(setq gptel-backend (gptel-make-anthropic "Claude"          
-                      :stream t                             
-                      :key (get-claude-key)))
-(add-hook 'gptel-post-response-functions 'gptel-end-of-response)
-(add-hook 'gptel-post-stream-hook 'gptel-auto-scroll)
-
-(use-package aidermacs
-  :config
-  (setenv "GEMINI_API_KEY" (get-gemini-key))
-  :custom
-  (aidermacs-use-architect-mode t)
-  (aidermacs-default-model "gemini"))
-
-(use-package verb)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;         ORG MODE & NOTES               ;;
@@ -904,171 +741,157 @@ Returns the password string, or nil if no matching entry is found.
     :prefix "SPC"))
 ;;:global-prefix "C-SPC"))
 (leader
-  "SPC" '(projectile-find-file :which-key "project ff")
-  "," '(consult-buffer :which-key "find buffer")
-  "." '(find-file-at-point :which-key "find file under cursor")
-  "TAB" '(perspective-map :which-key "perspective")
-  "TAB TAB" '(persp-switch :which-key "perspective")
+ "SPC" '(project-find-file :which-key "project ff")
+ "," '(consult-buffer :which-key "find buffer")
+ "." '(consult-project-buffer :which-key "find file under cursor")
+ "TAB" '(perspective-map :which-key "perspective")
+ "TAB TAB" '(persp-switch :which-key "perspective")
 
-  "hh" '(harpoon-quick-menu-hydra :which-key "harpoon menu")
-  "1" '(harpoon-go-to-1)
-  "2" '(harpoon-go-to-2)
-  "3" '(harpoon-go-to-3)
-  "4" '(harpoon-go-to-4)
-  "5" '(harpoon-go-to-5)
-  "6" '(harpoon-go-to-6)
-  "7" '(harpoon-go-to-7)
-  "8" '(harpoon-go-to-8)
-  "9" '(harpoon-go-to-9)
-  "ha" '(harpoon-add-file :which-key "add file")
-  "hc" '(harpoon-clear :which-key "clear")
-  "hf" '(harpoon-toggle-file :which-key "edit harpoon files")
+ "hh" '(harpoon-quick-menu-hydra :which-key "harpoon menu")
+ "1" '(harpoon-go-to-1)
+ "2" '(harpoon-go-to-2)
+ "3" '(harpoon-go-to-3)
+ "4" '(harpoon-go-to-4)
+ "5" '(harpoon-go-to-5)
+ "6" '(harpoon-go-to-6)
+ "7" '(harpoon-go-to-7)
+ "8" '(harpoon-go-to-8)
+ "9" '(harpoon-go-to-9)
+ "ha" '(harpoon-add-file :which-key "add file")
+ "hc" '(harpoon-clear :which-key "clear")
+ "hf" '(harpoon-toggle-file :which-key "edit harpoon files")
 
-  "a" '(aidermacs-transient-menu :which-key "aider")
+ "a" '(aidermacs-transient-menu :which-key "aider")
 
-  "b" '(:ignore :which-key "buffer")
-  "br" '(rename-buffer :which-key "rename buffer")
-  "bk" '(kill-buffer :which-key "kill buffer")
+ "b" '(:ignore :which-key "buffer")
+ "br" '(rename-buffer :which-key "rename buffer")
+ "bk" '(kill-buffer :which-key "kill buffer")
 
-  "c" '(:igore t :which-key "code")
-  "ca" '(lsp-execute-code-action :which-key "code actions")
-  "cc" '(compile :which-key "compile")
-  "cf" '(lsp-format-buffer :which-key "format buffer")
-  "cF" '(apheleia-format-buffer :which-key "format buffer")
-  "cr" '(lsp-rename :which-key "rename")
-  "co" '(lsp-organize-imports :which-key "organize imports")
+ "c" '(:igore t :which-key "code")
+ "ca" '(eglot-code-actions :which-key "code actions")
+ "cc" '(compile :which-key "compile")
+ "cf" '(eglot-format-buffer :which-key "format buffer")
+ "cF" '(apheleia-format-buffer :which-key "format buffer")
+ "cr" '(eglot-rename :which-key "rename")
+ "co" '(eglot-code-action-organize-imports :which-key "organize imports")
 
-  "e" '(:ignore t :which-key "eval elisp")
-  "eb" '(eval-buffer :which-key "eval buffer")
-  "er" '(eval-region :which-key "eval region")
-  "ee" '(eval-expression :which-key "eval expression")
-  "ed" '(eval-expression :which-key "eval expression")
+ "e" '(:ignore t :which-key "eval elisp")
+ "eb" '(eval-buffer :which-key "eval buffer")
+ "er" '(eval-region :which-key "eval region")
+ "ee" '(eval-expression :which-key "eval expression")
+ "ed" '(eval-expression :which-key "eval expression")
 
-  "f" '(:ignore t :which-key "file")
-  "ff" '(find-file :which-key "find file")
-  "fr" '(rename-visited-file :which-key "rename file")
+ "f" '(:ignore t :which-key "file")
+ "ff" '(find-file :which-key "find file")
+ "fr" '(rename-visited-file :which-key "rename file")
 
-  "g" '(:ignore t :which-key "git")
-  "gg" '(magit-status :which-key "magit")
-  "gb" '(magit-blame  :which-key "magit blame")
-  "gd" '(magit-diff-buffer-file  :which-key "magit diff")
-  "gr" '(magit-refresh-buffer  :which-key "magit refresh buffer")
+ "g" '(:ignore t :which-key "git")
+ "gg" '(magit-status :which-key "magit")
+ "gb" '(magit-blame  :which-key "magit blame")
+ "gd" '(magit-diff-buffer-file  :which-key "magit diff")
+ "gr" '(magit-refresh-buffer  :which-key "magit refresh buffer")
 
-  "gt" '(:ignore t :which-key "gptel")
-  "gts" '(gptel-send            :which-key "Send Query")
-  "gtn" '(gptel                 :which-key "New Chat Buffer")
-  "gtr" '(gptel-rewrite         :which-key "Rewrite/Refactor")
-  "gta" '(gptel-add             :which-key "Add Context")
-  "gtf" '(gptel-add-file        :which-key "Add File to Context")
-  "gto" '(gptel-org-set-topic   :which-key "Set Org Topic")
-  "gtp" '(gptel-org-set-properties :which-key "Set Org Properties")
-  "gtm" '(gptel-menu :which-key "Set Org Properties")
+ "o" '(:igore t :which-key "open/org")
+ "od" '(dired-jump :which-key "open dired")
+ "ot" '(multi-vterm-project :which-key "open project terminal")
+ "oT" '(vterm :which-key "open terminal")
+ "op" '(proced :which-key "open proced")
+ "oc" '(:ignore t :which-key "org clock")
+ "oci" '(org-clock-in :which-key "clock in")
+ "oco" '(org-clock-out :which-key "clock out")
+ "ocr" '(org-clock-report :which-key "clock report")
+ "oca"  '(org-clock-goto :which-key "goto active clock")
+ "obu" '(org-dblock-update :which-key "org block update")
+ "obU" '(org-update-all-dblocks :which-key "org block update all")
 
-  "o" '(:igore t :which-key "open/org")
-  "od" '(dired-jump :which-key "open dired")
-  "ot" '(multi-vterm-project :which-key "open project terminal")
-  "oT" '(vterm :which-key "open terminal")
-  "op" '(proced :which-key "open proced")
-  "oc" '(:ignore t :which-key "org clock")
-  "oci" '(org-clock-in :which-key "clock in")
-  "oco" '(org-clock-out :which-key "clock out")
-  "ocr" '(org-clock-report :which-key "clock report")
-  "oca"  '(org-clock-goto :which-key "goto active clock")
-  "obu" '(org-dblock-update :which-key "org block update")
-  "obU" '(org-update-all-dblocks :which-key "org block update all")
+ "n" '(:ignore :which-key "nodes")
+ "nf" '(org-roam-node-find :which-key "find node")
+ "ng" '(org-roam-graph :which-key "show graph")
+ "ni" '(org-roam-node-insert :which-key "insert node")
+ "nc" '(org-roam-capture :which-key "capture node")
+ "nj" '(org-roam-dailies-capture-today :which-key "capture daily node") 
 
+ "p" '(:ignore :which-key "project")
+ "pp" '(project-switch-project :which-key "switch to project")
+ "ps" '(project-search :which-key "switch to project")
+ "ps" '(project-search :which-key "switch to project")
 
-  "l" '(:ignore t :which-key "lsp/linter")
-  "ln" '(flycheck-next-error :which-key "lint next error")
-  "lN" '(flycheck-previous-error :which-key "lint previous error")
+ "qr" '(query-replace :which-key "Query Replace")
+ "qR" '(query-replace-regexp :which-key "Query regex Replace")
+ "qq" '(evil-quit :which-key "quit emcas")
 
-  "n" '(:ignore :which-key "nodes")
-  "nf" '(org-roam-node-find :which-key "find node")
-  "ng" '(org-roam-graph :which-key "show graph")
-  "ni" '(org-roam-node-insert :which-key "insert node")
-  "nc" '(org-roam-capture :which-key "capture node")
-  "nj" '(org-roam-dailies-capture-today :which-key "capture daily node") 
+ "r" '(verb-command-map :which-key "restclient")
 
-  "p" '(projectile-command-map p :which-key "project")
+ "s" '(:ignore :which-key "spelling/search")
+ "sc" '(jinx-correct :which-key "correct spelling")
+ "sd" '(consult-lsp-diagnostics :which-key "lsp diagnostics")
+ "sl" '(jinx-languages :which-key "set language")
+ "sn" '(jinx-correct-next :which-key "jinx next")
+ "sN" '(jinx-correct-previous :which-key "jinx previous")
+ "sa" '(jinx-correct-all :which-key "jinx corect all")
+ "sg" '(consult-ripgrep :which-key "search grep")
+ "sm" '(consult-ripgrep :which-key "search manpages")
+ "ss" '(consult-lsp-file-symbols :which-key "workspace symbol")
+ "sS" '(consult-lsp-symbols :which-key "workspace symbol")
 
-  "qr" '(query-replace :which-key "Query Replace")
-  "qR" '(query-replace-regexp :which-key "Query regex Replace")
-  "qq" '(evil-quit :which-key "quit emcas")
+ "t"  '(:ignore t :which-key "toggles")
 
-  "r" '(verb-command-map :which-key "restclient")
+ "w" '(:ignore w :which-key "window")
+ "wv" '(evil-window-vsplit :which-key "split vertically")
+ "ws" '(evil-window-split :which-key "split horizontally")
+ "wq" '(delete-window :which-key "delete window")
 
-  "s" '(:ignore :which-key "spelling/search")
-  "sc" '(jinx-correct :which-key "correct spelling")
-  "sd" '(consult-lsp-diagnostics :which-key "lsp diagnostics")
-  "sl" '(jinx-languages :which-key "set language")
-  "sn" '(jinx-correct-next :which-key "jinx next")
-  "sN" '(jinx-correct-previous :which-key "jinx previous")
-  "sa" '(jinx-correct-all :which-key "jinx corect all")
-  "sg" '(consult-ripgrep :which-key "search grep")
-  "sm" '(consult-ripgrep :which-key "search manpages")
-  "ss" '(consult-lsp-file-symbols :which-key "workspace symbol")
-  "sS" '(consult-lsp-symbols :which-key "workspace symbol")
+ "wo" '(:ignore t :which-key "olivetti")
+ "woo" '(olivetti-mode :which-key "center")
+ "wo>" '(olivetti-expand :which-key "expand margin")
+ "wo<" '(olivetti-shrink :which-key "shrink margin")
+ "wos" '(olivetti-set-width :which-key "set width")
 
-  "t"  '(:ignore t :which-key "toggles")
+ "ww" '(other-window :which-key "switch window")
+ "w." '(balance-windows :which-key "switch window")
+ "w<" '(evil-window-decrease-width :which-key "decrease width")
+ "w>" '(evil-window-increase-width :which-key "increase width")
+ "w+" '(evil-window-increase-height :which-key "increase height")
+ "w-" '(evil-window-decrease-height :which-key "decrease height")
+ "wh" '(evil-window-left :which-key "window left")
+ "wl" '(evil-window-right :which-key "window right")
+ "wj" '(evil-window-down :which-key "window down")
+ "wk" '(evil-window-up :which-key "window up")
+ "wH" '(evil-window-move-far-left :which-key "move window far left")
+ "wL" '(evil-window-move-far-right :which-key "move window far right")
+ "wJ" '(evil-window-move-very-bottom :which-key "move window very bottom")
+ "wK" '(evil-window-move-very-top :which-key "move window very top")
+ "wt" '(evil-window-top-left :which-key "top-left window")
+ "wb" '(evil-window-bottom-right :which-key "bottom-right window")
+ "w=" '(balance-windows :which-key "balance windows")
+ "wr" '(evil-window-rotate-downwards :which-key "rotate downwards")
+ "wR" '(evil-window-rotate-upwards :which-key "rotate upwards")
 
-  "w" '(:ignore w :which-key "window")
-  "wv" '(evil-window-vsplit :which-key "split vertically")
-  "ws" '(evil-window-split :which-key "split horizontally")
-  "wq" '(delete-window :which-key "delete window")
-
-  "wo" '(:ignore t :which-key "olivetti")
-  "woo" '(olivetti-mode :which-key "center")
-  "wo>" '(olivetti-expand :which-key "expand margin")
-  "wo<" '(olivetti-shrink :which-key "shrink margin")
-  "wos" '(olivetti-set-width :which-key "set width")
-
-  "ww" '(other-window :which-key "switch window")
-  "w." '(balance-windows :which-key "switch window")
-  "w<" '(evil-window-decrease-width :which-key "decrease width")
-  "w>" '(evil-window-increase-width :which-key "increase width")
-  "w+" '(evil-window-increase-height :which-key "increase height")
-  "w-" '(evil-window-decrease-height :which-key "decrease height")
-  "wh" '(evil-window-left :which-key "window left")
-  "wl" '(evil-window-right :which-key "window right")
-  "wj" '(evil-window-down :which-key "window down")
-  "wk" '(evil-window-up :which-key "window up")
-  "wH" '(evil-window-move-far-left :which-key "move window far left")
-  "wL" '(evil-window-move-far-right :which-key "move window far right")
-  "wJ" '(evil-window-move-very-bottom :which-key "move window very bottom")
-  "wK" '(evil-window-move-very-top :which-key "move window very top")
-  "wt" '(evil-window-top-left :which-key "top-left window")
-  "wb" '(evil-window-bottom-right :which-key "bottom-right window")
-  "w=" '(balance-windows :which-key "balance windows")
-  "wr" '(evil-window-rotate-downwards :which-key "rotate downwards")
-  "wR" '(evil-window-rotate-upwards :which-key "rotate upwards")
-
-  )
+ )
 (leader
-  :states 'normal
-  :keymaps '(jtsx-jsx-mode-map jtsx-tsx-mode-map)
-  "x" '(:ignore t :which-key "jsx/tsx")
-  "xr" '(jtsx-rename-jsx-element :which-key "rename jsx element")
-  "xw" '(jtsx-wrap-in-jsx-element :which-key "wrap in jsx element")
-  "xu" '(jtsx-unwrap-jsx :which-key "unwrap jsx")
-  "xD" '(jtsx-delete-jsx-node :which-key "delete jsx node")
-  "xd" '(jtsx-delete-jsx-attribute :which-key "delete attribute")
-  "xx" '(jtsx-jump-jsx-element-tag-dwim :which-key "jump jsx tag"))
+ :states 'normal
+ :keymaps '(jtsx-jsx-mode-map jtsx-tsx-mode-map)
+ "x" '(:ignore t :which-key "jsx/tsx")
+ "xr" '(jtsx-rename-jsx-element :which-key "rename jsx element")
+ "xw" '(jtsx-wrap-in-jsx-element :which-key "wrap in jsx element")
+ "xu" '(jtsx-unwrap-jsx :which-key "unwrap jsx")
+ "xD" '(jtsx-delete-jsx-node :which-key "delete jsx node")
+ "xd" '(jtsx-delete-jsx-attribute :which-key "delete attribute")
+ "xx" '(jtsx-jump-jsx-element-tag-dwim :which-key "jump jsx tag"))
 
 (general-define-key
  :states 'normal
  "M-t" 'tab-to-tab-stop
  "M-i" 'consult-imenu
  "M-I" 'consult-imenu-multi
- "M-d" 'xref-find-definitions-at-mouse
+ "M-d" 'xref-find-definitions
  "M-r" 'xref-find-references
  "gd"  'lsp-find-definition   
  "gr"  'lsp-find-references    
  "gI"  'lsp-find-implementation 
  "gy"  'lsp-find-type-definition 
  "gD"  'lsp-find-declaration      
- "K"   'lsp-ui-doc-glance          
- "J" 'lsp-ui-doc-focus-frame
- "H" 'lsp-ui-doc-hide 
+ "K"  'eldoc-box-help-at-point
  "gcc" '(lambda ()
           (interactive)
           (if (not (use-region-p))
@@ -1078,6 +901,10 @@ Returns the password string, or nil if no matching entry is found.
 (general-define-key
  :states 'motion
  "gc" 'comment-or-uncomment-region)
+
+(general-define-key
+ :states 'insert
+ "M-t" 'tab-to-tab-stop)
 
 (general-define-key
  :states 'motion
