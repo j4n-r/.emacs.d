@@ -3,7 +3,6 @@
 ;;; Code:
 
 (use-package undo-tree
-  :defer t
   :ensure t
   :hook
   (elpaca-after-init . global-undo-tree-mode)

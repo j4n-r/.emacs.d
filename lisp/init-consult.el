@@ -4,7 +4,6 @@
 
 (use-package consult
   :ensure t
-  :straight t
   :defer t
   :init
   ;; Enhance register preview with thin lines and no mode line.

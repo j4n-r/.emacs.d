@@ -9,9 +9,23 @@
    '(
         ("\\magit.*"
         (display-buffer-in-side-window)
-        (window-width . 1)     ;; 30% of frame width
+        (window-width . 1)
         (side . right)
         (slot . -1))
+
+
+        ("\\COMMIT_EDITMSG"
+        (display-buffer-in-side-window)
+        (window-width . 1)
+        (side . left)
+        (slot . 0))
+        
+        ("\\*vterm.*\\*"
+        (display-buffer-reuse-window display-buffer-in-direction)
+        (direction . right)
+        (window-width . 1)
+        (side . right)
+        (slot . 0))
 
         ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|[Hh]elp\\|Messages\\|Bookmark List\\|Ibuffer\\|Occur\\|eldoc.*\\)\\*"
         (display-buffer-in-side-window)

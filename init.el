@@ -31,7 +31,7 @@
 (setq jit-lock-defer-time 0)
 
 ;; Allow users to provide an optional "init-preload-local.el"
- (require 'init-consult)
+(require 'init-consult)
 (require 'init-corfu)
 (require 'init-diff-hl)
 (require 'init-dired)
@@ -79,6 +79,11 @@
   :ensure nil
   :init
   (savehist-mode))
+(use-package vterm
+  :ensure t)
+(use-package multi-vterm
+  :ensure t)
+(setq multi-vterm-dedicated-window-height-percent 30)
 
 (provide 'init)
 
