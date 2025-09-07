@@ -68,6 +68,7 @@
 (require 'init-window)
 (require 'init-xclip)
 (require 'init-yasnippet)
+(require 'init-perspective)
 
 
 ;; Extra packages which don't require any configuration

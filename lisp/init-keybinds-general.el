@@ -18,7 +18,7 @@
     "," '(consult-buffer :which-key "find buffer")
     "." '(consult-project-buffer :which-key "find file under cursor")
     "TAB" '(perspective-map :which-key "perspective")
-    ;; "TAB TAB" '(persp-switch :which-key "perspective")
+    "TAB TAB" '(persp-switch :which-key "perspective")
 
 
     "b" '(:ignore :which-key "buffer")
