@@ -23,14 +23,11 @@
 
 ;; Bootstrap config
 (setq custom-file (locate-user-emacs-file "custom.el"))
-;; (require 'init-utils)
-;; (require 'init-site-lisp) ;; Must come before elpa, as it may provide package.el
-;; Calls (package-initialize)
-(require 'init-elpaca)      ;; Machinery for installing required packages
+
+(require 'init-elpaca)
 
 (setq jit-lock-defer-time 0)
 
-;; Allow users to provide an optional "init-preload-local.el"
 (require 'init-consult)
 (require 'init-corfu)
 (require 'init-diff-hl)
@@ -38,7 +35,7 @@
 (require 'init-doom-modeline)
 (require 'init-dotenv)
 (require 'init-eglot)
-;;(require 'init-eldoc-box)
+(require 'init-eldoc-box)
 (require 'init-eldoc)
 (require 'init-elpaca)
 (require 'init-emacs-options)
@@ -48,7 +45,6 @@
 (require 'init-flymake)
 (require 'init-helpful)
 (require 'init-isearch)
-(require 'init-keybinds-general)
 (require 'init-magit)
 (require 'init-marginalia)
 (require 'init-markdown)
@@ -70,6 +66,8 @@
 (require 'init-yasnippet)
 (require 'init-perspective)
 
+;; this has to be last (i actually dunno)
+(require 'init-keybinds-general)
 
 ;; Extra packages which don't require any configuration
 (use-package sudo-edit
@@ -80,12 +78,10 @@
   :ensure nil
   :init
   (savehist-mode))
-(use-package vterm
-  :ensure t)
-(use-package multi-vterm
-  :ensure t)
-(setq multi-vterm-dedicated-window-height-percent 30)
+
+(setq c-ts-mode-indent-offset 4)
 
 (provide 'init)
 
 ;;; init.el ends here
+(put 'dired-find-alternate-file 'disabled nil)

@@ -27,7 +27,7 @@
 
     "c" '(:igore t :which-key "code")
     "ca" '(eglot-code-actions :which-key "code actions")
-    "cc" '(compile :which-key "compile")
+    "cc" '(project-compile :which-key "compile")
     "cf" '(eglot-format-buffer :which-key "format buffer")
     "cF" '(apheleia-format-buffer :which-key "format buffer")
     "cr" '(eglot-rename :which-key "rename")
@@ -37,17 +37,21 @@
     "eb" '(eval-buffer :which-key "eval buffer")
     "er" '(eval-region :which-key "eval region")
     "ee" '(eval-expression :which-key "eval expression")
-    "ed" '(eval-expression :which-key "eval expression")
+    "ed" '(eval-defun :which-key "eval at point")
 
     "f" '(:ignore t :which-key "file")
     "ff" '(find-file :which-key "find file")
     "fr" '(rename-visited-file :which-key "rename file")
+    "fh" '(ff-find-other-file :which-key "find header file")
 
     "g" '(:ignore t :which-key "git")
     "gg" '(magit-status :which-key "magit")
     "gb" '(magit-blame  :which-key "magit blame")
     "gd" '(magit-diff-buffer-file  :which-key "magit diff")
     "gr" '(magit-refresh-buffer  :which-key "magit refresh buffer")
+
+    "h" '(:ignore t :which-key "help")
+    "hw" '(woman :which-key "woman")
 
     "o" '(:igore t :which-key "open/org")
     "od" '(dired-jump :which-key "open dired")
@@ -73,6 +77,7 @@
     "pp" '(project-switch-project :which-key "switch to project")
     "ps" '(project-search :which-key "switch to project")
     "ps" '(project-search :which-key "switch to project")
+    "pc" '(project-compile :which-key "project compile")
 
     "qr" '(query-replace :which-key "Query Replace")
     "qR" '(query-replace-regexp :which-key "Query regex Replace")
@@ -128,6 +133,7 @@
     )
   (general-define-key
    :states 'normal
+   "C-!" 'async-shell-command
    "M-t" 'tab-to-tab-stop
    "M-i" 'consult-imenu
    "M-I" 'consult-imenu-multi
@@ -145,6 +151,10 @@
             (if (not (use-region-p))
                 (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
    )
+  
+  (general-define-key
+   :states 'insert
+    "M-t" 'tab-to-tab-stop)
 
   (general-define-key
    :states 'motion

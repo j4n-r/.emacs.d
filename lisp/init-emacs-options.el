@@ -33,6 +33,7 @@
   (scroll-margin 10)
   (scroll-step 1)
   (org-duration-format 'h:mm)
+  (blink-cursor-mode 'nil)
 
   :hook
   (prog-mode . display-line-numbers-mode)

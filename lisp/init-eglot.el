@@ -11,7 +11,7 @@
   (tsx-ts-mode  . eglot-ensure)
   (typescript-ts-mode  . eglot-ensure)
   (js-ts-mode  . eglot-ensure)
-  (c-ts-mode  . eglot-ensure)
+  ;; (c-ts-mode  . eglot-ensure)
   (css-ts-mode  . eglot-ensure)
   (html-ts-mode  . eglot-ensure)
   (c++-ts-mode  . eglot-ensure)
