@@ -42,7 +42,7 @@
     "f" '(:ignore t :which-key "file")
     "ff" '(find-file :which-key "find file")
     "fr" '(rename-visited-file :which-key "rename file")
-    "fh" '(ff-find-other-file :which-key "find header file")
+    "fa" '(ff-find-other-file :which-key "find alternate file") ;; e.g. find header
 
     "g" '(:ignore t :which-key "git")
     "gg" '(magit-status :which-key "magit")
@@ -80,7 +80,7 @@
     "pc" '(project-compile :which-key "project compile")
 
     "qr" '(query-replace :which-key "Query Replace")
-    "qR" '(query-replace-regexp :which-key "Query regex Replace")
+    "qR" '(project-query-replace-regexp :which-key "Query regex Replace")
     "qq" '(evil-quit :which-key "quit emcas")
 
     "r" '(verb-command-map :which-key "restclient")
@@ -133,7 +133,7 @@
     )
   (general-define-key
    :states 'normal
-   "C-!" 'async-shell-command
+   "C-!" 'project-async-shell-command
    "M-t" 'tab-to-tab-stop
    "M-i" 'consult-imenu
    "M-I" 'consult-imenu-multi
@@ -158,7 +158,8 @@
 
   (general-define-key
    :states 'motion
-   "gc" 'comment-or-uncomment-region)
+   "gc" 'comment-or-uncomment-region
+   "gC" 'comment-box)
 
   (general-define-key
    "s-j" 'avy-goto-char-2
