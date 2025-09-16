@@ -1,0 +1,17 @@
+;;; init-hl-todo.el --- highlight TODOs  -*- lexical-binding: t; -*-
+;;; Commentary:
+;;; Code:
+
+(use-package hl-todo
+  :ensure t
+  :defer t
+  :hook
+  (prog-mode . hl-todo-mode)
+  :custom
+  (hl-todo-keyword-faces
+      '(("TODO"   . "#eb6f92")
+        ("FIXME"  . "#eb6f92")
+        ("BUG"    . "#eb6f92")
+        ("DEBUG"  . "#f6c177"))))
+(provide 'init-hl-todo)
+;;; init-hl-todo.el ends here.
