@@ -13,5 +13,17 @@
         ("FIXME"  . "#eb6f92")
         ("BUG"    . "#eb6f92")
         ("DEBUG"  . "#f6c177"))))
+
+(use-package consult-todo
+  :ensure t
+  :defer t)
+
+(use-package magit-todos
+  :ensure t
+  :after magit
+  :defer t
+  :config (magit-todos-mode 1))
+
 (provide 'init-hl-todo)
+
 ;;; init-hl-todo.el ends here.

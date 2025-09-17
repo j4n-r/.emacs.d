@@ -66,6 +66,7 @@
 (require 'init-yasnippet)
 (require 'init-perspective)
 (require 'init-hl-todo)
+(require 'init-pdf-tools)
 
 ;; this has to be last (i actually dunno)
 (require 'init-keybinds-general)

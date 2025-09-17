@@ -4,16 +4,22 @@
 
 (use-package magit
   :ensure t
+  :defer t
   :config
   (setopt magit-format-file-function #'magit-format-file-nerd-icons) ;; Turns on magit nerd-icons
-  :defer t)
+  (magit-clone-submodules 'recursive))
+
 (use-package transient
-  :ensure t)
+  :ensure t
+  :defer t)
+
 (use-package with-editor
-  :ensure t)
+  :ensure t
+  :defer t)
 
 (use-package forge
   :ensure t
+  :defer t
   :after magit)
 
 (provide 'init-magit)

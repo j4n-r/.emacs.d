@@ -34,6 +34,7 @@
   (scroll-step 1)
   (org-duration-format 'h:mm)
   (blink-cursor-mode 'nil)
+  (fill-column 80)
 
   :hook
   (prog-mode . display-line-numbers-mode)
@@ -50,6 +51,7 @@
   (savehist-mode 1)
   (save-place-mode 1)
   (winner-mode 1)
+  (global-visual-line-mode 1)
   (xterm-mouse-mode 1)
   (file-name-shadow-mode 1)
   (modify-coding-system-alist 'file "" 'utf-8)

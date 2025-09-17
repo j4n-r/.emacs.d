@@ -78,6 +78,7 @@
     "ps" '(project-search :which-key "switch to project")
     "ps" '(project-search :which-key "switch to project")
     "pc" '(project-compile :which-key "project compile")
+    "pt" '(consult-todo-project :which-key "todos in project")
 
     "qr" '(query-replace :which-key "Query Replace")
     "qR" '(project-query-replace-regexp :which-key "Query regex Replace")
@@ -129,11 +130,11 @@
     "w=" '(balance-windows :which-key "balance windows")
     "wr" '(evil-window-rotate-downwards :which-key "rotate downwards")
     "wR" '(evil-window-rotate-upwards :which-key "rotate upwards")
-
     )
   (general-define-key
    :states 'normal
-   "C-!" 'project-async-shell-command
+   "M-a" 'project-async-shell-command
+   "M-A" 'async-shell-command
    "M-t" 'tab-to-tab-stop
    "M-i" 'consult-imenu
    "M-I" 'consult-imenu-multi

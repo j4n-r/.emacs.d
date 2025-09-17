@@ -1,10 +1,11 @@
 ;;; init-evil.el ---  extensible vi layer  -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
-
 (use-package evil
   :ensure t
   :defer t
+  :preface
+  (setq evil-respect-visual-line-mode t)
   :hook
   (elpaca-after-init . evil-mode)
   :init
@@ -14,8 +15,8 @@
   (setq evil-want-C-u-delete t)
   :config
   (evil-set-undo-system 'undo-tree)
-  (setq evil-leader/in-all-states t)
-  (setq evil-want-fine-undo t))
+  (evil-leader/in-all-states t)
+  (evil-want-fine-undo t))
 
 (use-package evil-collection
   :ensure t

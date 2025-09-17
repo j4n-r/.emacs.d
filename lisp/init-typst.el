@@ -4,6 +4,8 @@
 
 (use-package typst-ts-mode
   :ensure (:host sourcehut :repo "meow_king/typst-ts-mode")
+  :hook
+  (typst-ts-mode . display-line-numbers-mode)
   :custom
   (typst-ts-mode-watch-options "--open"))
 
