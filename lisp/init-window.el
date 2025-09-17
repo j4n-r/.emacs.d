@@ -6,6 +6,7 @@
   :ensure nil       ;; This is built-in, no need to fetch it.
   :custom
   (window-divider-default-right-width 4)
+  (window-sides-vertical t)
   (display-buffer-alist
    '(
     ;; ("\\magit.*"
@@ -20,13 +21,24 @@
   ;;       (window-width . 1)
   ;;       (side . left)
   ;;       (slot . 0))
+
+        ;; ("\\*Async Shell Command"
+        ;; (display-buffer-in-side-window)
+        ;; (window-width . 0.33)
+        ;; (side . right)
+        ;; (slot . -1))
         
-        ("*compilation*"
+        ("\\*compilation"
         (display-buffer-in-side-window)
         (window-width . 0.33)
         (side . right)
-        (slot . -1))
+        (slot . 0))
 
+        ("\\*WoMan"
+        (display-buffer-in-side-window)
+        (window-width . 0.33)
+        (side . right)
+        (slot . 1))
 
   ;;       ("\\*|eldoc.*\\*"
   ;;       (display-buffer-in-side-window)

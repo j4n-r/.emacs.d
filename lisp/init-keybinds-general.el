@@ -71,7 +71,7 @@
     "ng" '(org-roam-graph :which-key "show graph")
     "ni" '(org-roam-node-insert :which-key "insert node")
     "nc" '(org-roam-capture :which-key "capture node")
-    "nj" '(org-roam-dailies-capture-today :which-key "capture daily node") 
+    "nj" '(org-roam-dailies-capture-today :which-key "capture daily node")
 
     "p" '(:ignore :which-key "project")
     "pp" '(project-switch-project :which-key "switch to project")
@@ -112,7 +112,6 @@
     "wos" '(olivetti-set-width :which-key "set width")
 
     "ww" '(other-window :which-key "switch window")
-    "w." '(balance-windows :which-key "switch window")
     "w<" '(evil-window-decrease-width :which-key "decrease width")
     "w>" '(evil-window-increase-width :which-key "increase width")
     "w+" '(evil-window-increase-height :which-key "increase height")
@@ -127,12 +126,14 @@
     "wK" '(evil-window-move-very-top :which-key "move window very top")
     "wt" '(evil-window-top-left :which-key "top-left window")
     "wb" '(evil-window-bottom-right :which-key "bottom-right window")
-    "w=" '(balance-windows :which-key "balance windows")
+    "w=" '(balance-windows-area :which-key "balance windows")
     "wr" '(evil-window-rotate-downwards :which-key "rotate downwards")
     "wR" '(evil-window-rotate-upwards :which-key "rotate upwards")
+    "wt" '(window-toggle-side-windows :which-key "toggle side windows")
     )
   (general-define-key
    :states 'normal
+   :keymaps 'override
    "M-a" 'project-async-shell-command
    "M-A" 'async-shell-command
    "M-t" 'tab-to-tab-stop
@@ -141,12 +142,14 @@
    "M-d" 'xref-find-definitions
    "M-r" 'xref-find-references
    "M-p" 'consult-yank-from-kill-ring
-   "gd"  'lsp-find-definition   
+   "gd"  'lsp-find-definition  
    "gr"  'lsp-find-references    
    "gI"  'lsp-find-implementation 
    "gy"  'lsp-find-type-definition 
    "gD"  'lsp-find-declaration      
    "K"  'eldoc-box-help-at-point
+   "]e" 'next-error
+   "[e" 'previous-error
    "gcc" '(lambda ()
             (interactive)
             (if (not (use-region-p))

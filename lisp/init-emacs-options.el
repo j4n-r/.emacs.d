@@ -21,7 +21,8 @@
   (pixel-scroll-precision-mode t)
   (pixel-scroll-precision-use-momentum nil)
   (ring-bell-function 'ignore)
-  (split-width-threshold 300)
+  (split-width-threshold 0)
+  (split-height-threshold nil)
   (switch-to-buffer-obey-display-actions t)
   (tab-always-indent 'complete)
   (tab-width 4)
@@ -35,6 +36,7 @@
   (org-duration-format 'h:mm)
   (blink-cursor-mode 'nil)
   (fill-column 80)
+  (reb-re-syntax 'string)
 
   :hook
   (prog-mode . display-line-numbers-mode)
