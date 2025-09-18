@@ -74,12 +74,20 @@
 ;; Extra packages which don't require any configuration
 (use-package sudo-edit
   :ensure t)
+
 (use-package avy
   :ensure t)
+
 (use-package savehist
   :ensure nil
   :init
   (savehist-mode))
+
+(use-package envrc
+  :ensure t
+  :hook
+  (elpaca-after-init . envrc-global-mode))
+
 
 (setq c-ts-mode-indent-offset 4)
 
