@@ -40,6 +40,7 @@
 
   :hook
   (prog-mode . display-line-numbers-mode)
+  ;; (shell-command-mode . special-mode)
 
   :init
   (tool-bar-mode -1)

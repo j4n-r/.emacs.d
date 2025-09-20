@@ -55,7 +55,7 @@
 
     "o" '(:igore t :which-key "open/org")
     "od" '(dired-jump :which-key "open dired")
-    "ot" '(multi-vterm-project :which-key "open project terminal")
+    "ot" '(vterm-other-window :which-key "open project terminal")
     "oT" '(vterm :which-key "open terminal")
     "op" '(proced :which-key "open proced")
     "oc" '(:ignore t :which-key "org clock")
@@ -112,6 +112,7 @@
     "wos" '(olivetti-set-width :which-key "set width")
 
     "ww" '(other-window :which-key "switch window")
+    "ww" '(other-window :which-key "switch window")
     "w<" '(evil-window-decrease-width :which-key "decrease width")
     "w>" '(evil-window-increase-width :which-key "increase width")
     "w+" '(evil-window-increase-height :which-key "increase height")
@@ -135,6 +136,7 @@
    :states 'normal
    :keymaps 'override
    "M-a" 'project-async-shell-command
+   "M-o" 'ace-window
    "M-A" 'async-shell-command
    "M-t" 'tab-to-tab-stop
    "M-i" 'consult-imenu

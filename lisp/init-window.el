@@ -22,11 +22,11 @@
   ;;       (side . left)
   ;;       (slot . 0))
 
-        ;; ("\\*Async Shell Command"
-        ;; (display-buffer-in-side-window)
-        ;; (window-width . 0.33)
-        ;; (side . right)
-        ;; (slot . -1))
+        ("\\*Async Shell Command"
+        (display-buffer-in-side-window)
+        (window-height . 0.33)
+        (side . bottom)
+        (slot . -1))
         
         ("\\*compilation"
         (display-buffer-in-side-window)

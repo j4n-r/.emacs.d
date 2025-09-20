@@ -7,6 +7,7 @@
 ;;; Code:
 
 ;; Produce backtraces when errors occur: can be helpful to diagnose startup issues
+;;
 ;;(setq debug-on-error t)
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
@@ -71,6 +72,9 @@
 ;; this has to be last (i actually dunno)
 (require 'init-keybinds-general)
 
+(use-package vterm
+    :ensure t)
+
 ;; Extra packages which don't require any configuration
 (use-package sudo-edit
   :ensure t)
@@ -87,6 +91,16 @@
   :ensure t
   :hook
   (elpaca-after-init . envrc-global-mode))
+
+(use-package ace-window
+  :ensure t
+  :custom
+  ;(aw-keys '(?f ?d ?s ?v ?c ?x)) ;; 123456 without modifier key
+  (aw-background nil))
+
+(use-package docker
+  :ensure t
+  :defer t)
 
 
 (setq c-ts-mode-indent-offset 4)
