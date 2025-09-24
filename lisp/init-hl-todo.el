@@ -12,6 +12,7 @@
       '(("TODO"   . "#eb6f92")
         ("FIXME"  . "#eb6f92")
         ("BUG"    . "#eb6f92")
+        ("NOTE"   . "#9ccfd8")
         ("DEBUG"  . "#f6c177"))))
 
 (use-package consult-todo

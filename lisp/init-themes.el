@@ -16,5 +16,13 @@
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
+(use-package color-theme-sanityinc-tomorrow
+  :ensure t
+  :defer t)
+(use-package ample-theme
+  :ensure t
+  :defer t)
+
+
 (provide 'init-themes)
 ;;; init-themes.el ends here.

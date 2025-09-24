@@ -22,7 +22,7 @@
   (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t)
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
-                 '(typst-ts-mode . ("tinymist" "--lsp"))
+                 '(typst-ts-mode . ("tinymist" "lsp"))
                  '(nix-mode . ("nil" "--stdio")))))
 
 (provide 'init-eglot)
