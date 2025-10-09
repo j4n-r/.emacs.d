@@ -149,7 +149,8 @@
    "gI"  'lsp-find-implementation 
    "gy"  'lsp-find-type-definition 
    "gD"  'lsp-find-declaration      
-   "K"  'eldoc-box-help-at-point
+   "K"   'eldoc-box-help-at-point
+   "s-k" 'display-local-help
    "]e" 'next-error
    "[e" 'previous-error
    "gcc" '(lambda ()

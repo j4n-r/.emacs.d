@@ -40,11 +40,11 @@
         (side . right)
         (slot . 1))
 
-  ;;       ("\\*|eldoc.*\\*"
-  ;;       (display-buffer-in-side-window)
-  ;;       (window-height . 0.25)
-  ;;       (side . bottom)
-  ;;       (slot . 0))
+        ("\\*eldoc.*\\*"
+        (display-buffer-in-side-window)
+        (window-width . 0.33)
+        (side . right)
+        (slot . 1))
 
   ;;       ;; ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|[Hh]elp\\|Messages\\|Bookmark List\\|Ibuffer\\|Occur\\|eldoc.*\\)\\*"
   ;;       ;; (display-buffer-in-side-window)

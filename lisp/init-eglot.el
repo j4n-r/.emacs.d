@@ -14,12 +14,13 @@
   ;; (c-ts-mode  . eglot-ensure)
   (css-ts-mode  . eglot-ensure)
   (html-ts-mode  . eglot-ensure)
-  (c++-ts-mode  . eglot-ensure)
+  ;; (c++-ts-mode  . eglot-ensure)
   (typst-ts-mode  . eglot-ensure)
   (nix-mode  . eglot-ensure)
+  (zig-mode . eglot-ensure)
 
   :config
-  (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t)
+  ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t)
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
                  '(typst-ts-mode . ("tinymist" "lsp"))
