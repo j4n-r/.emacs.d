@@ -2,8 +2,6 @@
 ;;; Commentary:
 ;;; Code:
 
-;; Theme
-
 (use-package general
   :ensure t
   :config
@@ -66,12 +64,22 @@
     "obu" '(org-dblock-update :which-key "org block update")
     "obU" '(org-update-all-dblocks :which-key "org block update all")
 
-    "n" '(:ignore :which-key "nodes")
-    "nf" '(org-roam-node-find :which-key "find node")
-    "ng" '(org-roam-graph :which-key "show graph")
-    "ni" '(org-roam-node-insert :which-key "insert node")
-    "nc" '(org-roam-capture :which-key "capture node")
-    "nj" '(org-roam-dailies-capture-today :which-key "capture daily node")
+    "n" '(:ignore t :which-key "notes")
+    "nn"'(denote :which-key "new note")
+    "nf" '(lambda ()
+            (interactive) 
+            (let ((default-directory "~/notes/"))
+            (project-find-file)) 
+            :which-key "find notes")
+    "ng" '(denote-grep :which-key "grep notes")
+    "nl" '(denote-link :which-key "insert link")
+    "nL" '(denote-add-links :which-key "add multiple links")
+    "nb" '(denote-backlinks :which-key "show backlinks")
+    "nq" '(:ignore t :which-key "queries")
+    "nqc" '(denote-query-contents-link :which-key "query by contents")
+    "nqf" '(denote-query-filenames-link :which-key "query by filenames")
+    "nr" '(denote-rename-file :which-key "rename file")
+    "nR" '(denote-rename-file-using-front-matter :which-key "rename (front matter)")
 
     "p" '(:ignore :which-key "project")
     "pp" '(project-switch-project :which-key "switch to project")

@@ -12,6 +12,8 @@
   (org-roam-db-autosync-mode)
   ;; If using org-roam-protocol
   (require 'org-roam-protocol))
+
+(server-start)
 (provide 'init-org-roam)
 ;;; init-org-roam.el ends here.
 

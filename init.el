@@ -55,6 +55,7 @@
 (require 'init-rust)
 (require 'init-orderless)
 (require 'init-org-roam)
+(require 'init-denote)
 (require 'init-proced)
 (require 'init-pulsar)
 (require 'init-themes)
@@ -105,6 +106,10 @@
   :defer t)
 
 (use-package realgud
+  :ensure t
+  :defer t)
+
+(use-package olivetti
   :ensure t
   :defer t)
 
