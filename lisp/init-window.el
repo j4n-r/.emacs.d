@@ -6,6 +6,7 @@
   :ensure nil       ;; This is built-in, no need to fetch it.
   :custom
   (window-divider-default-right-width 4)
+
   (window-sides-vertical t)
   (display-buffer-alist
    '(
@@ -68,6 +69,10 @@
   ;;       ;; (side . bottom)
   ;;       ;; (slot . 1))
     	))
+  :config
+  (set-face-attribute 'window-divider                 nil :foreground "#2a273f")
+  (set-face-attribute 'window-divider-first-pixel     nil :foreground "#2a273f")
+  (set-face-attribute 'window-divider-last-pixel      nil :foreground "#2a273f")
   :init
   (window-divider-mode 1)
   )
