@@ -40,6 +40,7 @@
 
   :hook
   (prog-mode . display-line-numbers-mode)
+  (prog-mode . display-fill-column-indicator-mode)
   ;; (shell-command-mode . special-mode)
 
   :init
@@ -67,8 +68,8 @@
 ;;    Loading time : %s
 ;;    Packages     : %s
 "
-                                (emacs-init-time)
-                                (number-to-string (length package-activated-list)))))))
+                    (emacs-init-time)
+                    (number-to-string (length package-activated-list)))))))
 
   :config
   ;; Skip special buffers when cycling
@@ -78,9 +79,11 @@
   (setq switch-to-prev-buffer-skip 'skip-these-buffers)
 
   ;; Fonts (safe even in TTY; no-op if font isn't available)
-  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 155)
+  (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"
+                      :height 155)
   (when (eq system-type 'darwin)
-    (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font" :height 135))
+    (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"
+                        :height 135))
 
   ;; Separate customizations file
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
@@ -88,6 +91,8 @@
 
   ;; Vertical window divider: use U+2502 BOX DRAWINGS LIGHT VERTICAL
   (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
+
+  (set-face-attribute 'fill-column-indicator nil :background nil :foreground "#1f1d2e")
 
   ;; Modeline: battery + time (use setq for variables, then enable the mode)
   (display-battery-mode 1)

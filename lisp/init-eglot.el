@@ -7,6 +7,7 @@
   :hook
   (kotlin-ts-mode . eglot-ensure)
   (rust-ts-mode  . eglot-ensure)
+  (rust-mode  . eglot-ensure)
   (python-ts-mode  . eglot-ensure)
   (tsx-ts-mode  . eglot-ensure)
   (typescript-ts-mode  . eglot-ensure)

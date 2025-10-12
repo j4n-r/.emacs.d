@@ -52,6 +52,7 @@
 (require 'init-nerd-icons)
 (require 'init-nix)
 (require 'init-zig)
+(require 'init-rust)
 (require 'init-orderless)
 (require 'init-org-roam)
 (require 'init-proced)
@@ -106,7 +107,6 @@
 (use-package realgud
   :ensure t
   :defer t)
-
 
 
 (setq c-ts-mode-indent-offset 4)
