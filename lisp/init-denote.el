@@ -18,7 +18,12 @@
   ;; Remember to check the doc string of each of those variables.
   (setq denote-directory (expand-file-name "~/notes/"))
   (setq denote-save-buffers t)
-  (setq denote-known-keywords '("uni" "nix" "books" "temp" "metanote"))
+  (setq denote-known-keywords '(
+                                "uni"
+                                "nix" "rust"
+                                "book" "psychology" "philosophy"
+                                "personal"
+                                "temp" "metanote" "export"))
   (setq denote-infer-keywords t)
   (setq denote-sort-keywords t)
   (setq denote-prompts '(title keywords))

@@ -1,0 +1,17 @@
+.cache/
+auto-save-list/
+custom-vars.el
+early-init.el
+eln-cache/
+elpa/
+elpaca/
+eshell/
+forge-database.sqlite
+history
+multisession/
+org-roam.db
+places
+projects
+recentf
+tramp
+transient/

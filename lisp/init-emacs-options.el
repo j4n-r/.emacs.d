@@ -80,7 +80,7 @@
 
   ;; Fonts (safe even in TTY; no-op if font isn't available)
   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"
-                      :height 155)
+                      :height 160)
   (when (eq system-type 'darwin)
     (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"
                         :height 135))

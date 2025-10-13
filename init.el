@@ -113,6 +113,10 @@
   :ensure t
   :defer t)
 
+(use-package org-download
+  :ensure t
+  :defer t)
+
 
 (setq c-ts-mode-indent-offset 4)
 
