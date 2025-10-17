@@ -26,8 +26,10 @@
   ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t)
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
-                 '(typst-ts-mode . ("tinymist" "lsp"))
-                 '(elixir-mode . ("elixir-ls"))
+                 '(typst-ts-mode . ("tinymist" "lsp")))
+    (add-to-list 'eglot-server-programs
+                 '(elixir-mode . ("elixir-ls")))
+    (add-to-list 'eglot-server-programs
                  '(nix-mode . ("nil" "--stdio")))))
 
 (provide 'init-eglot)

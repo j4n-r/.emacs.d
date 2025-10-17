@@ -4,10 +4,9 @@
 
 (use-package elixir-mode
   :ensure t
-  :defer t
+  :mode "\\.exs\\'"
   :mode "\\.ex\\'"
-  :mode "\\.exs\\'")
-
-(add-to-list 'major-mode-remap-alist '(elixir-ts-mode . elixir-mode))
+  :defer t)
+(setq elixir-ts-mode-hook elixir-mode-hook)
 (provide 'init-elixir)
 ;;; init-elixir.el ends here.
