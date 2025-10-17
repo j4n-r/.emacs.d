@@ -51,6 +51,7 @@
 (require 'init-markdown)
 (require 'init-nerd-icons)
 (require 'init-nix)
+(require 'init-elixir)
 (require 'init-zig)
 (require 'init-rust)
 (require 'init-orderless)
@@ -114,6 +115,10 @@
   :defer t)
 
 (use-package org-download
+  :ensure t
+  :defer t)
+
+(use-package nov
   :ensure t
   :defer t)
 

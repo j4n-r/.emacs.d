@@ -19,12 +19,15 @@
   (typst-ts-mode  . eglot-ensure)
   (nix-mode  . eglot-ensure)
   (zig-mode . eglot-ensure)
+  (elixir-mode . eglot-ensure)
+  (nix-mode .eglot-ensure)
 
   :config
   ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t)
   (with-eval-after-load 'eglot
     (add-to-list 'eglot-server-programs
                  '(typst-ts-mode . ("tinymist" "lsp"))
+                 '(elixir-mode . ("elixir-ls"))
                  '(nix-mode . ("nil" "--stdio")))))
 
 (provide 'init-eglot)

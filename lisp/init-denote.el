@@ -21,7 +21,8 @@
   (setq denote-known-keywords '(
                                 "uni"
                                 "nix" "rust"
-                                "book" "psychology" "philosophy"
+                                "book" "article"
+                                "psychology" "philosophy"
                                 "personal"
                                 "temp" "metanote" "export"))
   (setq denote-infer-keywords t)

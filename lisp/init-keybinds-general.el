@@ -63,6 +63,7 @@
     "oca"  '(org-clock-goto :which-key "goto active clock")
     "obu" '(org-dblock-update :which-key "org block update")
     "obU" '(org-update-all-dblocks :which-key "org block update all")
+    "oib" '(org-insert-structure-template :which-key "org insert block")
 
     "n" '(:ignore t :which-key "notes")
     "nn"'(denote :which-key "new note")
@@ -72,14 +73,15 @@
             (project-find-file)) 
             :which-key "find notes")
     "ng" '(denote-grep :which-key "grep notes")
-    "nl" '(denote-link :which-key "insert link")
-    "nL" '(denote-add-links :which-key "add multiple links")
+    "ni" '(denote-link :which-key "insert link")
+    "nI" '(denote-add-links :which-key "add multiple links")
     "nb" '(denote-backlinks :which-key "show backlinks")
     "nq" '(:ignore t :which-key "queries")
     "nqc" '(denote-query-contents-link :which-key "query by contents")
     "nqf" '(denote-query-filenames-link :which-key "query by filenames")
     "nr" '(denote-rename-file :which-key "rename file")
     "nR" '(denote-rename-file-using-front-matter :which-key "rename (front matter)")
+    "nv" '(denote-link-open-at-point :which-key "denote visit link")
 
     "p" '(:ignore :which-key "project")
     "pp" '(project-switch-project :which-key "switch to project")
@@ -152,11 +154,9 @@
    "M-d" 'xref-find-definitions
    "M-r" 'xref-find-references
    "M-p" 'consult-yank-from-kill-ring
-   "gd"  'lsp-find-definition  
-   "gr"  'lsp-find-references    
-   "gI"  'lsp-find-implementation 
-   "gy"  'lsp-find-type-definition 
-   "gD"  'lsp-find-declaration      
+   "gd"  'eglot-find-declaration  
+   "gr"  'eglot-find-implementation
+   "gt"  'eglot-find-typeDefinition
    "K"   'eldoc-box-help-at-point
    "s-k" 'display-local-help
    "]e" 'next-error
@@ -189,7 +189,17 @@
    "h" 'dired-up-directory
    "l" 'dired-find-alternate-file
    ;; "M-s" 'dired-do-shell-command
+   )
+
+  (general-define-key
+   :states 'normal
+   :keymaps 'nov-mode-map
+   "<down>" 'nov-scroll-up
+   "<up>" 'nov-scroll-down
+   "<left>" 'nov-history-back
+   "<right>" 'nov-next-document
    ))
+
 
 (provide 'init-keybinds-general)
 ;;; init-keybinds-general.el ends here.
