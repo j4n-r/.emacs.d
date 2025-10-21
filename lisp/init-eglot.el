@@ -1,7 +1,6 @@
 ;;; init-eglot.el --- built in LSP Server -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
-
 (use-package eglot
   :ensure nil
   :hook
@@ -20,17 +19,14 @@
   (nix-mode  . eglot-ensure)
   (zig-mode . eglot-ensure)
   (elixir-mode . eglot-ensure)
-  (nix-mode .eglot-ensure)
-
   :config
   ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t)
-  (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 '(typst-ts-mode . ("tinymist" "lsp")))
-    (add-to-list 'eglot-server-programs
-                 '(elixir-mode . ("elixir-ls")))
-    (add-to-list 'eglot-server-programs
-                 '(nix-mode . ("nil" "--stdio")))))
+  (add-to-list 'eglot-server-programs
+               '(typst-ts-mode . ("tinymist" "lsp")))
+  (add-to-list 'eglot-server-programs
+               '(elixir-mode . ("elixir-ls")))
+  (add-to-list 'eglot-server-programs
+               '(nix-mode . ("nil" "--stdio"))))
 
 (provide 'init-eglot)
 ;;; init-eglot.el ends here.
