@@ -52,6 +52,7 @@
 (require 'init-nerd-icons)
 (require 'init-nix)
 (require 'init-elixir)
+(require 'init-go)
 (require 'init-zig)
 (require 'init-rust)
 (require 'init-orderless)

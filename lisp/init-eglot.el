@@ -19,6 +19,7 @@
   (nix-mode  . eglot-ensure)
   (zig-mode . eglot-ensure)
   (elixir-mode . eglot-ensure)
+  (go-ts-mode . eglot-ensure)
   :config
   ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t)
   (add-to-list 'eglot-server-programs
