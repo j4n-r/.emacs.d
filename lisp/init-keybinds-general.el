@@ -30,6 +30,7 @@
     "cF" '(apheleia-format-buffer :which-key "format buffer")
     "cr" '(eglot-rename :which-key "rename")
     "co" '(eglot-code-action-organize-imports :which-key "organize imports")
+    "ce" '(consult-flymake :which-key "Consult diagnostics")
 
     "e" '(:ignore t :which-key "eval elisp")
     "eb" '(eval-buffer :which-key "eval buffer")
@@ -104,9 +105,7 @@
     "sN" '(jinx-correct-previous :which-key "jinx previous")
     "sa" '(jinx-correct-all :which-key "jinx corect all")
     "sg" '(consult-ripgrep :which-key "search grep")
-    "sm" '(consult-ripgrep :which-key "search manpages")
-    "ss" '(consult-lsp-file-symbols :which-key "workspace symbol")
-    "sS" '(consult-lsp-symbols :which-key "workspace symbol")
+    "sm" '(consult-man :which-key "search manpages")
 
     "t"  '(:ignore t :which-key "toggles")
 
