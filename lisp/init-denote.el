@@ -26,6 +26,7 @@
                                 "personal"
                                 "temp" "metanote" "export"))
   (setq denote-infer-keywords t)
+  (setq denote-file-type 'text)
   (setq denote-sort-keywords t)
   (setq denote-prompts '(title keywords))
   (setq denote-excluded-directories-regexp nil)
