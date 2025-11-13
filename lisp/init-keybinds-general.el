@@ -107,7 +107,10 @@
     "sg" '(consult-ripgrep :which-key "search grep")
     "sm" '(consult-man :which-key "search manpages")
 
-    "t"  '(:ignore t :which-key "toggles")
+    "t"  '(:ignore t :which-key "text/toggles")
+    "ta" '(text-scale-adjust :which-key "adjust text scale")
+    "tA" '(global-text-scale-adjust :which-key "adjust global text scale")
+
 
     "w" '(:ignore w :which-key "window")
     "wv" '(evil-window-vsplit :which-key "split vertically")
