@@ -49,6 +49,7 @@
 (require 'init-magit)
 (require 'init-marginalia)
 (require 'init-markdown)
+(require 'init-dape)
 (require 'init-nerd-icons)
 (require 'init-nix)
 (require 'init-elixir)
@@ -123,8 +124,18 @@
   :ensure t
   :defer t)
 
+(use-package rainbow-mode
+  :ensure t
+  :defer t
+  :init
+(add-hook 'prog-mode-hook 'rainbow-mode)
+(add-hook 'text-mode-hook 'rainbow-mode)
+)
+
 
 (setq c-ts-mode-indent-offset 4)
+(setq typescript-ts-mode-indent-offset 2)
+(setq tsx-ts-mode-indent-offset 2)
 
 (provide 'init)
 

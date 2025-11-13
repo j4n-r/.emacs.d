@@ -29,5 +29,8 @@
   (add-to-list 'eglot-server-programs
                '(nix-mode . ("nil" "--stdio"))))
 
+(setq-default eglot-workspace-configuration
+            '(:typescript (:format (:enable :json-false))))
+
 (provide 'init-eglot)
 ;;; init-eglot.el ends here.
