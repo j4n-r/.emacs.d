@@ -1,7 +1,6 @@
 .cache/
 auto-save-list/
 custom-vars.el
-early-init.el
 eln-cache/
 elpa/
 elpaca/
