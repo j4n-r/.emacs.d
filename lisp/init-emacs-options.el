@@ -56,6 +56,7 @@
   (save-place-mode 1)
   (winner-mode 1)
   (global-visual-line-mode 1)
+  (adaptive-fill-mode -1)
   (xterm-mouse-mode 1)
   (file-name-shadow-mode 1)
   (modify-coding-system-alist 'file "" 'utf-8)

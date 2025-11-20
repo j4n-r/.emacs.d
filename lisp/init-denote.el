@@ -20,8 +20,8 @@
   (setq denote-known-keywords '(
                                 "uni"
                                 "nix" "rust"
-                                "book" "article"
-                                "psychology" "philosophy"
+                                "book" "article" "talk"
+                                "psychology" "philosophy" "technology"
                                 "personal"
                                 "temp" "metanote" "export"))
   (setq denote-infer-keywords t)
@@ -36,7 +36,8 @@
   
   ;; Templates für Notizen
   (setq denote-templates
-        `((contact . ,(concat "Name: \n"
+        `((empty . "")
+          (contact . ,(concat "Name: \n"
                               "Kennengelernt: \n"
                               "Beziehung: \n"
                               "\n"
@@ -58,7 +59,39 @@
                               "Geschenkideen:\n"
                               "- \n"
                               "- \n"
-                              "\n"))))
+                              "\n"))
+ (talk . ,(concat "Speaker: \n"
+                         "Event: \n"
+                         "Date: \n"
+                         "Location: \n"
+                         "\n"
+                         "================================================================================\n"
+                         "\t\t\t\t\t\t\t\t\tSummary\n"
+                         "================================================================================\n"
+                         "\n\n"
+                         "================================================================================\n"
+                         "\t\t\t\t\t\t\t\t\tKey Points\n"
+                         "================================================================================\n"
+                         "\n"
+                         "- \n"
+                         "- \n"
+                         "- \n"
+                         "\n\n"
+                         "================================================================================\n"
+                         "\t\t\t\t\t\t\t\t\tQuestions/Ideas\n"
+                         "================================================================================\n"
+                         "\n"
+                         "- \n"
+                         "- \n"
+                         "\n\n"
+                         "================================================================================\n"
+                         "\t\t\t\t\t\t\t\t\tResources\n"
+                         "================================================================================\n"
+                         "\n"
+                         "Links: \n"
+                         "References: \n"
+                         "\n"))
+          ))
   
   ;; Automatically rename Denote buffers using the `denote-rename-buffer-format'.
   (denote-rename-buffer-mode 1))
