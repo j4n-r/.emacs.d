@@ -56,6 +56,7 @@
     "lT" '(consult-todo :which-key "Todos dir")
     "le" '(consult-flymake :which-key "errors")
     "lm" '(consult-mark :which-key "marks")
+    "lr" '(consult-recent-file :which-key "marks")
 
     "n" '(:ignore t :which-key "notes")
     "nn"'(denote :which-key "new note")

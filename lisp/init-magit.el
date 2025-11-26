@@ -7,6 +7,7 @@
   :defer t
   :config
   (setopt magit-format-file-function #'magit-format-file-nerd-icons) ;; Turns on magit nerd-icons
+  (setopt magit-display-buffer-function 'magit-display-buffer-fullframe-status-v1)
   (magit-clone-submodules 'recursive))
 
 (use-package transient

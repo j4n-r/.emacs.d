@@ -21,7 +21,7 @@
   (pixel-scroll-precision-mode t)
   (pixel-scroll-precision-use-momentum nil)
   (ring-bell-function 'ignore)
-  (split-width-threshold 0)
+  (split-width-threshold 100)
   (split-height-threshold nil)
   (switch-to-buffer-obey-display-actions t)
   (tab-always-indent 'complete)

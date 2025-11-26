@@ -29,6 +29,8 @@
 
 (setq jit-lock-defer-time 0)
 
+(setq auth-sources '("~/.authinfo"))
+
 (require 'init-consult)
 (require 'init-corfu)
 (require 'init-diff-hl)
