@@ -40,7 +40,8 @@
 
   :hook
   (prog-mode . display-line-numbers-mode)
-  (prog-mode . display-fill-column-indicator-mode)
+  ;; (prog-mode . display-fill-column-indicator-mode)
+  (compilation-filter-hook . ansi-color-compilation-filter)
   ;; (shell-command-mode . special-mode)
 
   :init
@@ -93,7 +94,7 @@
   ;; Vertical window divider: use U+2502 BOX DRAWINGS LIGHT VERTICAL
   (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
 
-  (set-face-attribute 'fill-column-indicator nil :background nil :foreground "#1f1d2e")
+  ;; (set-face-attribute 'fill-column-indicator nil :background unspecified :foreground "#1f1d2e")
 
   ;; Modeline: battery + time (use setq for variables, then enable the mode)
   (display-battery-mode 1)

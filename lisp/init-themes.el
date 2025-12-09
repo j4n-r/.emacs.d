@@ -12,13 +12,15 @@
 
 
    (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-   (load-theme 'doom-rose-pine t)
+  (load-theme 'doom-rose-pine t)
+  ;;(load-theme 'complinet)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
 (use-package color-theme-sanityinc-tomorrow
   :ensure t
   :defer t)
+
 (use-package ample-theme
   :ensure t
   :defer t)

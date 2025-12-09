@@ -195,7 +195,15 @@
    "N" 'dired-create-directory
    "h" 'dired-up-directory
    "l" 'dired-find-alternate-file
+   "W" 'wdired-change-to-wdired-mode
    ;; "M-s" 'dired-do-shell-command
+   )
+
+  (general-define-key
+   :states 'normal
+   :keymaps 'wdired-mode-map
+   ;; Z-Z finish edit
+   "A" 'wdired-abort-changes
    )
 
   (general-define-key

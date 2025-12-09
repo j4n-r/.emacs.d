@@ -50,6 +50,10 @@
         ("\\*vterm\\*"
         (display-buffer-same-window)
         (reusable-frames . nil))
+
+        ("\\*docker-containers\\*"
+        (display-buffer-same-window)
+        (reusable-frames . nil))
   ;;       ;; ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|[Hh]elp\\|Messages\\|Bookmark List\\|Ibuffer\\|Occur\\|eldoc.*\\)\\*"
   ;;       ;; (display-buffer-in-side-window)
   ;;       ;; (window-height . 0.25)

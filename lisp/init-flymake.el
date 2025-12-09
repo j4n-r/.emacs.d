@@ -9,7 +9,7 @@
 (use-package flymake
   :ensure nil          ;; This is built-in, no need to fetch it.
   :defer t
-  :hook (prog-mode . flymake-mode)
+  ;; :hook (prog-mode . flymake-mode) ;; eglot should handle this
   :custom
   (flymake-margin-indicators-string
    '((error "!»" compilation-error) (warning "»" compilation-warning)
