@@ -133,6 +133,30 @@
 (add-hook 'text-mode-hook 'rainbow-mode)
 )
 
+(use-package highlight-indent-guides
+  :ensure t
+  :config
+  ;; Disable auto-color calculation (it fails with Rose Pine)
+  (setq highlight-indent-guides-auto-enabled nil)
+
+  ;; Set the guide characters to "Highlight Med" (subtle grey-purple)
+  (set-face-foreground 'highlight-indent-guides-character-face "#403d52")
+  (set-face-foreground 'highlight-indent-guides-odd-face "#403d52")
+  (set-face-foreground 'highlight-indent-guides-even-face "#403d52")
+
+  ;; Set the "active" guide (where your cursor is) to "Iris" (purple)
+  ;; Note: This requires 'highlight-indent-guides-responsive' to be set to 'top
+  (set-face-foreground 'highlight-indent-guides-top-character-face "#c4a7e7")
+  (set-face-foreground 'highlight-indent-guides-top-odd-face "#c4a7e7")
+  (set-face-foreground 'highlight-indent-guides-top-even-face "#c4a7e7")
+  (set-face-foreground 'highlight-indent-guides-stack-character-face "#c4a7e7")
+  (set-face-foreground 'highlight-indent-guides-stack-odd-face "#c4a7e7")
+  (set-face-foreground 'highlight-indent-guides-stack-even-face "#c4a7e7")
+
+  :custom
+  (highlight-indent-guides-method 'character)
+  (highlight-indent-guides-responsive 'top)
+  (highlight-indent-guides-delay 0))
 
 (setq c-ts-mode-indent-offset 4)
 (setq typescript-ts-mode-indent-offset 2)
