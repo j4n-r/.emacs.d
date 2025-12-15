@@ -40,6 +40,7 @@
 
   :hook
   (prog-mode . display-line-numbers-mode)
+  (text-mode . highlight-indent-guides-mode)
   ;; (prog-mode . display-fill-column-indicator-mode)
   (compilation-filter-hook . ansi-color-compilation-filter)
   ;; (shell-command-mode . special-mode)

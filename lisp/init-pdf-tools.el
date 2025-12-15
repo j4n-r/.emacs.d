@@ -7,7 +7,11 @@
   :defer t
   :init
   (pdf-tools-install)
-  (pdf-loader-activate))
+  (pdf-loader-activate)
+  :custom
+  (pdf-view-resize-factor 1.15)
+  )
+
 
 (provide 'init-pdf-tools)
 ;;; init-pdf-tools.el ends here.
