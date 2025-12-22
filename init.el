@@ -82,6 +82,9 @@
 (use-package vterm
     :ensure t)
 
+(use-package jinx
+  :ensure t)
+
 ;; Extra packages which don't require any configuration
 (use-package sudo-edit
   :ensure t)
@@ -132,6 +135,12 @@
 (add-hook 'prog-mode-hook 'rainbow-mode)
 (add-hook 'text-mode-hook 'rainbow-mode)
 )
+
+(use-package goggles
+  :ensure t
+  :hook ((prog-mode text-mode) . goggles-mode)
+  :config
+  (setq-default goggles-pulse t)) ;; set to nil to disable pulsing
 
 (use-package highlight-indent-guides
   :ensure t

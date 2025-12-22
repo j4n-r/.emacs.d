@@ -21,6 +21,7 @@
 
     "b" '(:ignore :which-key "buffer")
     "br" '(rename-buffer :which-key "rename buffer")
+    "bR" '(revert-buffer :which-key "revert buffer")
     "bk" '(kill-buffer :which-key "kill buffer")
 
     "c" '(:igore t :which-key "code")
@@ -187,6 +188,7 @@
    "s-j" 'avy-goto-char-2
    "M-e" 'embark-act)
 
+
   (general-define-key
    :states 'normal
    :keymaps 'dired-mode-map
@@ -205,6 +207,11 @@
    ;; Z-Z finish edit
    "A" 'wdired-abort-changes
    )
+
+  (general-define-key
+   :states 'normal
+   :keymaps 'magit-mode-map
+   "Z" 'magit-worktree)
 
   (general-define-key
    :states 'normal

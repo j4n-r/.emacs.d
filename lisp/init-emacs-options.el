@@ -46,6 +46,8 @@
   ;; (shell-command-mode . special-mode)
 
   :init
+  ;; TODO this is a workaround because some stuff broke in new nixos
+  (setenv "SSH_AUTH_SOCK" "/home/j4n-r/.bitwarden-ssh-agent.sock")
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (when (fboundp 'scroll-bar-mode)

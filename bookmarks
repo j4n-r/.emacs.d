@@ -1,0 +1,23 @@
+;;;; Emacs Bookmark Format Version 1;;;; -*- coding: utf-8; mode: lisp-data -*-
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("discrete_math"
+ (filename . "~/math/discrete_mathematics_with_applications-Susanna_Epp.pdf")
+ (position . 1)
+ (last-modified 26950 26079 894273 123000)
+ (page . 58)
+ (slice)
+ (size . 3.1006076388888886)
+ (origin 0.0 . 0.012998655311519499)
+ (handler . pdf-view-bookmark-jump-handler))
+("discrete_math_solutions"
+ (filename . "~/math/discrete_mathematics_with_applications-Susanna_Epp.pdf")
+ (position . 1)
+ (last-modified 26946 25049 67691 798000)
+ (page . 899)
+ (slice)
+ (size . 2.698209718670077)
+ (origin 0.0 . 0.0)
+ (handler . pdf-view-bookmark-jump-handler))
+)
