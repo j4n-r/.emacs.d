@@ -75,6 +75,7 @@
 (require 'init-perspective)
 (require 'init-hl-todo)
 (require 'init-pdf-tools)
+(require 'init-agent-shell)
 
 ;; this has to be last (i actually dunno)
 (require 'init-keybinds-general)
@@ -127,6 +128,34 @@
 (use-package nov
   :ensure t
   :defer t)
+
+(use-package sicp
+  :ensure t
+  :defer t)
+
+(use-package geiser-racket
+:ensure t
+:config (setq geiser-active-implementations '(racket)))
+(use-package racket-mode :ensure t)
+
+
+(use-package haskell-mode
+  :ensure t
+  :defer t)
+
+
+
+(defun my/optimize-reading-layout ()
+  "Setup line spacing for a better reading experience."
+  (setq line-spacing 0.25)) ;; 0.25 = 25% extra height between lines
+
+(use-package mixed-pitch
+  :ensure t
+  :hook
+  (Info-mode . mixed-pitch-mode)
+  (Info-mode . my/optimize-reading-layout)
+  :config
+  (set-face-attribute 'variable-pitch nil :font "ET Book" :height 200))
 
 (use-package rainbow-mode
   :ensure t

@@ -19,10 +19,15 @@
     "TAB TAB" '(persp-switch :which-key "perspective")
 
 
-    "b" '(:ignore :which-key "buffer")
+    "b" '(:ignore :which-key "buffer/bookmark")
     "br" '(rename-buffer :which-key "rename buffer")
     "bR" '(revert-buffer :which-key "revert buffer")
     "bk" '(kill-buffer :which-key "kill buffer")
+    "bs" '(bookmark-set :which-key "bookmark set")
+    "bj" '(bookmark-jump :which-key "bookmark jump")
+    "bd" '(bookmark-delete :which-key "bookmark jump")
+
+    "b" '(:ignore :which-key "buffer")
 
     "c" '(:igore t :which-key "code")
     "ca" '(eglot-code-actions :which-key "code actions")
@@ -76,6 +81,9 @@
     "nr" '(denote-rename-file :which-key "rename file")
     "nR" '(denote-rename-file-using-front-matter :which-key "rename (front matter)")
     "nv" '(denote-link-open-at-point :which-key "denote visit link")
+    "nt" '(:ignore t :which-key "timer")
+    "nts" '(org-timer-set-timer :which-key "set timer")
+    "ntt" '(org-timer-pause-or-continue :which-key "toggle timer")
 
     "o" '(:igore t :which-key "open/org")
     "od" '(dired-jump :which-key "open dired")
@@ -187,7 +195,6 @@
   (general-define-key
    "s-j" 'avy-goto-char-2
    "M-e" 'embark-act)
-
 
   (general-define-key
    :states 'normal

@@ -2,20 +2,45 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("discrete_math"
+(("(sicp) 1-2-2"
+ (front-context-string . "   * If n is 0, ")
+ (rear-context-string . "o make change.\n\n")
+ (position . 126202)
+ (last-modified 27010 14705 606297 673000)
+ (filename . "/home/j4n-r/.emacs.d/elpaca/builds/sicp/sicp")
+ (info-node . "1-2-2")
+ (handler . Info-bookmark-jump))
+("sicp"
+ (front-context-string . "constructs\" such")
+ (rear-context-string . "urpose \"looping\n")
+ (position . 115550)
+ (last-modified 26983 27123 650592 64000)
+ (filename . "/home/j4n-r/.emacs.d/elpaca/builds/sicp/sicp")
+ (info-node . "1-2-1")
+ (handler . Info-bookmark-jump))
+("theorem 2.1.1"
  (filename . "~/math/discrete_mathematics_with_applications-Susanna_Epp.pdf")
  (position . 1)
- (last-modified 26975 25497 937152 929000)
- (page . 88)
+ (last-modified 26979 27912 652842 486000)
+ (page . 72)
  (slice)
  (size . 3.1006076388888886)
  (origin 0.0 . 0.0)
  (handler . pdf-view-bookmark-jump-handler))
+("discrete_math"
+ (filename . "~/math/discrete_mathematics_with_applications-Susanna_Epp.pdf")
+ (position . 1)
+ (last-modified 26990 693 344627 657000)
+ (page . 141)
+ (slice)
+ (size . 3.1006076388888886)
+ (origin 0.0 . 0.06051098162259077)
+ (handler . pdf-view-bookmark-jump-handler))
 ("discrete_math_solutions"
  (filename . "~/math/discrete_mathematics_with_applications-Susanna_Epp.pdf")
  (position . 1)
- (last-modified 26971 35373 79932 563000)
- (page . 903)
+ (last-modified 26984 41677 238726 823000)
+ (page . 910)
  (slice)
  (size . 3.102604166666666)
  (origin 0.0 . 0.012981199641897942)

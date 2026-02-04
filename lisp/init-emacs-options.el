@@ -37,6 +37,7 @@
   (blink-cursor-mode 'nil)
   (fill-column 80)
   (reb-re-syntax 'string)
+  (text-scale-mode-step 1.1)
 
   :hook
   (prog-mode . display-line-numbers-mode)
