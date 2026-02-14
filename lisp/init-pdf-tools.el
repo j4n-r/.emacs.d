@@ -7,7 +7,6 @@
   :defer t
   :init
   (pdf-tools-install)
-  (pdf-loader-activate)
   :custom
   (pdf-view-resize-factor 1.15)
   )

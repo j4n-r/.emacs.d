@@ -13,10 +13,10 @@
   (setq evil-want-keybinding nil)
   (setq evil-want-C-u-scroll t)
   (setq evil-want-C-u-delete t)
+  (setq evil-want-fine-undo t)
   :config
   (evil-set-undo-system 'undo-tree)
-  (evil-leader/in-all-states t)
-  (evil-want-fine-undo t))
+  )
 
 (use-package evil-collection
   :ensure t

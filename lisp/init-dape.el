@@ -10,7 +10,7 @@
   ;; If you do not want to use any prefix, set it to nil.
   ;; (setq dape-key-prefix "\C-x\C-a")
 
-  :hook
+  ;:hook
   ;; Save breakpoints on quit
   ; (kill-emacs . dape-breakpoint-save)
   ;; Load breakpoints on startup

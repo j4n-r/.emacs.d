@@ -61,7 +61,6 @@
   (save-place-mode 1)
   (winner-mode 1)
   (global-visual-line-mode 1)
-  (adaptive-fill-mode -1)
   (xterm-mouse-mode 1)
   (file-name-shadow-mode 1)
   (modify-coding-system-alist 'file "" 'utf-8)
@@ -86,7 +85,7 @@
 
   ;; Fonts (safe even in TTY; no-op if font isn't available)
   (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"
-                      :height 160)
+                      :height 115)
   (when (eq system-type 'darwin)
     (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"
                         :height 135))
