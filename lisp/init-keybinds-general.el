@@ -59,7 +59,7 @@
 
     "l" '(:ingore t :which-key "list")
     "lt" '(consult-todo :which-key "Todos buffer")
-    "lT" '(consult-todo :which-key "Todos dir")
+    "lT" '(consult-todo-all :which-key "Todos dir")
     "le" '(consult-flymake :which-key "errors")
     "lm" '(consult-mark :which-key "marks")
     "lr" '(consult-recent-file :which-key "marks")
@@ -169,6 +169,7 @@
    "M-I" 'consult-imenu-multi
    "M-d" 'xref-find-definitions
    "M-r" 'xref-find-references
+   "M-t" 'eglot-find-typeDefinition
    "M-p" 'consult-yank-from-kill-ring
    "gd"  'eglot-find-declaration  
    "gr"  'eglot-find-implementation

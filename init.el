@@ -48,17 +48,17 @@
 (require 'init-flymake)
 (require 'init-helpful)
 (require 'init-isearch)
+(require 'init-nerd-icons)
 (require 'init-magit)
 (require 'init-marginalia)
 (require 'init-markdown)
 (require 'init-dape)
-(require 'init-nerd-icons)
 (require 'init-nix)
 (require 'init-elixir)
 (require 'init-go)
 (require 'init-zig)
 (require 'init-orderless)
-(require 'init-org-roam)
+;;(require 'init-org-roam)
 (require 'init-denote)
 (require 'init-proced)
 ;; (require 'init-pulsar)
@@ -75,7 +75,8 @@
 (require 'init-perspective)
 (require 'init-hl-todo)
 (require 'init-pdf-tools)
-(require 'init-agent-shell)
+(require 'init-custom-func)
+;;(require 'init-agent-shell)
 
 ;; this has to be last (i actually dunno)
 (require 'init-keybinds-general)
@@ -102,6 +103,10 @@
   :ensure t
   :hook
   (elpaca-after-init . envrc-global-mode))
+
+(use-package kdl-mode
+  :ensure t
+  :defer t)
 
 (use-package ace-window
   :ensure t

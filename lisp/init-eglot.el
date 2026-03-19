@@ -27,7 +27,9 @@
   (add-to-list 'eglot-server-programs
                '(elixir-mode . ("elixir-ls")))
   (add-to-list 'eglot-server-programs
-               '(nix-mode . ("nil" "--stdio"))))
+               '(nix-mode . ("nil" "--stdio")))
+  (add-to-list 'eglot-server-programs
+               '(python-ts-mode . ("ty" "server"))))
 
 (setq-default eglot-workspace-configuration
             '(:typescript (:format (:enable :json-false))))
