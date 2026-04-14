@@ -33,6 +33,7 @@
 
 (require 'init-consult)
 (require 'init-corfu)
+(require 'init-cape)
 (require 'init-diff-hl)
 (require 'init-dired)
 (require 'init-doom-modeline)
@@ -54,14 +55,9 @@
 (require 'init-markdown)
 (require 'init-dape)
 (require 'init-nix)
-(require 'init-elixir)
 (require 'init-go)
-(require 'init-zig)
 (require 'init-orderless)
-;;(require 'init-org-roam)
 (require 'init-denote)
-(require 'init-proced)
-;; (require 'init-pulsar)
 (require 'init-themes)
 (require 'init-tramp)
 (require 'init-treesit-auto)
@@ -148,7 +144,13 @@
   :ensure t
   :defer t)
 
+(use-package just-mode
+  :ensure t
+  :defer t)
 
+(use-package ox-hugo
+  :ensure t   
+  :after ox)
 
 (defun my/optimize-reading-layout ()
   "Setup line spacing for a better reading experience."
@@ -202,6 +204,7 @@
   (highlight-indent-guides-delay 0))
 
 (setq c-ts-mode-indent-offset 4)
+(setq c++-ts-mode-indent-offset 4)
 (setq typescript-ts-mode-indent-offset 2)
 (setq tsx-ts-mode-indent-offset 2)
 

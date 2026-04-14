@@ -20,6 +20,7 @@
   (elixir-mode . eglot-ensure)
   (go-ts-mode . eglot-ensure)
   (haskell-mode . eglot-ensure)
+  (c++-ts-mode . eglot-ensure)
   :config
   ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t)
   (add-to-list 'eglot-server-programs
@@ -29,7 +30,9 @@
   (add-to-list 'eglot-server-programs
                '(nix-mode . ("nil" "--stdio")))
   (add-to-list 'eglot-server-programs
-               '(python-ts-mode . ("ty" "server"))))
+               '(python-ts-mode . ("ty" "server")))
+  (add-to-list 'auto-mode-alist '("CMakeLists\\.txt\\'" . cmake-ts-mode))
+  (add-to-list 'auto-mode-alist '("\\.cmake\\'" . cmake-ts-mode)))
 
 (setq-default eglot-workspace-configuration
             '(:typescript (:format (:enable :json-false))))

@@ -15,7 +15,7 @@
    (dired-mode . denote-dired-mode))
   :config
   ;; Remember to check the doc string of each of those variables.
-  (setq denote-directory (expand-file-name "~/notes/"))
+  (setq denote-directory (expand-file-name '("~/notes/" "~/dev/projects/blog/content-org/")))
   (setq denote-save-buffers t)
   (setq denote-known-keywords '(
                                 "uni"
@@ -36,7 +36,16 @@
   
   ;; Templates für Notizen
   (setq denote-templates
-        `((empty . "")
+        '((empty . "")
+          (post . ,(concat "#+title: \n"
+                 "#+date: [" (format-time-string "%Y-%m-%d %a %H:%M") "]\n"
+                 "#+hugo_base_dir: ../\n"
+                 "#+hugo_section: posts\n"
+                 "#+hugo_slug: posts\n"
+                 "#+draft: true\n"
+                 "#+summary: \n"
+                 "#+filetags: \n"
+                 "\n"))
           (contact . ,(concat "Name: \n"
                               "Kennengelernt: \n"
                               "Beziehung: \n"
@@ -92,7 +101,6 @@
                          "References: \n"
                          "\n"))
           ))
-  
   ;; Automatically rename Denote buffers using the `denote-rename-buffer-format'.
   (denote-rename-buffer-mode 1))
 

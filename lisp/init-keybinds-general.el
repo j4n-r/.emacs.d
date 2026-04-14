@@ -194,7 +194,7 @@
    "gC" 'comment-box)
 
   (general-define-key
-   "s-j" 'avy-goto-char-2
+   "s-a" 'avy-goto-char-2
    "M-e" 'embark-act)
 
   (general-define-key

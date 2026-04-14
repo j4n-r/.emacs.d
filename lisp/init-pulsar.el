@@ -4,7 +4,7 @@
 
 (use-package pulsar
   :defer t
-  :ensure t
+  ;; :ensure t
   :hook
   (elpaca-after-init . pulsar-global-mode)
   :config
