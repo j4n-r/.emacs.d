@@ -171,8 +171,9 @@
    "M-r" 'xref-find-references
    "M-t" 'eglot-find-typeDefinition
    "M-p" 'consult-yank-from-kill-ring
+   "M-j" 'evil-avy-goto-char-2
    "gd"  'eglot-find-declaration  
-   "gr"  'eglot-find-implementation
+   "gi"  'eglot-find-implementation
    "gt"  'eglot-find-typeDefinition
    "K"   'eldoc-box-help-at-point
    "s-k" 'display-local-help
