@@ -177,10 +177,6 @@
 
     ;; Doom mode line
     (doom-modeline-bar :background green) ; The line to the left
-    (doom-modeline-evil-emacs-state  :foreground magenta)  ; The dot color when in emacs mode
-    (doom-modeline-evil-normal-state :foreground green)    ; The dot color when in normal mode
-    (doom-modeline-evil-visual-state :foreground magenta)  ; The dot color when in visual mode
-    (doom-modeline-evil-insert-state :foreground orange)   ; The dot color when in insert mode
 
     ;; Helm
     (helm-selection :foreground base :weight 'bold :background blue)

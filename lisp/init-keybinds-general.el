@@ -27,7 +27,7 @@
     "bj" '(bookmark-jump :which-key "bookmark jump")
     "bd" '(bookmark-delete :which-key "bookmark jump")
 
-    "b" '(:ignore :which-key "buffer")
+    "" '(:ignore :which-key "buffer")
 
     "c" '(:igore t :which-key "code")
     "ca" '(eglot-code-actions :which-key "code actions")

@@ -45,7 +45,7 @@
 (require 'init-emacs-options)
 (require 'init-embark-consult)
 (require 'init-embark)
-(require 'init-evil)
+;;(require 'init-evil)
 (require 'init-flymake)
 (require 'init-helpful)
 (require 'init-isearch)
@@ -72,13 +72,29 @@
 (require 'init-hl-todo)
 (require 'init-pdf-tools)
 (require 'init-custom-func)
-;;(require 'init-agent-shell)
+(require 'init-meow)
+
 
 ;; this has to be last (i actually dunno)
-(require 'init-keybinds-general)
+;; (require 'init-keybinds-general)
 
 (use-package vterm
-    :ensure t)
+  :ensure t
+  :config
+  (advice-add 'meow-kill :around (lambda (orig-fun &rest args)
+                                   (if (derived-mode-p 'vterm-mode)
+                                       (if (region-active-p)
+                                           (vterm-delete-region
+                                            (region-beginning) (region-end))
+                                         (vterm-delete-region
+                                          (point) (pos-eol)))
+                                     (apply orig-fun args))))
+  :hook
+  (vterm-mode . (lambda ()
+                  (add-hook 'meow-insert-enter-hook
+                            (lambda () (vterm-copy-mode -1)) nil t)
+                  (add-hook 'meow-insert-exit-hook 'vterm-copy-mode nil t)))
+  )
 
 (use-package jinx
   :ensure t)
@@ -89,6 +105,8 @@
 
 (use-package avy
   :ensure t)
+
+
 
 (use-package savehist
   :ensure nil

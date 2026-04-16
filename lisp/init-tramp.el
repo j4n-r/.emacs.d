@@ -21,7 +21,6 @@
   (with-eval-after-load 'compile
     (remove-hook 'compilation-mode-hook #'tramp-compile-disable-ssh-controlmaster-options)))
 
-(remove-hook 'evil-insert-state-exit-hook #'doom-modeline-update-buffer-file-name)
 (remove-hook 'find-file-hook #'doom-modeline-update-buffer-file-name)
 (remove-hook 'find-file-hook 'forge-bug-reference-setup)
 
