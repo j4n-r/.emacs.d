@@ -23,6 +23,8 @@
    '("TAB TAB" . persp-switch)
    '("," . consult-buffer)
    '("." . consult-project-buffer)
+   '("b f" . eglot-format-buffer)
+   '("e b" . eval-buffer)
    '("p p" . project-switch-project)
    '("p s" . project-search)
    '("p c" . project-compile)
@@ -31,15 +33,17 @@
    '("w s" . split-window-below)
    '("w q" . delete-window)
    '("w h" . windmove-left)
-   '("w j" . windmove-down)
+   '("w j" . windmove-Down)
    '("w k" . windmove-up)
    '("w l" . windmove-right)
    '("w o o" . olivetti-mode)
    '("o t" . vterm)
    '("o d" . dired-jump)
    '("q r" . query-replace)
-   '("q R" . project-query-replace-reqexp)
-   ;; Use SPC (0-9) for digit arguments.
+   '("q R" . project-query-replace-regexp)
+   '("s g" . consult-ripgrep)
+   '("q q" . kill-emacs)
+      ;; Use SPC (0-9) for digit arguments.
    '("1" . meow-digit-argument)
    '("2" . meow-digit-argument)
    '("3" . meow-digit-argument)
@@ -171,7 +175,7 @@
 (global-set-key (kbd "K") #'eldoc-box-help-at-point)
 (global-set-key (kbd "s-k") #'display-local-help)
 (global-set-key (kbd "M-t") #'tab-to-tab-stop)
-
+(global-set-key (kbd "C-M-g") #'magit-status)
 ;;(global-set-key (kbd "] e") #'next-error)
 ;;(global-set-key (kbd "[ e") #'previous-error)
 
