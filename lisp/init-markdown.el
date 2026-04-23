@@ -6,6 +6,6 @@
   :defer t
   :ensure t
   :mode ("README\\.md\\'" . gfm-mode)            ;; Use gfm-mode for README.md files.
-  :init (setq markdown-command "multimarkdown")) ;; Set the Markdown processing command.
+  :init (setq markdown-command "markdown")) ;; Set the Markdown processing command.
 (provide 'init-markdown)
 ;;; init-markdown.el ends here.

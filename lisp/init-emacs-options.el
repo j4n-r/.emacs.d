@@ -11,7 +11,7 @@
   (create-lockfiles nil)
   (delete-by-moving-to-trash t)
   (delete-selection-mode 1)
-  (display-line-numbers-type 'relative)
+  (display-line-numbers-type 't)
   (global-auto-revert-non-file-buffers t)
   (history-length 25)
   (inhibit-startup-message t)

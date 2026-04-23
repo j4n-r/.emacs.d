@@ -1,4 +1,4 @@
-;;; init-meow.el --- meow mode  -*- lexical-binding: t; -*-
+;;; Init-Meow.el --- meow mode  -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
 
@@ -25,6 +25,11 @@
    '("." . consult-project-buffer)
    '("b f" . eglot-format-buffer)
    '("e b" . eval-buffer)
+   '("n n" . denote)
+   '("n f" . (lambda ()
+               (interactive)
+               (let ((default-directory "~/notes/"))
+                 (project-find-file))))
    '("p p" . project-switch-project)
    '("p s" . project-search)
    '("p c" . project-compile)
@@ -97,11 +102,11 @@
    '("L" . meow-right-expand)
    '("m" . meow-join)
    '("n" . meow-search)
-    '("o" . meow-tree-sitter-node)
+   '("o" . meow-tree-sitter-node)
    '("O" . meow-to-block)
    '("p" . meow-yank)
    '("q" . meow-quit)
-   '("Q" . meow-goto-line)             
+   ;; '("Q" . meow-goto-line)             
    '("r" . meow-replace)
    '("R" . meow-swap-grab)
    '("s" . meow-kill)
@@ -127,33 +132,33 @@
 :ensure t
   :config
   (meow-setup)
-  (meow-global-mode 1)
-  (meow-thing-register 'angle
-                       '(regexp "<" ">")
-                       '(regexp "<" ">"))
-  (meow-thing-register 'double-quote
-                       '(regexp "\"" "\"")
-                       '(regexp "\"" "\""))
-  (meow-thing-register 'single-quote
-                       '(regexp "'" "'")
-                       '(regexp "'" "'"))
-  (meow-thing-register 'backtick
-                       '(regexp "`" "`")
-                       '(regexp "`" "`"))
-  (setq meow-char-thing-table
-        '((?\( . round)
-          (?\[ . square)
-          (?\{ . curly)
-          (?\< . angle)
-          (?\" . double-quote)
-          (?\' . single-quote)
-          (?\` . backtick)
-          (?e . symbol)
-          (?w . window)
-          (?b . buffer)
-          (?p . paragraph)
-          (?l . line)
-          (?d . defun))))
+  (meow-global-mode 1))
+  ;; (meow-thing-register 'angle
+  ;;                      '(regexp "<" ">")
+  ;;                      '(regexp "<" ">"))
+  ;; (meow-thing-register 'double-quote
+  ;;                      '(regexp "\"" "\"")
+  ;;                      '(regexp "\"" "\""))
+  ;; (meow-thing-register 'single-quote
+  ;;                      '(regexp "'" "'")
+  ;;                      '(regexp "'" "'"))
+  ;; (meow-thing-register 'backtick
+  ;;                      '(regexp "`" "`")
+  ;;                      '(regexp "`" "`"))
+  ;; (setq meow-char-thing-table
+  ;;       '((?\( . round)
+  ;;         (?\[ . square)
+  ;;         (?\{ . curly)
+  ;;         (?\< . angle)
+  ;;         (?\" . double-quote)
+  ;;         (?\' . single-quote)
+  ;;         (?\` . backtick)
+  ;;         (?e . symbol)
+  ;;         (?w . window)
+  ;;         (?b . buffer)
+  ;;         (?p . paragraph)
+  ;;         (?l . line) 
+  ;;         (?d . defun))))
 (use-package meow-tree-sitter
   :ensure t
   :after meow
@@ -172,12 +177,14 @@
 (global-set-key (kbd "M-r") #'xref-find-references)
 (global-set-key (kbd "M-p") #'consult-yank-from-kill-ring)
 (global-set-key (kbd "M-j") #'avy-goto-char-2)
-(global-set-key (kbd "K") #'eldoc-box-help-at-point)
+(global-set-key (kbd "M-k") #'eldoc-box-help-at-point)
 (global-set-key (kbd "s-k") #'display-local-help)
 (global-set-key (kbd "M-t") #'tab-to-tab-stop)
 (global-set-key (kbd "C-M-g") #'magit-status)
-;;(global-set-key (kbd "] e") #'next-error)
-;;(global-set-key (kbd "[ e") #'previous-error)
+(global-set-key (kbd "M-g n") #'flymake-goto-next-error)
+(global-set-key (kbd "M-g p") #'flymake-goto-prev-error)
+(global-set-key (kbd "C-c r") #'eglot-rename)
+(global-set-key (kbd "C-c a") #'eglot-code-actions)
 
 (provide 'init-meow)
 ;;; init-meow.el ends here.
