@@ -167,6 +167,9 @@
 
 (global-set-key (kbd "C-v") #'my/scroll-up-command)
 (global-set-key (kbd "M-v") #'my/scroll-down-command)
+(global-set-key (kbd "C-u") #'my/scroll-down-command)
+(global-set-key (kbd "C-d") #'my/scroll-up-command)
+
 (global-set-key (kbd "M-a") #'project-async-shell-command)
 (global-set-key (kbd "M-o") #'ace-window)
 (global-set-key (kbd "M-A") #'async-shell-command)
