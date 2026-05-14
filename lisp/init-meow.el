@@ -2,6 +2,7 @@
 ;;; Commentary:
 ;;; Code:
 
+
 (defun my/scroll-down-command ()
   (interactive)
   (scroll-down-command 30))
@@ -207,7 +208,7 @@
 (global-set-key (kbd "M-d") #'xref-find-definitions)
 (global-set-key (kbd "M-r") #'xref-find-references)
 (global-set-key (kbd "M-p") #'consult-yank-from-kill-ring)
-(global-set-key (kbd "M-j") #'avy-goto-char-2)
+(global-set-key (kbd "M-j") #'avy-goto-char-timer)
 (global-set-key (kbd "M-k") #'eldoc-box-help-at-point)
 (global-set-key (kbd "s-k") #'dsplay-local-help)
 (global-set-key (kbd "M-t") #'tab-to-tab-stop)
