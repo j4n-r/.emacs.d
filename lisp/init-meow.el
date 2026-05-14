@@ -9,6 +9,17 @@
 (defun my/scroll-up-command ()
   (interactive)
   (scroll-up-command 30))
+
+(defun meow-negative-find ()
+  (interactive)
+  (let ((current-prefix-arg -1))
+    (call-interactively 'meow-find)))
+
+(defun meow-negative-till ()
+  (interactive)
+  (let ((current-prefix-arg -1))
+    (call-interactively 'meow-till)))
+
     
 (defun meow-setup ()
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
@@ -103,6 +114,7 @@
    '("e" . meow-next-word)
    '("E" . meow-next-symbol)
    '("f" . meow-find)
+   '("F" . meow-negative-find)
    '("g" . meow-cancel-selection)
    '("G" . meow-grab)
    '("h" . meow-left)
@@ -126,6 +138,7 @@
    '("R" . meow-swap-grab)
    '("s" . meow-kill)
    '("t" . meow-till)
+   '("T" . meow-negative-till)   
    '("u" . undo-tree-undo)
    '("U" . undo-tree-redo)
    '("v" . meow-visit)
