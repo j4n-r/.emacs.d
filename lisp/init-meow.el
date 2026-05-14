@@ -61,11 +61,13 @@
    '("w j" . windmove-down)
    '("w k" . windmove-up)
    '("w l" . windmove-right)
+   '("w =" . balance-windows)
    '("w o o" . olivetti-mode)
    '("o t" . vterm)
    '("o d" . dired-jump)
    '("q r" . query-replace)
    '("q R" . project-query-replace-regexp)
+<<<<<<< HEAD
    '("q q" . kill-emacs)
    '("r r" . point-to-register)
    '("r c" . consult-register)
@@ -75,6 +77,31 @@
    '("s f" . consult-flymake)
    '("s t" . consult-todo-all)
    
+=======
+   '("s g" . consult-ripgrep)
+    ;; jump/navigation
+   '("j d" . xref-find-definitions)
+   '("j r" . xref-find-references)
+   '("j t" . eglot-find-typeDefinition)
+   '("j b" . xref-go-back)
+   '("j f" . xref-go-forward)
+   '("j i" . consult-imenu)
+   '("j I" . consult-imenu-multi)
+   '("j l" . consult-line)
+   '("j m" . consult-mark)
+   '("j M" . consult-global-mark)
+   '("j j" . avy-goto-char-2)
+
+   ;; language/LSP
+   '("l f" . eglot-format-buffer)
+   '("l r" . eglot-rename)
+   '("l a" . eglot-code-actions)
+   '("l d" . xref-find-definitions)
+   '("l R" . xref-find-references)
+   '("l t" . eglot-find-typeDefinition)
+   '("l n" . flymake-goto-next-error)
+   '("l p" . flymake-goto-prev-error)
+>>>>>>> b8e7898 (meow changes + clojure stuff)
       ;; Use SPC (0-9) for digit arguments.
    '("1" . meow-digit-argument)
    '("2" . meow-digit-argument)
@@ -150,6 +177,7 @@
    '("y" . meow-save)
    '("Y" . meow-sync-grab)
    '("z" . meow-pop-selection)
+   '("Z" . meow-pop-to-mark)
    '("'" . repeat)
    '("<escape>" . ignore)
    '("Q" . kmacro-start-macro)
@@ -180,7 +208,7 @@
   ;;         (?\[ . square)
   ;;         (?\{ . curly)
   ;;         (?\< . angle)
-  ;;         (?\" . double-quote)
+
   ;;         (?\' . single-quote)
   ;;         (?\` . backtick)
   ;;         (?e . symbol)
@@ -210,13 +238,14 @@
 (global-set-key (kbd "M-p") #'consult-yank-from-kill-ring)
 (global-set-key (kbd "M-j") #'avy-goto-char-timer)
 (global-set-key (kbd "M-k") #'eldoc-box-help-at-point)
-(global-set-key (kbd "s-k") #'dsplay-local-help)
-(global-set-key (kbd "M-t") #'tab-to-tab-stop)
+(global-set-key (kbd "s-k") #'display-local-help)
+(global-set-key (kbd "C-t") #'tab-to-tab-stop)
 (global-set-key (kbd "C-M-g") #'magit-status)
 (global-set-key (kbd "M-g n") #'flymake-goto-next-error)
 (global-set-key (kbd "M-g p") #'flymake-goto-prev-error)
 (global-set-key (kbd "C-c A") #'org-agenda)
 (global-set-key (kbd "M-a") #'embark-act)
+
 
 
 (provide 'init-meow)

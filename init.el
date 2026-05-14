@@ -166,6 +166,18 @@
   :ensure t
   :defer t)
 
+(use-package clojure-ts-mode
+  :ensure t
+  :defer t)
+
+(use-package cider
+  :ensure t
+  :defer t)
+
+(use-package inf-clojure
+  :ensure t
+  :defer t)
+
 (use-package just-mode
   :ensure t
   :defer t)
