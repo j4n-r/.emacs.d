@@ -239,6 +239,12 @@
    (swiper-match-face-3 :inherit 'ivy-minibuffer-match-face-3)
    (swiper-match-face-4 :inherit 'ivy-minibuffer-match-face-4)
 
+    ;; isearch
+   (isearch
+    :background gold
+    :foreground surface
+    :weight 'bold)
+
    ;; ediff
    (ediff-current-diff-A        :background (doom-blend love base 0.2) :foreground love)
    (ediff-current-diff-Ancestor :background region)
@@ -256,5 +262,6 @@
    (ediff-odd-diff-Ancestor     :inherit 'ediff-even-diff-Ancestor)
    (ediff-odd-diff-B            :inherit 'ediff-even-diff-B)
    (ediff-odd-diff-C            :inherit 'ediff-even-diff-C)))
+
 
 ;;; doom-rose-pine-theme.el ends here

@@ -10,13 +10,13 @@
 ;; will utilize `mpv'.
 (use-package dired
   :ensure nil                                                ;; This is built-in, no need to fetch it.
-  :bind (:map dired-mode-map
-              ("f" . find-file)
-              ("n" . dired-create-empty-file)
-              ("N" . dired-create-directory)
-              ("h" . dired-up-directory)
-              ("l" . dired-find-alternate-file)
-              ("W" . wdired-change-to-wdired-mode))
+  ;; :bind (:map dired-mode-map
+  ;;             ("f" . find-file)
+  ;;             ("n" . dired-create-empty-file)
+  ;;             ("N" . dired-create-directory)
+  ;;             ("h" . dired-up-directory)
+  ;;             ("l" . dired-find-alternate-file)
+  ;;             ("W" . wdired-change-to-wdired-mode))
   :custom
   (dired-listing-switches "-lah --group-directories-first")  ;; Display files in a human-readable format and group directories first.
   (dired-dwim-target t)                                      ;; Enable "do what I mean" for target directories.

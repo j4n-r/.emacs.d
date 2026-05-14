@@ -73,6 +73,7 @@
 (require 'init-pdf-tools)
 (require 'init-custom-func)
 (require 'init-meow)
+(require 'init-org)
 
 
 ;; this has to be last (i actually dunno)
@@ -106,6 +107,9 @@
 (use-package avy
   :ensure t)
 
+
+(use-package wgrep
+  :ensure t)
 
 
 (use-package savehist

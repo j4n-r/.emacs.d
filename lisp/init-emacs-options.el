@@ -42,6 +42,8 @@
   :hook
   (prog-mode . display-line-numbers-mode)
   (text-mode . highlight-indent-guides-mode)
+  (org-mode . olivetti-mode)
+  (dired-mode . dired-hide-details-mode)
 
   ;; (prog-mode . display-fill-column-indicator-mode)
   (compilation-filter-hook . ansi-color-compilation-filter)
@@ -98,6 +100,11 @@
   ;; Separate customizations file
   (setq custom-file (locate-user-emacs-file "custom-vars.el"))
   (load custom-file 'noerror 'nomessage)
+
+  ;; Make regular Isearch interpret the empty space as a regular
+  ;; expression that matches any character between the words you give
+  ;; it.
+  (setq search-whitespace-regexp ".*?")   
 
   ;; Vertical window divider: use U+2502 BOX DRAWINGS LIGHT VERTICAL
   (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
