@@ -67,7 +67,6 @@
    '("o d" . dired-jump)
    '("q r" . query-replace)
    '("q R" . project-query-replace-regexp)
-<<<<<<< HEAD
    '("q q" . kill-emacs)
    '("r r" . point-to-register)
    '("r c" . consult-register)
@@ -76,32 +75,7 @@
    '("s m" . consult-mark)
    '("s f" . consult-flymake)
    '("s t" . consult-todo-all)
-   
-=======
    '("s g" . consult-ripgrep)
-    ;; jump/navigation
-   '("j d" . xref-find-definitions)
-   '("j r" . xref-find-references)
-   '("j t" . eglot-find-typeDefinition)
-   '("j b" . xref-go-back)
-   '("j f" . xref-go-forward)
-   '("j i" . consult-imenu)
-   '("j I" . consult-imenu-multi)
-   '("j l" . consult-line)
-   '("j m" . consult-mark)
-   '("j M" . consult-global-mark)
-   '("j j" . avy-goto-char-2)
-
-   ;; language/LSP
-   '("l f" . eglot-format-buffer)
-   '("l r" . eglot-rename)
-   '("l a" . eglot-code-actions)
-   '("l d" . xref-find-definitions)
-   '("l R" . xref-find-references)
-   '("l t" . eglot-find-typeDefinition)
-   '("l n" . flymake-goto-next-error)
-   '("l p" . flymake-goto-prev-error)
->>>>>>> b8e7898 (meow changes + clojure stuff)
       ;; Use SPC (0-9) for digit arguments.
    '("1" . meow-digit-argument)
    '("2" . meow-digit-argument)
