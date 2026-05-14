@@ -72,7 +72,7 @@
    '("s g" . consult-ripgrep)
    '("s l" . consult-line)
    '("s m" . consult-mark)
-   '("s e" . consult-flymake)
+   '("s f" . consult-flymake)
    '("s t" . consult-todo-all)
    
       ;; Use SPC (0-9) for digit arguments.

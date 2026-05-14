@@ -18,7 +18,6 @@
   (setq org-todo-keywords
         '((sequence "TODO(t)" "WAIT(w!)" "|" "CANCEL(c!)" "DONE(d!)"))))
 
-/home/work/projects
 
 (provide 'init-org)
 ;;; init-org.el ends here.
