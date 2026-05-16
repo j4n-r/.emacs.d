@@ -107,6 +107,11 @@
 (use-package avy
   :ensure t)
 
+(use-package gt
+  :ensure t
+  :config
+  (gt-langs '(en de))
+  (gt-default-translator (gt-translator :engines (gt-google-engine))))
 
 (use-package wgrep
   :ensure t)
