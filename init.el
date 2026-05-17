@@ -116,6 +116,10 @@
 (use-package wgrep
   :ensure t)
 
+(use-package neocaml
+  :ensure (:host github
+           :repo "bbatsov/neocaml"
+           :depth treeless))
 
 (use-package savehist
   :ensure nil

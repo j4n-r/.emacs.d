@@ -25,6 +25,8 @@
   ;; (add-hook 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode t)
   (add-to-list 'eglot-server-programs
                '(typst-ts-mode . ("tinymist" "lsp")))
+    (add-to-list 'eglot-server-programs
+               '(neocaml-mode . ("ocamllsp")))
   (add-to-list 'eglot-server-programs
                '(elixir-mode . ("elixir-ls")))
   (add-to-list 'eglot-server-programs
