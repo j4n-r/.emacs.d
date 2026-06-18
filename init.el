@@ -191,6 +191,13 @@
   :ensure t
   :defer t)
 
+(use-package rego-mode
+  :ensure t
+  :mode "\\.rego\\'"
+  :custom
+  (rego-repl-executable "opa")
+  (rego-opa-command "opa"))
+
 (use-package ox-hugo
   :ensure t   
   :after ox)
@@ -198,6 +205,15 @@
 (use-package ox-pandoc
   :ensure t   
   :after ox)
+
+(use-package uuidgen
+  :ensure t)
+
+
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
 
 (defun my/optimize-reading-layout ()
   "Setup line spacing for a better reading experience."

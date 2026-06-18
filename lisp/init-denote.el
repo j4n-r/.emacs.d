@@ -15,7 +15,7 @@
    (dired-mode . denote-dired-mode))
   :config
   ;; Remember to check the doc string of each of those variables.
-  (setq denote-directory (expand-file-name '("~/notes/" "~/dev/projects/blog/content-org/")))
+  (setq denote-directory "~/notes/")
   (setq denote-save-buffers t)
   (setq denote-known-keywords '(
                                 "uni"

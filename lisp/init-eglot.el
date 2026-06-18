@@ -28,9 +28,13 @@
     (add-to-list 'eglot-server-programs
                '(neocaml-mode . ("ocamllsp")))
   (add-to-list 'eglot-server-programs
+               '(rego-mode . ("regal" "language-server")))
+  (add-to-list 'eglot-server-programs
                '(elixir-mode . ("elixir-ls")))
   (add-to-list 'eglot-server-programs
-               '(nix-mode . ("nil" "--stdio")))
+               '(nix-mode . ("nixd")))
+  (add-to-list 'eglot-server-programs
+               '(sql-mode . ("postgres-language-server" "lsp-proxy")))
   (add-to-list 'eglot-server-programs
                '(python-ts-mode . ("ty" "server")))
   (add-to-list 'auto-mode-alist '("CMakeLists\\.txt\\'" . cmake-ts-mode))

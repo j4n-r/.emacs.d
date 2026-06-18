@@ -23,6 +23,8 @@
 
     
 (defun meow-setup ()
+  (add-to-list 'meow-mode-state-list '(compilation-mode . normal))
+  (add-to-list 'meow-mode-state-list '(helpful-mode . normal))
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (setq meow-use-clipboard t)
   (meow-motion-define-key
@@ -39,6 +41,9 @@
    '("b k" . kill-buffer)
    '("b r" . revert-buffer)
    '("b g" . wgrep-change-to-wgrep-mode)
+   '("b p p" . json-pretty-print-buffer)
+   '("b a" . text-scale-adjust)
+   '("b A" . global-text-scale-adjust)
    '("e b" . eval-buffer)
    '("e e" . eval-expression)
    '("e a" . eglot-code-actions)
@@ -53,7 +58,8 @@
    '("p p" . project-switch-project)
    '("p s" . project-search)
    '("p c" . project-compile)
-   '("w w" . other-window)
+   '("w w" . window-swap-states)
+   '("w =" . balance-windows)
    '("w v" . split-window-right)
    '("w s" . split-window-below)
    '("w q" . delete-window)
@@ -167,33 +173,31 @@
 :ensure t
   :config
   (meow-setup)
-  (meow-global-mode 1))
-  ;; (meow-thing-register 'angle
-  ;;                      '(regexp "<" ">")
-  ;;                      '(regexp "<" ">"))
-  ;; (meow-thing-register 'double-quote
-  ;;                      '(regexp "\"" "\"")
-  ;;                      '(regexp "\"" "\""))
-  ;; (meow-thing-register 'single-quote
-  ;;                      '(regexp "'" "'")
-  ;;                      '(regexp "'" "'"))
-  ;; (meow-thing-register 'backtick
-  ;;                      '(regexp "`" "`")
-  ;;                      '(regexp "`" "`"))
-  ;; (setq meow-char-thing-table
-  ;;       '((?\( . round)
-  ;;         (?\[ . square)
-  ;;         (?\{ . curly)
-  ;;         (?\< . angle)
-
-  ;;         (?\' . single-quote)
-  ;;         (?\` . backtick)
-  ;;         (?e . symbol)
-  ;;         (?w . window)
-  ;;         (?b . buffer)
-  ;;         (?p . paragraph)
-  ;;         (?l . line) 
-  ;;         (?d . defun))))
+  (meow-global-mode 1)
+  (meow-thing-register 'angle
+                       '(regexp "<" ">")
+                       '(regexp "<" ">"))
+  (meow-thing-register 'double-quote
+                       '(regexp "\"" "\"")
+                       '(regexp "\"" "\""))
+  (meow-thing-register 'single-quote
+                       '(regexp "'" "'")
+                       '(regexp "'" "'"))
+  (meow-thing-register 'backtick
+                       '(regexp "`" "`")
+                       '(regexp "`" "`"))
+  (setq meow-char-thing-table
+        '((?\( . round)
+          (?\[ . square)
+          (?\{ . curly)
+          (?\< . angle)
+          (?\" . double-quote)
+          (?\' . single-quote)
+          (?\` . backtick)
+          (?e . symbol)
+          (?b . buffer)
+          (?p . paragraph)
+          (?d . defun)))
 (use-package meow-tree-sitter
   :ensure t
   :after meow
