@@ -25,6 +25,7 @@
 (defun meow-setup ()
   (add-to-list 'meow-mode-state-list '(compilation-mode . normal))
   (add-to-list 'meow-mode-state-list '(helpful-mode . normal))
+(add-hook 'git-timemachine-mode-hook #'meow-insert-mode)
   (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
   (setq meow-use-clipboard t)
   (meow-motion-define-key
@@ -197,7 +198,7 @@
           (?e . symbol)
           (?b . buffer)
           (?p . paragraph)
-          (?d . defun)))
+          (?d . defun))))
 (use-package meow-tree-sitter
   :ensure t
   :after meow

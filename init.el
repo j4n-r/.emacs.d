@@ -187,6 +187,10 @@
   :ensure t
   :defer t)
 
+(use-package git-timemachine
+  :ensure t
+  :defer t)
+
 (use-package just-mode
   :ensure t
   :defer t)
