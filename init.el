@@ -8,7 +8,7 @@
 
 ;; Produce backtraces when errors occur: can be helpful to diagnose startup issues
 ;;
-;; (setq debug-on-error t)
+;;(setq debug-on-error t)
 
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 ;; (require 'init-benchmarking) ;; Measure startup time
@@ -41,7 +41,6 @@
 (require 'init-eglot)
 (require 'init-eldoc-box)
 (require 'init-eldoc)
-(require 'init-elpaca)
 (require 'init-emacs-options)
 (require 'init-embark-consult)
 (require 'init-embark)
@@ -79,23 +78,31 @@
 ;; this has to be last (i actually dunno)
 ;; (require 'init-keybinds-general)
 
-(use-package vterm
-  :ensure t
-  :config
-  (advice-add 'meow-kill :around (lambda (orig-fun &rest args)
-                                   (if (derived-mode-p 'vterm-mode)
-                                       (if (region-active-p)
-                                           (vterm-delete-region
-                                            (region-beginning) (region-end))
-                                         (vterm-delete-region
-                                          (point) (pos-eol)))
-                                     (apply orig-fun args))))
-  :hook
-  (vterm-mode . (lambda ()
-                  (add-hook 'meow-insert-enter-hook
-                            (lambda () (vterm-copy-mode -1)) nil t)
-                  (add-hook 'meow-insert-exit-hook 'vterm-copy-mode nil t)))
-  )
+;; (use-package vterm
+;;   :ensure t
+;;   :config
+;;   (advice-add 'meow-kill :around (lambda (orig-fun &rest args)
+;;                                    (if (derived-mode-p 'vterm-mode)
+;;                                        (if (region-active-p)
+;;                                            (vterm-delete-region
+;;                                             (region-beginning) (region-end))
+;;                                          (vterm-delete-region
+;;                                           (point) (pos-eol)))
+;;                                      (apply orig-fun args))))
+;;   :hook
+;;   (vterm-mode . (lambda ()
+;;                   (add-hook 'meow-insert-enter-hook
+;;                             (lambda () (vterm-copy-mode -1)) nil t)
+;;                   (add-hook 'meow-insert-exit-hook 'vterm-copy-mode nil t)))
+;;   )
+
+(use-package ghostel
+  :ensure t)
+
+(use-package meow-ghostel
+  :vc (:url "https://github.com/dakra/meow-ghostel" :rev :newest)
+  :after (ghostel meow)
+  :hook (ghostel-mode . meow-ghostel-mode))
 
 (use-package jinx
   :ensure t)
@@ -110,8 +117,9 @@
 (use-package gt
   :ensure t
   :config
-  (gt-langs '(en de))
-  (gt-default-translator (gt-translator :engines (gt-google-engine))))
+  (setq gt-langs '(en de))
+  (setq gt-default-translator
+        (gt-translator :engines (gt-google-engine))))
 
 (use-package wgrep
   :ensure t)
@@ -165,12 +173,6 @@
   :ensure t
   :defer t)
 
-(use-package geiser-racket
-:ensure t
-:config (setq geiser-active-implementations '(racket)))
-(use-package racket-mode :ensure t)
-
-
 (use-package haskell-mode
   :ensure t
   :defer t)
@@ -195,6 +197,17 @@
   :ensure t
   :defer t)
 
+(use-package gptel
+  :ensure (:host github
+           :repo "karthink/gptel"
+           :branch "master"
+           :files ("*.el"))
+  :config
+  (setq gptel-backend
+        (gptel-make-openai-oauth "OpenAI-sub"))
+
+  (setq gptel-model 'gpt-5.6-sol))
+
 (use-package rego-mode
   :ensure t
   :mode "\\.rego\\'"
@@ -205,6 +218,9 @@
 (use-package ox-hugo
   :ensure t   
   :after ox)
+
+(use-package zig-mode
+  :ensure t)
 
 (use-package ox-pandoc
   :ensure t   

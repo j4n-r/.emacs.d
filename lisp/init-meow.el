@@ -70,7 +70,7 @@
    '("w l" . windmove-right)
    '("w =" . balance-windows)
    '("w o o" . olivetti-mode)
-   '("o t" . vterm)
+   '("o t" . ghostel)
    '("o d" . dired-jump)
    '("q r" . query-replace)
    '("q R" . project-query-replace-regexp)

@@ -97,8 +97,7 @@
     (set-face-attribute 'default nil :family "JetBrainsMono Nerd Font"
                         :height 135))
 
-  ;; Separate customizations file
-  (setq custom-file (locate-user-emacs-file "custom-vars.el"))
+  ;; Load the customizations selected by `init.el'.
   (load custom-file 'noerror 'nomessage)
 
   ;; Make regular Isearch interpret the empty space as a regular
