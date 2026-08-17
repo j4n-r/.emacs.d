@@ -6,6 +6,17 @@
   :defer t
   :ensure t
   :mode ("README\\.md\\'" . gfm-mode)            ;; Use gfm-mode for README.md files.
-  :init (setq markdown-command "markdown")) ;; Set the Markdown processing command.
+  :hook (markdown-mode . markdown-live-preview-mode)
+  :init
+  (setq markdown-command "pandoc"))
+
+(use-package grip-mode
+  :ensure t
+  :defer t
+  :custom
+  (grip-command 'go-grip)
+  ;; Embedded WebKit requires a graphical frame with xwidget support.
+  (grip-preview-in-webkit (display-graphic-p)))
+
 (provide 'init-markdown)
 ;;; init-markdown.el ends here.
