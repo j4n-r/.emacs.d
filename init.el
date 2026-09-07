@@ -50,6 +50,7 @@
 (require 'init-isearch)
 (require 'init-nerd-icons)
 (require 'init-magit)
+(require 'init-ediff)
 (require 'init-marginalia)
 (require 'init-markdown)
 (require 'init-dape)
@@ -97,10 +98,15 @@
 ;;   )
 
 (use-package ghostel
-  :ensure t)
+  :ensure t
+  :custom
+  (ghostel-keymap-exceptions
+   '("C-c" "C-x" "C-u" "C-h" "M-x" "C-M-g" "M-:" "C-\\"
+     "C-v" "M-v" "C-r" "C-s")))
 
 (use-package meow-ghostel
-  :vc (:url "https://github.com/dakra/meow-ghostel" :rev :newest)
+  :vc (:url "https://github.com/dakra/meow-ghostel"
+       :rev :newest)
   :after (ghostel meow)
   :hook (ghostel-mode . meow-ghostel-mode))
 
@@ -282,7 +288,7 @@
   (set-face-foreground 'highlight-indent-guides-stack-even-face "#c4a7e7")
 
   :custom
-  (highlight-indent-guides-method 'character)
+  (highlight-indent-guides-method 'column)
   (highlight-indent-guides-responsive 'top)
   (highlight-indent-guides-delay 0))
 

@@ -1,4 +1,4 @@
-;;; init-magit.el --- A Git Porcelain inside Emacs-*- lexical-binding: t; -*-
+;;; init-magit.el --- A Git Porcelain inside Emacs -*- lexical-binding: t; -*-
 ;;; Commentary:
 ;;; Code:
 
@@ -6,16 +6,16 @@
   :ensure t
   :bind (:map magit-mode-map
          ("x" . magit-discard)
-         ("k" . nil)) ;; Unbind 'k' so Meow can use it for movement
+         ("k" . nil))
   :config
   (setopt magit-format-file-function #'magit-format-file-nerd-icons)
-  (setq magit-display-buffer-function #'magit-display-buffer-fullframe-status-v1
-        magit-bury-buffer-function    #'magit-restore-window-configuration)
-  (setopt magit-clone-submodules 'recursive)
 
-  ;; Fix the Transient menu (swaps 'k' to 'x' perfectly in place)
-  (transient-replace-suffix 'magit-file-dispatch "k"
-    '("x" "Discard" magit-discard)))
+  (setq magit-display-buffer-function
+        #'magit-display-buffer-fullframe-status-v1
+        magit-bury-buffer-function
+        #'magit-restore-window-configuration)
+
+  (setopt magit-clone-submodules 'recursive))
 
 (use-package transient
   :ensure t
